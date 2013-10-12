@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>Savannah Example Echo</title>
+    </head>
+    <body>
+        <div class="app">
+            <h1>Savannah Example Echo</h1>
+        </div>
+        <script type="text/javascript" src="savannah.js"></script>
+        <script type="text/javascript">
+            document.body.innerHTML += "<br />Connecting to device...";
+
+            window.savannah.onReady(function() {
+                document.body.innerHTML += "<br />Device ready!<br/><br />Echo!";
+
+                window.savannah.exec(function(message) {
+                    document.body.innerHTML += "<br />" + message;
+                }, null, "uk.co.tealspoon.savannah.echo", "echo", ["Echo!"]);
+            });
+        </script>
+    </body>
+</html>
