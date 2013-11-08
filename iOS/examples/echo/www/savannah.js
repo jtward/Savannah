@@ -88,9 +88,7 @@
     var callbackFromNative = function(callbackId, success, args, keepCallback) {
         var callback = callbacks[callbackId];
         if (callback) {
-            alert("the callback exists");
             if (success && callback.success) {
-                alert("it has a success method!");
                 callback.success.apply(null, args);
             } else if (!success && callback.fail) {
                 callback.fail.apply(null, args);
@@ -100,8 +98,6 @@
             if (!keepCallback) {
                 delete callbacks[callbackId];
             }
-        } else {
-            console.log("no such callback " + callbackId);
         }
     };
 
