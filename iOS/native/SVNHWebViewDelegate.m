@@ -92,9 +92,9 @@
 
 - (void) sendPluginResult:(SVNHPluginResult *)result toWebView:(UIWebView *)webView withCallbackId:(NSString *)callbackId {
     NSString *arguments = [result argumentsAsJSON];
-    int status = [result.status intValue];
-    BOOL keepCallback = [result.keepCallback boolValue];
-    NSString *execString = [NSString stringWithFormat:@"window.savannah.nativeCallback('%@',%d,%@,%d);", callbackId, status, arguments, keepCallback];
+    NSString *status = result.status ? @"true" : @"false";
+    BOOL keepCallback = result.keepCallback;
+    NSString *execString = [NSString stringWithFormat:@"window.savannah.nativeCallback('%@',%@,%@,%d);", callbackId, status, arguments, keepCallback];
     [webView stringByEvaluatingJavaScriptFromString:execString];
 }
 

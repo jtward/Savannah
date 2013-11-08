@@ -18,12 +18,10 @@
  */
 
 #import "SVNHPluginResult.h"
-#import "SVNHJSON.h"
-#import "NSData+Base64.h"
 
 @interface SVNHPluginResult ()
 
-- (SVNHPluginResult*)initWithStatus:(SVNHCommandStatus)statusOrdinal message:(id)theMessage;
+- (SVNHPluginResult*)initWithSuccess:(BOOL)success keepCallback:(BOOL)keepCallback message:(id)message;
 
 @end
 
@@ -32,135 +30,27 @@
 
 static NSArray* CommandStatusMsgs;
 
-id messageFromArrayBuffer(NSData* data)
-{
-    return @{
-             @"SVNHType" : @"ArrayBuffer",
-             @"data" :[data base64EncodedString]
-             };
-}
-
-id massageMessage(id message)
-{
-    if ([message isKindOfClass:[NSData class]]) {
-        return messageFromArrayBuffer(message);
-    }
-    return message;
-}
-
-id messageFromMultipart(NSArray* theMessages)
-{
-    NSMutableArray* messages = [NSMutableArray arrayWithArray:theMessages];
-    
-    for (NSUInteger i = 0; i < messages.count; ++i) {
-        [messages replaceObjectAtIndex:i withObject:massageMessage([messages objectAtIndex:i])];
-    }
-    
-    return @{
-             @"CDVType" : @"MultiPart",
-             @"messages" : messages
-             };
-}
-
-+ (void)initialize
-{
-    CommandStatusMsgs = [[NSArray alloc] initWithObjects:@"No result",
-                                            @"OK",
-                                            @"Class not found",
-                                            @"Illegal access",
-                                            @"Instantiation error",
-                                            @"Malformed url",
-                                            @"IO error",
-                                            @"Invalid action",
-                                            @"JSON error",
-                                            @"Error",
-                                            nil];
-}
-
-
-- (SVNHPluginResult*)init
-{
-    return [self initWithStatus:SVNHCommandStatus_NO_RESULT message:nil];
-}
-
-- (SVNHPluginResult*)initWithStatus:(SVNHCommandStatus)statusOrdinal message:(id)theMessage
-{
+- (SVNHPluginResult*)initWithSuccess:(BOOL)success keepCallback:(BOOL)shouldKeepCallback message:(id)theMessage {
     self = [super init];
-    if (self) {
-        status = [NSNumber numberWithInt:statusOrdinal];
-        message = theMessage;
-        keepCallback = [NSNumber numberWithBool:NO];
-    }
+    self.status = success;
+    self.keepCallback = shouldKeepCallback;
+    self.message = theMessage;
     return self;
-}
-
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal
-{
-    return [[self alloc] initWithStatus:statusOrdinal message:[CommandStatusMsgs objectAtIndex:statusOrdinal]];
-}
-
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageAsString:(NSString*)theMessage
-{
-    return [[self alloc] initWithStatus:statusOrdinal message:theMessage];
-}
-
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageAsArray:(NSArray*)theMessage
-{
-    return [[self alloc] initWithStatus:statusOrdinal message:theMessage];
-}
-
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageAsInt:(int)theMessage
-{
-    return [[self alloc] initWithStatus:statusOrdinal message:[NSNumber numberWithInt:theMessage]];
-}
-
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageAsDouble:(double)theMessage
-{
-    return [[self alloc] initWithStatus:statusOrdinal message:[NSNumber numberWithDouble:theMessage]];
-}
-
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageAsBool:(BOOL)theMessage
-{
-    return [[self alloc] initWithStatus:statusOrdinal message:[NSNumber numberWithBool:theMessage]];
-}
-
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageAsDictionary:(NSDictionary*)theMessage
-{
-    return [[self alloc] initWithStatus:statusOrdinal message:theMessage];
-}
-
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageAsArrayBuffer:(NSData*)theMessage
-{
-    return [[self alloc] initWithStatus:statusOrdinal message:messageFromArrayBuffer(theMessage)];
-}
-
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageAsMultipart:(NSArray*)theMessages
-{
-    return [[self alloc] initWithStatus:statusOrdinal message:messageFromMultipart(theMessages)];
-}
-
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageToErrorObject:(int)errorCode
-{
-    NSDictionary* errDict = @{@"code" :[NSNumber numberWithInt:errorCode]};
-    
-    return [[self alloc] initWithStatus:statusOrdinal message:errDict];
-}
-
-- (void)setKeepCallbackAsBool:(BOOL)bKeepCallback
-{
-    [self setKeepCallback:[NSNumber numberWithBool:bKeepCallback]];
 }
 
 - (NSString*)argumentsAsJSON
 {
     id arguments = (self.message == nil ? [NSNull null] : self.message);
-    NSArray* argumentsWrappedInArray = [NSArray arrayWithObject:arguments];
     
-    NSString* argumentsJSON = [argumentsWrappedInArray JSONString];
+    NSData* argumentsJSON = [NSJSONSerialization dataWithJSONObject:[NSArray arrayWithObject:arguments]
+                                                            options:0
+                                                              error:nil];
     
-    argumentsJSON = [argumentsJSON substringWithRange:NSMakeRange(1, [argumentsJSON length] - 2)];
+    NSString *argumentsString = [[NSString alloc] initWithData:argumentsJSON encoding:NSUTF8StringEncoding];
     
-    return argumentsJSON;
+    NSString *returnedArguments = [argumentsString substringWithRange:NSMakeRange(1, [argumentsString length] - 2)];
+    
+    return returnedArguments;
 }
 
 @end

@@ -56,4 +56,19 @@
 
 - (void)sendPluginResult:(SVNHPluginResult *)result;
 
+- (void) successAndKeepCallback:(BOOL)keepCallback;
+- (void) successWithMessageAsArray:(NSArray *)message keepCallback:(BOOL)keepCallback;
+- (void) successWithMessageAsBool:(BOOL)message keepCallback:(BOOL)keepCallback;
+- (void) successWithMessageAsDictionary:(NSDictionary *)message keepCallback:(BOOL)keepCallback;
+- (void) successWithMessageAsDouble:(double)message keepCallback:(BOOL)keepCallback;
+- (void) successWithMessageAsInt:(int)message keepCallback:(BOOL)keepCallback;
+- (void) successWithMessageAsString:(NSString *)message keepCallback:(BOOL)keepCallback;
+- (void) errorAndKeepCallback:(BOOL)keepCallback;
+- (void) errorWithMessageAsArray:(NSArray *)message keepCallback:(BOOL)keepCallback;
+- (void) errorWithMessageAsBool:(BOOL)message keepCallback:(BOOL)keepCallback;
+- (void) errorWithMessageAsDictionary:(NSDictionary *)message keepCallback:(BOOL)keepCallback;
+- (void) errorWithMessageAsDouble:(double)message keepCallback:(BOOL)keepCallback;
+- (void) errorWithMessageAsInt:(int)message keepCallback:(BOOL)keepCallback;
+- (void) errorWithMessageAsString:(NSString *)message keepCallback:(BOOL)keepCallback;
+
 @end

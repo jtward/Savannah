@@ -19,38 +19,13 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum {
-    SVNHCommandStatus_NO_RESULT = 0,
-    SVNHCommandStatus_OK,
-    SVNHCommandStatus_CLASS_NOT_FOUND_EXCEPTION,
-    SVNHCommandStatus_ILLEGAL_ACCESS_EXCEPTION,
-    SVNHCommandStatus_INSTANTIATION_EXCEPTION,
-    SVNHCommandStatus_MALFORMED_URL_EXCEPTION,
-    SVNHCommandStatus_IO_EXCEPTION,
-    SVNHCommandStatus_INVALID_ACTION,
-    SVNHCommandStatus_JSON_EXCEPTION,
-    SVNHCommandStatus_ERROR
-} SVNHCommandStatus;
-
 @interface SVNHPluginResult : NSObject
 
-@property (nonatomic, strong, readonly) NSNumber* status;
-@property (nonatomic, strong, readonly) id message;
-@property (nonatomic, strong)           NSNumber* keepCallback;
+@property (nonatomic) BOOL status;
+@property (nonatomic, strong) id message;
+@property (nonatomic) BOOL keepCallback;
 
-- (SVNHPluginResult*)init;
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal;
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageAsString:(NSString*)theMessage;
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageAsArray:(NSArray*)theMessage;
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageAsInt:(int)theMessage;
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageAsDouble:(double)theMessage;
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageAsBool:(BOOL)theMessage;
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageAsDictionary:(NSDictionary*)theMessage;
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageAsArrayBuffer:(NSData*)theMessage;
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageAsMultipart:(NSArray*)theMessages;
-+ (SVNHPluginResult*)resultWithStatus:(SVNHCommandStatus)statusOrdinal messageToErrorObject:(int)errorCode;
-
-- (void)setKeepCallbackAsBool:(BOOL)bKeepCallback;
+- (SVNHPluginResult*)initWithSuccess:(BOOL)success keepCallback:(BOOL)keepCallback message:(id)message;
 
 - (NSString*)argumentsAsJSON;
 

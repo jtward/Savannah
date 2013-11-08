@@ -15,9 +15,8 @@
 };
 
 - (void) echo:(SVNHCommand *)command {
-    NSString *message = [command  argumentAtIndex:0];
-    SVNHPluginResult *result = [SVNHPluginResult resultWithStatus:SVNHCommandStatus_OK messageAsString:message];
-    [command sendPluginResult:result];
+    NSString *message = [command argumentAtIndex:0];
+    [command successWithMessageAsString:message keepCallback:NO];
 }
 
 @end

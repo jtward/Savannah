@@ -19,7 +19,6 @@
 
 #import "SVNHCommand.h"
 #import "SVNHWebViewDelegate.h"
-#import "NSData+Base64.h"
 
 @implementation SVNHCommand
 
@@ -38,34 +37,7 @@
         _webViewDelegate = webViewDelegate;
         _webView = webView;
     }
-    [self massageArguments];
     return self;
-}
-
-- (void)massageArguments
-{
-    NSMutableArray* newArgs = nil;
-    
-    for (NSUInteger i = 0, count = [_arguments count]; i < count; ++i) {
-        id arg = [_arguments objectAtIndex:i];
-        if (![arg isKindOfClass:[NSDictionary class]]) {
-            continue;
-        }
-        NSDictionary* dict = arg;
-        NSString* type = [dict objectForKey:@"SVNHType"];
-        if (!type || ![type isEqualToString:@"ArrayBuffer"]) {
-            continue;
-        }
-        NSString* data = [dict objectForKey:@"data"];
-        if (!data) {
-            continue;
-        }
-        if (newArgs == nil) {
-            newArgs = [NSMutableArray arrayWithArray:_arguments];
-            _arguments = newArgs;
-        }
-        [newArgs replaceObjectAtIndex:i withObject:[NSData dataFromBase64String:data]];
-    }
 }
 
 - (id)argumentAtIndex:(NSUInteger)index
@@ -94,8 +66,63 @@
 }
 
 - (void)sendPluginResult:(SVNHPluginResult *)result {
-    // TODO get arguments from result
     [self.webViewDelegate sendPluginResult:result toWebView:self.webView withCallbackId:self.callbackId];
+}
+
+- (void) successAndKeepCallback:(BOOL)keepCallback {
+    [self sendPluginResult:[[SVNHPluginResult alloc] initWithSuccess:YES keepCallback:keepCallback message:nil]];
+}
+
+- (void) successWithMessageAsArray:(NSArray *)message keepCallback:(BOOL)keepCallback {
+    [self sendPluginResult:[[SVNHPluginResult alloc] initWithSuccess:YES keepCallback:keepCallback message:message]];
+}
+
+- (void) successWithMessageAsBool:(BOOL)message keepCallback:(BOOL)keepCallback {
+    [self sendPluginResult:[[SVNHPluginResult alloc] initWithSuccess:YES keepCallback:keepCallback message:[NSNumber numberWithBool:message]]];
+}
+
+- (void) successWithMessageAsDictionary:(NSDictionary *)message keepCallback:(BOOL)keepCallback {
+    [self sendPluginResult:[[SVNHPluginResult alloc] initWithSuccess:YES keepCallback:keepCallback message:message]];
+}
+
+- (void) successWithMessageAsDouble:(double)message keepCallback:(BOOL)keepCallback {
+    [self sendPluginResult:[[SVNHPluginResult alloc] initWithSuccess:YES keepCallback:keepCallback message:[NSNumber numberWithInt:message]]];
+}
+
+- (void) successWithMessageAsInt:(int)message keepCallback:(BOOL)keepCallback {
+    [self sendPluginResult:[[SVNHPluginResult alloc] initWithSuccess:YES keepCallback:keepCallback message:[NSNumber numberWithDouble:message]]];
+}
+
+- (void) successWithMessageAsString:(NSString *)message keepCallback:(BOOL)keepCallback {
+    [self sendPluginResult:[[SVNHPluginResult alloc] initWithSuccess:YES keepCallback:keepCallback message:message]];
+}
+
+- (void) errorAndKeepCallback:(BOOL)keepCallback {
+    [self sendPluginResult:[[SVNHPluginResult alloc] initWithSuccess:NO keepCallback:keepCallback message:nil]];
+}
+
+- (void) errorWithMessageAsArray:(NSArray *)message keepCallback:(BOOL)keepCallback {
+    [self sendPluginResult:[[SVNHPluginResult alloc] initWithSuccess:NO keepCallback:keepCallback message:message]];
+}
+
+- (void) errorWithMessageAsBool:(BOOL)message keepCallback:(BOOL)keepCallback {
+    [self sendPluginResult:[[SVNHPluginResult alloc] initWithSuccess:NO keepCallback:keepCallback message:[NSNumber numberWithBool:message]]];
+}
+
+- (void) errorWithMessageAsDictionary:(NSDictionary *)message keepCallback:(BOOL)keepCallback {
+    [self sendPluginResult:[[SVNHPluginResult alloc] initWithSuccess:NO keepCallback:keepCallback message:message]];
+}
+
+- (void) errorWithMessageAsDouble:(double)message keepCallback:(BOOL)keepCallback {
+    [self sendPluginResult:[[SVNHPluginResult alloc] initWithSuccess:NO keepCallback:keepCallback message:[NSNumber numberWithInt:message]]];
+}
+
+- (void) errorWithMessageAsInt:(int)message keepCallback:(BOOL)keepCallback {
+    [self sendPluginResult:[[SVNHPluginResult alloc] initWithSuccess:NO keepCallback:keepCallback message:[NSNumber numberWithDouble:message]]];
+}
+
+- (void) errorWithMessageAsString:(NSString *)message keepCallback:(BOOL)keepCallback {
+    [self sendPluginResult:[[SVNHPluginResult alloc] initWithSuccess:NO keepCallback:keepCallback message:message]];
 }
 
 @end

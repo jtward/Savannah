@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D04CB0AA18081CEB00AC522D /* SVNHCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = D04CB0A918081CEB00AC522D /* SVNHCommand.m */; };
-		D04CB0AD18081FB100AC522D /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = D04CB0AC18081FB100AC522D /* NSData+Base64.m */; };
 		D04CB0B01808277500AC522D /* SVNHPluginResult.m in Sources */ = {isa = PBXBuildFile; fileRef = D04CB0AF1808277500AC522D /* SVNHPluginResult.m */; };
-		D064FEF5180869D700DB51D7 /* SVNHJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = D064FEF4180869D700DB51D7 /* SVNHJSON.m */; };
 		D064FEFE1808754D00DB51D7 /* SVNHEchoPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = D064FEFD1808754D00DB51D7 /* SVNHEchoPlugin.m */; };
 		D069C570180326510065FA7B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D069C56F180326510065FA7B /* Foundation.framework */; };
 		D069C572180326510065FA7B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D069C571180326510065FA7B /* CoreGraphics.framework */; };
@@ -45,12 +43,8 @@
 		D04CB0A71807FAD200AC522D /* SVNHPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SVNHPlugin.h; sourceTree = "<group>"; };
 		D04CB0A818081CEB00AC522D /* SVNHCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVNHCommand.h; sourceTree = "<group>"; };
 		D04CB0A918081CEB00AC522D /* SVNHCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVNHCommand.m; sourceTree = "<group>"; };
-		D04CB0AB18081FB100AC522D /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
-		D04CB0AC18081FB100AC522D /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		D04CB0AE1808277500AC522D /* SVNHPluginResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVNHPluginResult.h; sourceTree = "<group>"; };
 		D04CB0AF1808277500AC522D /* SVNHPluginResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVNHPluginResult.m; sourceTree = "<group>"; };
-		D064FEF3180869D700DB51D7 /* SVNHJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVNHJSON.h; sourceTree = "<group>"; };
-		D064FEF4180869D700DB51D7 /* SVNHJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVNHJSON.m; sourceTree = "<group>"; };
 		D064FEFC1808754D00DB51D7 /* SVNHEchoPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVNHEchoPlugin.h; sourceTree = "<group>"; };
 		D064FEFD1808754D00DB51D7 /* SVNHEchoPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVNHEchoPlugin.m; sourceTree = "<group>"; };
 		D069C56C180326510065FA7B /* SavannahEchoExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SavannahEchoExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -147,12 +141,8 @@
 				D04CB0A71807FAD200AC522D /* SVNHPlugin.h */,
 				D04CB0A818081CEB00AC522D /* SVNHCommand.h */,
 				D04CB0A918081CEB00AC522D /* SVNHCommand.m */,
-				D04CB0AB18081FB100AC522D /* NSData+Base64.h */,
-				D04CB0AC18081FB100AC522D /* NSData+Base64.m */,
 				D04CB0AE1808277500AC522D /* SVNHPluginResult.h */,
 				D04CB0AF1808277500AC522D /* SVNHPluginResult.m */,
-				D064FEF3180869D700DB51D7 /* SVNHJSON.h */,
-				D064FEF4180869D700DB51D7 /* SVNHJSON.m */,
 				D064FEFC1808754D00DB51D7 /* SVNHEchoPlugin.h */,
 				D064FEFD1808754D00DB51D7 /* SVNHEchoPlugin.m */,
 			);
@@ -293,8 +283,6 @@
 				D064FEFE1808754D00DB51D7 /* SVNHEchoPlugin.m in Sources */,
 				D0F624181803305F006919E0 /* SVNHWebViewDelegate.m in Sources */,
 				D04CB0AA18081CEB00AC522D /* SVNHCommand.m in Sources */,
-				D064FEF5180869D700DB51D7 /* SVNHJSON.m in Sources */,
-				D04CB0AD18081FB100AC522D /* NSData+Base64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
