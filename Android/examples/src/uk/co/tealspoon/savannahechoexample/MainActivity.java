@@ -26,7 +26,14 @@ public class MainActivity extends Activity {
 		ArrayList<SavannahPlugin> plugins = new ArrayList<SavannahPlugin>(1);
 		plugins.add(new EchoPlugin());
 		
-		new SavannahWebViewManager(echoWebView, plugins, "file:///android_asset/www/index.html");
+		SavannahWebViewManager manager = new SavannahWebViewManager(echoWebView, plugins, "file:///android_asset/www/index.html");
+		
+		manager.setWebViewClient(new WebViewClient() {
+			@Override
+			public void onPageFinished(WebView view, String loadedUrl) {
+				Log.d("SAVANNAH", "Load finished for page " + loadedUrl + "!");
+			}
+		});
 	}
 
 	@Override

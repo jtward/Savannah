@@ -8,15 +8,23 @@ import org.json.JSONException;
 
 import android.app.Activity;
 import android.os.Build;
+import android.os.Message;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.HttpAuthHandler;
+import android.webkit.SslErrorHandler;
+import android.net.http.SslError;
+import android.graphics.Bitmap;
+import android.view.KeyEvent;
 
 public class SavannahWebViewManager {
 
 	private WebView webView;
 	private HashMap<String, SavannahPlugin> plugins;
+	WebViewClient webViewClient;
 	
 	private class WebViewJavascriptInterface {
 		private SavannahWebViewManager manager;
@@ -53,6 +61,110 @@ public class SavannahWebViewManager {
 			public void onPageFinished(WebView view, String loadedUrl) {
 				if (loadedUrl.equals(url)) {
 					webView.loadUrl("javascript:window.savannah.didFinishLoad();");
+				}
+				if (webViewClient != null) {
+					webViewClient.onPageFinished(view, loadedUrl);
+				}
+			}
+			
+			// proxy all WebViewClient methods
+			@Override
+			public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
+				if (webViewClient != null) {
+					webViewClient.doUpdateVisitedHistory(view, url, isReload);
+				}
+			}
+			
+			@Override
+			public void	onFormResubmission(WebView view, Message dontResend, Message resend) {
+				if (webViewClient != null) {
+					webViewClient.onFormResubmission(view, dontResend, resend);
+				}
+			}
+			
+			@Override
+			public void onLoadResource(WebView view, String url) {
+				if (webViewClient != null) {
+					webViewClient.onLoadResource(view, url);
+				}
+			}
+			
+			@Override
+			public void onPageStarted(WebView view, String url, Bitmap favicon) {
+				if (webViewClient != null) {
+					webViewClient.onPageStarted(view, url, favicon);
+				}
+			}
+			
+			@Override
+			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+				if (webViewClient != null) {
+					webViewClient.onReceivedError(view, errorCode, description, failingUrl);
+				}
+			}
+			
+			@Override
+			public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
+				if (webViewClient != null) {
+					webViewClient.onReceivedHttpAuthRequest(view, handler, host, realm);
+				}
+			}
+			
+			@Override
+			public void onReceivedLoginRequest(WebView view, String realm, String account, String args) {
+				if (webViewClient != null) {
+					webViewClient.onReceivedLoginRequest(view, realm, account, args);
+				}
+			}
+			
+			@Override
+			public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+				if (webViewClient != null) {
+					webViewClient.onReceivedSslError(view, handler, error);
+				}
+			}
+			
+			@Override
+			public void onScaleChanged(WebView view, float oldScale, float newScale) {
+				if (webViewClient != null) {
+					webViewClient.onScaleChanged(view, oldScale, newScale);
+				}
+			}
+			
+			@Override
+			public void onUnhandledKeyEvent(WebView view, KeyEvent event) {
+				if (webViewClient != null) {
+					webViewClient.onUnhandledKeyEvent(view, event);
+				}
+			}
+			
+			@Override
+			public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+				if (webViewClient != null) {
+					return webViewClient.shouldInterceptRequest(view, url);
+				}
+				else {
+					return null;
+				}
+			}
+			
+			@Override
+			public boolean shouldOverrideKeyEvent(WebView view, KeyEvent event) {
+				if (webViewClient != null) {
+					return webViewClient.shouldOverrideKeyEvent(view, event);
+				}
+				else {
+					return false;
+				}
+			}
+			
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				if (webViewClient != null) {
+					return webViewClient.shouldOverrideUrlLoading(view, url);
+				}
+				else {
+					return false;
 				}
 			}
 		});
@@ -109,5 +221,9 @@ public class SavannahWebViewManager {
 		    	}
 		    });
 	    }
+	}
+	
+	void setWebViewClient(WebViewClient client) {
+		webViewClient = client;
 	}
 }

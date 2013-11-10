@@ -24,6 +24,7 @@
 
 @synthesize isFirstRequest;
 @synthesize webView;
+@synthesize delegate;
 
 - (id) initWithWebView:(UIWebView *)theWebView plugins:(NSArray *)plugins URL:(NSURL *)URL {
     self = [super init];
@@ -87,7 +88,34 @@
         return NO;
     }
     else {
+        // forward on to the user's delegate
+        SEL selector = NSSelectorFromString([NSString stringWithFormat:@"webView:shouldStartLoadWithRequest:navigationType:"]);
+        if (delegate != nil && [delegate respondsToSelector:selector]) {
+            NSMethodSignature *signature;
+            NSInvocation *invocation;
+            signature = [[delegate class] instanceMethodSignatureForSelector:selector];
+            invocation = [NSInvocation invocationWithMethodSignature:signature];
+            [invocation setSelector:selector];
+            [invocation setTarget:delegate];
+            [invocation setArgument:&webView atIndex:2];
+            [invocation setArgument:&request atIndex:3];
+            [invocation setArgument:&navigationType atIndex:4];
+            
+            [invocation invoke];
+            BOOL result;
+            [invocation getReturnValue:&result];
+            return result;
+        }
         return YES;
+    }
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    if (delegate != nil) {
+        SEL selector = NSSelectorFromString([NSString stringWithFormat:@"webView:didFailLoadWithError:"]);
+        if ([delegate respondsToSelector:selector]) {
+            [delegate performSelector:selector withObject:webView withObject:error];
+        }
     }
 }
 
@@ -95,6 +123,21 @@
     if (self.isFirstLoad) {
         [theWebView stringByEvaluatingJavaScriptFromString:@"window.savannah.didFinishLoad()"];
         self.isFirstLoad = NO;
+    }
+    if (delegate != nil) {
+        SEL selector = NSSelectorFromString([NSString stringWithFormat:@"webViewDidFinishLoad:"]);
+        if ([delegate respondsToSelector:selector]) {
+            [delegate performSelector:selector withObject:webView];
+        }
+    }
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)theWebView {
+    if (delegate != nil) {
+        SEL selector = NSSelectorFromString([NSString stringWithFormat:@"webViewDidStartLoad:"]);
+        if ([delegate respondsToSelector:selector]) {
+            [delegate performSelector:selector withObject:webView];
+        }
     }
 }
 

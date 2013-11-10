@@ -14,8 +14,7 @@
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
-@synthesize plugins = _plugins;
-@synthesize logPlugin = _logPlugin;
+@synthesize webViewManager;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -26,7 +25,7 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    // create a viewcontroller to put our webview in
+    // create a viewcontroller to put our webview into
     UIViewController *controller = [UIViewController new];
     controller.view.autoresizesSubviews = YES;
     
@@ -35,7 +34,7 @@
     webView.frame = controller.view.bounds;
     
     // create a SVNHWebViewDelegate and pass in the plugins
-    self.webViewDelegate = [[SVNHWebViewManager alloc] initWithWebView:webView
+    self.webViewManager = [[SVNHWebViewManager alloc] initWithWebView:webView
                                                                 plugins:@[[SVNHEchoPlugin new]]
                                                                     URL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"www/index" ofType:@"html"]]];
     

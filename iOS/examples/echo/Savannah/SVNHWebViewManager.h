@@ -33,4 +33,6 @@
 @property (nonatomic) BOOL isFirstRequest;
 @property (nonatomic) BOOL isFirstLoad;
 
+@property(strong, nonatomic) id<UIWebViewDelegate> delegate;
+
 @end

@@ -18,10 +18,7 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-@property (strong, nonatomic) SVNHWebViewManager *webViewDelegate;
-@property (strong, nonatomic) NSArray *plugins;
-@property (strong, nonatomic) SVNHEchoPlugin *logPlugin;
-
+@property (strong, nonatomic) SVNHWebViewManager *webViewManager;
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
