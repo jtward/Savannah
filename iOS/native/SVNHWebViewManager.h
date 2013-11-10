@@ -23,12 +23,13 @@
 #import "SVNHPluginResult.h"
 
 @class SVNHCommand;
-@interface SVNHWebViewDelegate : NSObject <UIWebViewDelegate>
+@interface SVNHWebViewManager : NSObject <UIWebViewDelegate>
 
-- (id) initWithPlugins:(NSArray *)plugins;
+- (id) initWithWebView:(UIWebView *)webView plugins:(NSArray *)plugins URL:(NSURL *)URL;
 - (void) sendPluginResult:(SVNHPluginResult *)result toWebView:(UIWebView *)webView withCallbackId:(NSString *)callbackId;
 
 @property (strong, nonatomic) NSMutableDictionary *plugins;
+@property (strong, nonatomic) UIWebView *webView;
 @property (nonatomic) BOOL isFirstRequest;
 @property (nonatomic) BOOL isFirstLoad;
 

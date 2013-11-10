@@ -31,9 +31,9 @@ public class SavannahWebViewManager {
 			return "";
 		}
 	}
-
-	public void manageWebView(final WebView webView, final String url, Collection<SavannahPlugin> plugins) {
-
+	
+	public SavannahWebViewManager(final WebView webView, Collection<SavannahPlugin> plugins, final String url) {
+		
 		this.webView = webView;
 		
 		int initialCapacity = (plugins == null) ? 0 : plugins.size();
@@ -46,9 +46,9 @@ public class SavannahWebViewManager {
 			}
 		}
 		
-		webView.addJavascriptInterface(new WebViewJavascriptInterface(this), "savannahJSI");
+		this.webView.addJavascriptInterface(new WebViewJavascriptInterface(this), "savannahJSI");
 		
-		webView.setWebViewClient(new WebViewClient() {
+		this.webView.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageFinished(WebView view, String loadedUrl) {
 				if (loadedUrl.equals(url)) {
@@ -56,6 +56,8 @@ public class SavannahWebViewManager {
 				}
 			}
 		});
+		
+		this.webView.loadUrl(url);
 	}
 
 	public void handleCommand(final String cmd) {

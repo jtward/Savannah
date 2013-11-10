@@ -20,14 +20,14 @@
 #import <Foundation/Foundation.h>
 #import "SVNHPluginResult.h"
 
-@class SVNHWebViewDelegate;
+@class SVNHWebViewManager;
 
 @interface SVNHCommand : NSObject {
     NSString* _callbackId;
     NSString* _className;
     NSString* _methodName;
     NSArray* _arguments;
-    SVNHWebViewDelegate* _webViewDelegate;
+    SVNHWebViewManager* _webViewDelegate;
     UIWebView *_webView;
 }
 
@@ -35,14 +35,14 @@
 @property (nonatomic, readonly) NSString* callbackId;
 @property (nonatomic, readonly) NSString* className;
 @property (nonatomic, readonly) NSString* methodName;
-@property (nonatomic, readonly) SVNHWebViewDelegate* webViewDelegate;
+@property (nonatomic, readonly) SVNHWebViewManager* webViewDelegate;
 @property (nonatomic, readonly) UIWebView* webView;
 
 - (id) initWithArguments:(NSArray *)arguments
               callbackId:(NSString *)callbackId
               className:(NSString *)className
               methodName:(NSString *)methodName
-         webViewDelegate:(SVNHWebViewDelegate *)webViewDelegate
+         webViewDelegate:(SVNHWebViewManager *)webViewDelegate
                  webView:(UIWebView *)webView;
 
 // Returns the argument at the given index.

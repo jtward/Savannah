@@ -18,7 +18,7 @@
  */
 
 #import "SVNHCommand.h"
-#import "SVNHWebViewDelegate.h"
+#import "SVNHWebViewManager.h"
 
 @implementation SVNHCommand
 
@@ -26,7 +26,7 @@
               callbackId:(NSString *)callbackId
                className:(NSString *)className
               methodName:(NSString *)methodName
-         webViewDelegate:(SVNHWebViewDelegate *)webViewDelegate
+         webViewDelegate:(SVNHWebViewManager *)webViewDelegate
                  webView:(UIWebView *)webView {
     self = [super init];
     if (self != nil) {

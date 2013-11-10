@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SVNHWebViewDelegate.h"
+#import "SVNHWebViewManager.h"
 #import "SVNHEchoPlugin.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UIWebViewDelegate>
@@ -18,7 +18,7 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-@property (strong, nonatomic) SVNHWebViewDelegate *webViewDelegate;
+@property (strong, nonatomic) SVNHWebViewManager *webViewDelegate;
 @property (strong, nonatomic) NSArray *plugins;
 @property (strong, nonatomic) SVNHEchoPlugin *logPlugin;
 

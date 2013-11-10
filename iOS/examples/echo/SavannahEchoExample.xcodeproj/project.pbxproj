@@ -26,7 +26,7 @@
 		D069C599180326520065FA7B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D069C597180326520065FA7B /* InfoPlist.strings */; };
 		D069C59B180326520065FA7B /* SavannahTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D069C59A180326520065FA7B /* SavannahTests.m */; };
 		D0F6241418032E62006919E0 /* www in Resources */ = {isa = PBXBuildFile; fileRef = D0F6241318032E62006919E0 /* www */; };
-		D0F624181803305F006919E0 /* SVNHWebViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F624171803305F006919E0 /* SVNHWebViewDelegate.m */; };
+		D0F624181803305F006919E0 /* SVNHWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F624171803305F006919E0 /* SVNHWebViewManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,8 +66,8 @@
 		D069C598180326520065FA7B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D069C59A180326520065FA7B /* SavannahTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SavannahTests.m; sourceTree = "<group>"; };
 		D0F6241318032E62006919E0 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
-		D0F624161803305F006919E0 /* SVNHWebViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVNHWebViewDelegate.h; sourceTree = "<group>"; };
-		D0F624171803305F006919E0 /* SVNHWebViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVNHWebViewDelegate.m; sourceTree = "<group>"; };
+		D0F624161803305F006919E0 /* SVNHWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVNHWebViewManager.h; sourceTree = "<group>"; };
+		D0F624171803305F006919E0 /* SVNHWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVNHWebViewManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,8 +136,8 @@
 				D069C586180326510065FA7B /* Images.xcassets */,
 				D069C583180326510065FA7B /* Savannah.xcdatamodeld */,
 				D069C578180326510065FA7B /* Supporting Files */,
-				D0F624161803305F006919E0 /* SVNHWebViewDelegate.h */,
-				D0F624171803305F006919E0 /* SVNHWebViewDelegate.m */,
+				D0F624161803305F006919E0 /* SVNHWebViewManager.h */,
+				D0F624171803305F006919E0 /* SVNHWebViewManager.m */,
 				D04CB0A71807FAD200AC522D /* SVNHPlugin.h */,
 				D04CB0A818081CEB00AC522D /* SVNHCommand.h */,
 				D04CB0A918081CEB00AC522D /* SVNHCommand.m */,
@@ -281,7 +281,7 @@
 				D04CB0B01808277500AC522D /* SVNHPluginResult.m in Sources */,
 				D069C582180326510065FA7B /* AppDelegate.m in Sources */,
 				D064FEFE1808754D00DB51D7 /* SVNHEchoPlugin.m in Sources */,
-				D0F624181803305F006919E0 /* SVNHWebViewDelegate.m in Sources */,
+				D0F624181803305F006919E0 /* SVNHWebViewManager.m in Sources */,
 				D04CB0AA18081CEB00AC522D /* SVNHCommand.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

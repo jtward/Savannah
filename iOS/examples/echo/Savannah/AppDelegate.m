@@ -35,18 +35,9 @@
     webView.frame = controller.view.bounds;
     
     // create a SVNHWebViewDelegate and pass in the plugins
-    self.logPlugin = [[SVNHEchoPlugin alloc] init];
-    self.plugins = [[NSArray alloc] initWithObjects:self.logPlugin, nil];
-    self.webViewDelegate = [[SVNHWebViewDelegate alloc] initWithPlugins:self.plugins];
-    
-    // hook up the webview to the delegate
-    [webView setDelegate:self.webViewDelegate];
-    
-    // load the first page into the webview
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"www/index" ofType:@"html"];
-    NSURL *url =[NSURL fileURLWithPath:path];
-    NSURLRequest* appReq = [NSURLRequest requestWithURL:url];
-    [webView loadRequest:appReq];
+    self.webViewDelegate = [[SVNHWebViewManager alloc] initWithWebView:webView
+                                                                plugins:@[[SVNHEchoPlugin new]]
+                                                                    URL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"www/index" ofType:@"html"]]];
     
     // add the webview to the view controller
     [controller.view addSubview:webView];

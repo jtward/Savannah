@@ -17,23 +17,32 @@
  under the License.
  */
 
-#import "SVNHWebViewDelegate.h"
+#import "SVNHWebViewManager.h"
 #import "SVNHCommand.h"
 
-@implementation SVNHWebViewDelegate
+@implementation SVNHWebViewManager
 
 @synthesize isFirstRequest;
+@synthesize webView;
 
-- (id) initWithPlugins:(NSArray *)plugins {
+- (id) initWithWebView:(UIWebView *)theWebView plugins:(NSArray *)plugins URL:(NSURL *)URL {
     self = [super init];
+    
+    self.webView = theWebView;
+    [self.webView setDelegate:self];
     
     NSMutableDictionary *pluginsDictionary = [[NSMutableDictionary alloc] initWithCapacity:(plugins == nil ? 0 : [plugins count])];
     for (id <SVNHPlugin> plugin in plugins) {
         [pluginsDictionary setObject:plugin forKey:[[plugin class] name]];
     }
+
     self.plugins = pluginsDictionary;
     self.isFirstRequest = YES;
     self.isFirstLoad = YES;
+    
+    NSURLRequest* appReq = [NSURLRequest requestWithURL:URL];
+    [self.webView loadRequest:appReq];
+    
     return self;
 }
 
@@ -42,13 +51,13 @@
     [self.plugins setObject:plugin forKey:[plugin name]];
 }
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+- (BOOL)webView:(UIWebView *)theWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if (self.isFirstRequest) {
         self.isFirstRequest = NO;
         return YES;
     }
     else if ([[request.URL path] isEqualToString:@"/!svnh_exec"]) {
-        NSString *cmds = [webView stringByEvaluatingJavaScriptFromString:@"window.savannah.nativeFetchMessages()"];
+        NSString *cmds = [theWebView stringByEvaluatingJavaScriptFromString:@"window.savannah.nativeFetchMessages()"];
         NSError *error;
         NSArray *cmdsArray = [NSJSONSerialization JSONObjectWithData:[cmds dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if (error != nil) {
@@ -66,7 +75,7 @@
                     SEL execSelector = NSSelectorFromString([NSString stringWithFormat:@"%@:",methodName]);
                     if ([plugin respondsToSelector:execSelector]) {
                         // create command and send
-                        SVNHCommand *command = [[SVNHCommand alloc] initWithArguments:[cmd objectAtIndex:3] callbackId:[cmd objectAtIndex:0] className:pluginName methodName:methodName webViewDelegate:self webView:webView];
+                        SVNHCommand *command = [[SVNHCommand alloc] initWithArguments:[cmd objectAtIndex:3] callbackId:[cmd objectAtIndex:0] className:pluginName methodName:methodName webViewDelegate:self webView:theWebView];
                         [plugin performSelector:execSelector withObject:command];
                     }
                     else {
@@ -82,20 +91,19 @@
     }
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
+- (void)webViewDidFinishLoad:(UIWebView *)theWebView {
     if (self.isFirstLoad) {
-        [webView stringByEvaluatingJavaScriptFromString:@"window.savannah.didFinishLoad()"];
-        NSLog(@"webView did finish load");
+        [theWebView stringByEvaluatingJavaScriptFromString:@"window.savannah.didFinishLoad()"];
         self.isFirstLoad = NO;
     }
 }
 
-- (void) sendPluginResult:(SVNHPluginResult *)result toWebView:(UIWebView *)webView withCallbackId:(NSString *)callbackId {
+- (void) sendPluginResult:(SVNHPluginResult *)result toWebView:(UIWebView *)theWebView withCallbackId:(NSString *)callbackId {
     NSString *arguments = [result argumentsAsJSON];
     NSString *status = result.status ? @"true" : @"false";
     BOOL keepCallback = result.keepCallback;
     NSString *execString = [NSString stringWithFormat:@"window.savannah.nativeCallback('%@',%@,%@,%d);", callbackId, status, arguments, keepCallback];
-    [webView stringByEvaluatingJavaScriptFromString:execString];
+    [theWebView stringByEvaluatingJavaScriptFromString:execString];
 }
 
 @end

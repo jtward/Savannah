@@ -1,6 +1,8 @@
 package uk.co.tealspoon.savannahechoexample;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -18,17 +20,13 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		final WebView echoWebView = (WebView) findViewById(R.id.echo_web_view);
-		WebSettings webSettings = echoWebView.getSettings();
-		webSettings.setJavaScriptEnabled(true);
+		WebView echoWebView = (WebView) findViewById(R.id.echo_web_view);
+		echoWebView.getSettings().setJavaScriptEnabled(true);
 		
-		SavannahWebViewManager manager = new SavannahWebViewManager();
 		ArrayList<SavannahPlugin> plugins = new ArrayList<SavannahPlugin>(1);
-		EchoPlugin echoPlugin = new EchoPlugin();
-		plugins.add(echoPlugin);
-		manager.manageWebView(echoWebView, "file:///android_asset/www/index.html", plugins);
+		plugins.add(new EchoPlugin());
 		
-		echoWebView.loadUrl("file:///android_asset/www/index.html");
+		new SavannahWebViewManager(echoWebView, plugins, "file:///android_asset/www/index.html");
 	}
 
 	@Override
