@@ -3,6 +3,125 @@ Savannah
 
 Savannah is a web-native bridge for hybrid apps with a plugin architecture, similar to Apache Cordova.
 
-The main difference between Savannah and Cordova is that Savannah cares only about the webviews in your app that you hook up to use Savannah, whereas Cordova cares about your entire app. This means that Savannah is more appropriate for apps whose interfaces are not just single webviews.
+It is designed to be easy to drop into native apps, and enables you to use multiple isolated webviews with their own set of plugins.
 
-Savannah is currently a proof of concept and not yet ready for production.
+## Differences between Savannah and Cordova / Phonegap
+
+- You can create as many Savannah-managed webviews as you like. Each webview has its own manager, and is isolated from all others. Plugins are per-manager, which means your webviews can have different plugins available to them. You can use the same instance of a plugin in multiple managers, or create a new instance for each manager.
+
+- Savannah is intentionally lightweight, giving you, the developer, as much control as possible. You should expect to write native code when using Savannah in your apps.
+
+- The native plugin APIs are deliberately similar to Cordova's, to ease transitions, but there are several notable differences intended to make writing plugins simpler, and more consistent between platforms. For example, there are no plugin result codes, just success and error. Other differences are down to Savannah's multiple-webview model.
+
+- No JavaScript events (pause, resume, et cetera). You do need to wrap plugin execution with `Savannah.onReady`.
+
+- Sending JavaScript typed arrays across the native bridge is not currently supported.
+
+- No XML or JSON config files, core plugins, or CLIs. Just plain JavaScript and native code. Savannah is not a platform.
+
+Docs
+===================
+
+## iOS
+
+To use Savannah:
+
+```Objective-C
+// create a webview
+UIWebView *webView = [UIWebView new];
+
+// create a SVNHWebViewDelegate and pass in the webview, plugins and the url to load into the webview
+self.webViewManager = [[SVNHWebViewManager alloc] initWithWebView:webView
+                                                          plugins:@[[MyPlugin new]]
+                                                              URL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"www/index" ofType:@"html"]]];
+
+```
+
+Don't forget to include the iOS savannah.js file in your web page!
+
+
+A plugin class just implements SVNHPlugin. Plugin methods take a SVNHCommand as their only argument.
+
+```Objective-C
+@interface MyPlugin : NSObject <SVNHPlugin>
++ (NSString *) name;
+- (void) foo:(SVNHCommand *)command withArguments:(NSArray *)arguments;
+@end
+```
+
+```Objective-C
+@implementation MyPlugin
++ (NSString *) name {
+    return @"com.example.foo";
+};
+
+- (void) foo:(SVNHCommand *)command {
+    // report success and pass back the string "foo!"
+    // we don't need to return more than one response so return NO for keepCallback
+    [command successWithMessageAsString:@"foo!" keepCallback:NO];
+}
+```
+
+
+## Android
+
+To use Savannah:
+
+```Java
+// create or get a webview
+WebView webView = (WebView) findViewById(R.id.web_view);
+
+// make sure JavaScript is enabled in the webview
+webView.getSettings().setJavaScriptEnabled(true);
+
+// create a list for the plugins and add the plugins
+ArrayList<SavannahPlugin> plugins = new ArrayList<SavannahPlugin>(1);
+plugins.add(new MyPlugin());
+
+// create a SavannahWebViewManager and pass in the webview, plugins and the url to load into the webview
+new SavannahWebViewManager(webView, plugins, "file:///android_asset/www/index.html");
+
+```
+
+Don't forget to include the Android savannah.js file in your web page!
+
+A plugin class just implements `SavannahPlugin`. You need to implement an `execute` method, similar to Cordova, and a `getName` method.
+
+```Java
+public class MyPlugin implements SavannahPlugin {
+
+  @Override
+	public String getName() {
+		return "com.example.foo";
+	}
+
+	@Override
+	public boolean execute(String action, JSONArray args, SavannahCommand command) {
+		
+        // check for the `foo` action
+		if(action.equals("foo")) {
+            // report success and pass back the string "foo!"
+            // we don't need to return more than one response so return NO for keepCallback
+			command.success("foo!", false);
+			return true;
+		}
+		
+		return false;
+	}
+}
+```
+
+
+## JavaScript
+
+To execute a plugin from JavaScript, just call `Savannah.exec`, in exactly the same way you would call `Cordova.exec`, after Savannah is ready.
+
+```JavaScript
+Savannah.onReady(function() {
+  Savannah.exec(function success(message) {}, // success callback
+      function error(error) {},               // error callback
+      "com.example.foo",                      // plugin identifier / name
+      "foo",                                  // plugin method
+      []);                                    // array of arguments
+  });
+```
