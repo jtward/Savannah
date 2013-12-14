@@ -27,7 +27,7 @@
     NSString* _className;
     NSString* _methodName;
     NSArray* _arguments;
-    SVNHWebViewManager* _webViewDelegate;
+    SVNHWebViewManager* _webViewManager;
     UIWebView *_webView;
 }
 
@@ -35,14 +35,14 @@
 @property (nonatomic, readonly) NSString* callbackId;
 @property (nonatomic, readonly) NSString* className;
 @property (nonatomic, readonly) NSString* methodName;
-@property (nonatomic, readonly) SVNHWebViewManager* webViewDelegate;
+@property (nonatomic, readonly) SVNHWebViewManager* webViewManager;
 @property (nonatomic, readonly) UIWebView* webView;
 
 - (id) initWithArguments:(NSArray *)arguments
               callbackId:(NSString *)callbackId
               className:(NSString *)className
               methodName:(NSString *)methodName
-         webViewDelegate:(SVNHWebViewManager *)webViewDelegate
+         webViewManager:(SVNHWebViewManager *)webViewManager
                  webView:(UIWebView *)webView;
 
 // Returns the argument at the given index.

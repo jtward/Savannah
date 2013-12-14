@@ -26,7 +26,7 @@
               callbackId:(NSString *)callbackId
                className:(NSString *)className
               methodName:(NSString *)methodName
-         webViewDelegate:(SVNHWebViewManager *)webViewDelegate
+         webViewManager:(SVNHWebViewManager *)webViewManager
                  webView:(UIWebView *)webView {
     self = [super init];
     if (self != nil) {
@@ -34,7 +34,7 @@
         _callbackId = callbackId;
         _className = className;
         _methodName = methodName;
-        _webViewDelegate = webViewDelegate;
+        _webViewManager = webViewManager;
         _webView = webView;
     }
     return self;
@@ -66,7 +66,7 @@
 }
 
 - (void)sendPluginResult:(SVNHPluginResult *)result {
-    [self.webViewDelegate sendPluginResult:result toWebView:self.webView withCallbackId:self.callbackId];
+    [self.webViewManager sendPluginResult:result toWebView:self.webView withCallbackId:self.callbackId];
 }
 
 - (void) successAndKeepCallback:(BOOL)keepCallback {

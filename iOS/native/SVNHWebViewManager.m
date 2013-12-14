@@ -76,7 +76,7 @@
                     SEL execSelector = NSSelectorFromString([NSString stringWithFormat:@"%@:",methodName]);
                     if ([plugin respondsToSelector:execSelector]) {
                         // create command and send
-                        SVNHCommand *command = [[SVNHCommand alloc] initWithArguments:[cmd objectAtIndex:3] callbackId:[cmd objectAtIndex:0] className:pluginName methodName:methodName webViewDelegate:self webView:theWebView];
+                        SVNHCommand *command = [[SVNHCommand alloc] initWithArguments:[cmd objectAtIndex:3] callbackId:[cmd objectAtIndex:0] className:pluginName methodName:methodName webViewManager:self webView:theWebView];
                         [plugin performSelector:execSelector withObject:command];
                     }
                     else {
