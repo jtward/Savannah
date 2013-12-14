@@ -13,7 +13,7 @@ It is designed to be easy to drop into native apps, and enables you to use multi
 
 - The native plugin APIs are deliberately similar to Cordova's, to ease transitions, but there are several notable differences intended to make writing plugins simpler, and more consistent between platforms. For example, there are no plugin result codes, just success and error. Other differences are down to Savannah's multiple-webview model.
 
-- No JavaScript events (pause, resume, et cetera). You do need to wrap plugin execution with `Savannah.onReady`.
+- No JavaScript events (pause, resume, et cetera). You do need to wrap plugin execution with `savannah.onReady`.
 
 - Sending JavaScript typed arrays across the native bridge is not currently supported.
 
@@ -91,34 +91,34 @@ A plugin class just implements `SavannahPlugin`. You need to implement an `execu
 public class MyPlugin implements SavannahPlugin {
 
   @Override
-	public String getName() {
-		return "com.example.foo";
-	}
+  public String getName() {
+    return "com.example.foo";
+  }
 
-	@Override
-	public boolean execute(String action, JSONArray args, SavannahCommand command) {
-		
-        // check for the `foo` action
-		if(action.equals("foo")) {
+  @Override
+  public boolean execute(String action, JSONArray args, SavannahCommand command) {
+
+    // check for the `foo` action
+    if(action.equals("foo")) {
             // report success and pass back the string "foo!"
             // we don't need to return more than one response so return NO for keepCallback
-			command.success("foo!", false);
-			return true;
-		}
-		
-		return false;
-	}
+      command.success("foo!", false);
+      return true;
+    }
+
+    return false;
+  }
 }
 ```
 
 
 ## JavaScript
 
-To execute a plugin from JavaScript, just call `Savannah.exec`, in exactly the same way you would call `Cordova.exec`, after Savannah is ready.
+To execute a plugin from JavaScript, just call `savannah.exec`, in exactly the same way you would call `Cordova.exec`, after Savannah is ready.
 
 ```JavaScript
-Savannah.onReady(function() {
-  Savannah.exec(function success(message) {}, // success callback
+savannah.onReady(function() {
+  savannah.exec(function success(message) {}, // success callback
       function error(error) {},               // error callback
       "com.example.foo",                      // plugin identifier / name
       "foo",                                  // plugin method
