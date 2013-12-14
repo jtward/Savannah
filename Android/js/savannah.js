@@ -53,7 +53,6 @@
                 callbackId += 1;
             }
 
-            console.log("Executing via JSI");
             window.savannahJSI.exec(JSON.stringify(command));
         };
     }());
@@ -75,7 +74,6 @@
     };
 
     var nativeCallback = function(callbackId, success, message, keepCallback) {
-        console.log("received callback for call " + callbackId);
         callbackFromNative(callbackId, success, [message], keepCallback);
     };
 
@@ -96,8 +94,6 @@
         var didFinishLoad = function() {
             var i;
             var localCallbacks = callbacks.slice(0);
-
-            console.log("didFinishLoad");
 
             callbacks = [];
             isLoadFinished = true;
