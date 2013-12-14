@@ -185,7 +185,7 @@ public class SavannahWebViewManager {
 			}
 			else {
 				Log.d("SAVANNAH", "args is " + args.getString(3));
-				SavannahCommand command = new SavannahCommand(args.getString(3), args.getInt(0), pluginName, methodName, this, webView);
+				SavannahCommand command = new SavannahCommand(args.getString(3), args.getInt(0), this, webView);
 				plugin.execute(methodName, command.arguments, command);
 			}
 			

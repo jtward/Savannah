@@ -10,16 +10,12 @@ import android.webkit.WebView;
 public class SavannahCommand {
 	public JSONArray arguments;
 	private int callbackId;
-	private String className;
-	private String methodName;
-	private SavannahWebViewManager webViewManager;
-	private WebView webView;
+	public SavannahWebViewManager webViewManager;
+	public WebView webView;
 
-	public SavannahCommand(String arguments, int callbackId, String className, String methodName, SavannahWebViewManager webViewManager, WebView webView) {
+	public SavannahCommand(String arguments, int callbackId, SavannahWebViewManager webViewManager, WebView webView) {
 		this.arguments = massageArguments(arguments);
 		this.callbackId = callbackId;
-		this.className = className;
-		this.methodName = methodName;
 		this.webViewManager = webViewManager;
 		this.webView = webView;
 	}
@@ -40,30 +36,58 @@ public class SavannahCommand {
 	}
 	
 	public void success(boolean keepCallback) {
-		sendPluginResult(new SavannahPluginResult(true));
+		sendPluginResult(new SavannahPluginResult(true, keepCallback));
 	}
 	
 	public void success(JSONArray message, boolean keepCallback) {
-		sendPluginResult(new SavannahPluginResult(true, message));
+		sendPluginResult(new SavannahPluginResult(true, keepCallback, message));
 	}
 	
 	public void success(boolean message, boolean keepCallback) {
-		sendPluginResult(new SavannahPluginResult(true, message));
+		sendPluginResult(new SavannahPluginResult(true, keepCallback, message));
 	}
 	
 	public void success(double message, boolean keepCallback) {
-		sendPluginResult(new SavannahPluginResult(true, message));
+		sendPluginResult(new SavannahPluginResult(true, keepCallback, message));
 	}
 	
 	public void success(int message, boolean keepCallback) {
-		sendPluginResult(new SavannahPluginResult(true, message));
+		sendPluginResult(new SavannahPluginResult(true, keepCallback, message));
 	}
 	
 	public void success(JSONObject message, boolean keepCallback) {
-		sendPluginResult(new SavannahPluginResult(true, message));
+		sendPluginResult(new SavannahPluginResult(true, keepCallback, message));
 	}
 	
 	public void success(String message, boolean keepCallback) {
-		sendPluginResult(new SavannahPluginResult(true, message));
+		sendPluginResult(new SavannahPluginResult(true, keepCallback, message));
+	}
+	
+	public void error(boolean keepCallback) {
+		sendPluginResult(new SavannahPluginResult(false, keepCallback));
+	}
+	
+	public void error(JSONArray message, boolean keepCallback) {
+		sendPluginResult(new SavannahPluginResult(false, keepCallback, message));
+	}
+	
+	public void error(boolean message, boolean keepCallback) {
+		sendPluginResult(new SavannahPluginResult(false, keepCallback, message));
+	}
+	
+	public void error(double message, boolean keepCallback) {
+		sendPluginResult(new SavannahPluginResult(false, keepCallback, message));
+	}
+	
+	public void error(int message, boolean keepCallback) {
+		sendPluginResult(new SavannahPluginResult(false, keepCallback, message));
+	}
+	
+	public void error(JSONObject message, boolean keepCallback) {
+		sendPluginResult(new SavannahPluginResult(false, keepCallback, message));
+	}
+	
+	public void error(String message, boolean keepCallback) {
+		sendPluginResult(new SavannahPluginResult(false, keepCallback, message));
 	}
 }
