@@ -14,5 +14,5 @@
 
 + (NSString *) name;
 
-- (void)echo:(SVNHCommand *)command withArguments:(NSArray *)arguments;
+- (void)echo:(SVNHCommand *)command;
 @end

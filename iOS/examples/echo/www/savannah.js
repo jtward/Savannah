@@ -1,24 +1,3 @@
-/*
- *
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- *
- */
-
 (function(window) {
     "use strict";
     var version = "0.0.1dev";
@@ -28,6 +7,9 @@
 
     // Contains pending JS->Native messages.
     var commandQueue = [];
+
+    // keeps track of whether load is finished
+    var isLoadFinished = false;
 
     var exec = (function() {
 
@@ -50,12 +32,13 @@
                     "success": successCallback,
                     "fail": failCallback
                 };
-                callbackId += 1;
             }
+
+            callbackId += 1;
 
             commandQueue.push(JSON.stringify(command));
 
-            if (commandQueue.length == 1) {
+            if (isLoadFinished) {
                 window.location = "/!svnh_exec?";
             }
         };
@@ -105,44 +88,21 @@
         callbackFromNative(callbackId, success, [message], keepCallback);
     };
 
-    var onReady = (function() {
-        var isLoadFinished = false;
-        var callbacks = [];
-
-        var onReady = function(callback) {
-            if (typeof callback === "function") {
-                if (isLoadFinished) {
-                    callback();
-                } else {
-                    callbacks.push(callback);
-                }
-            }
-        };
-
-        var didFinishLoad = function() {
-            var i;
-            var localCallbacks = callbacks.slice(0);
-            callbacks = [];
+    var didFinishLoad = function() {
+        if (!isLoadFinished) {
             isLoadFinished = true;
-            for (i = 0; i < localCallbacks.length; i += 1) {
-                try {
-                    localCallbacks[i]();
-                } finally {}
+            if (commandQueue.length > 0) {
+                window.location = "/!svnh_exec?";
             }
-        };
-        return {
-            onReady: onReady,
-            didFinishLoad: didFinishLoad
-        };
-    }());
+        }
+    };
 
     window.savannah = {
         version: version,
         exec: exec,
         nativeFetchMessages: nativeFetchMessages,
         nativeCallback: nativeCallback,
-        onReady: onReady.onReady,
-        didFinishLoad: onReady.didFinishLoad
+        didFinishLoad: didFinishLoad
     };
 
 }(window));

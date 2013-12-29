@@ -35,7 +35,7 @@ public class SavannahWebViewManager {
 		
 		@JavascriptInterface
 		public String exec(String command) {
-			manager.handleCommand(command);
+			manager.handleCommands(command);
 			return "";
 		}
 	}
@@ -172,25 +172,29 @@ public class SavannahWebViewManager {
 		this.webView.loadUrl(url);
 	}
 
-	public void handleCommand(final String cmd) {
-		Log.d("SAVANNAH", "HANDLING COMMAND " + cmd);
+	public void handleCommands(final String commandsString) {
+		Log.d("SAVANNAH", "HANDLING COMMANDS " + commandsString);
 		try {
-			JSONArray args = new JSONArray(cmd);
-			String pluginName = args.getString(1);
-			String methodName = args.getString(2);
-			
-			SavannahPlugin plugin = plugins.get(pluginName);
-			if (plugin == null) {
-				Log.d("Savannah", "Plugin " + pluginName + " not found");
+			JSONArray commands = new JSONArray(commandsString);
+			for(int i = 0; i < commands.length(); i += 1) {
+				JSONArray command = commands.optJSONArray(i);
+				if (command != null) {
+					String pluginName = command.getString(1);
+					String methodName = command.getString(2);
+					
+					SavannahPlugin plugin = plugins.get(pluginName);
+					if (plugin == null) {
+						Log.d("Savannah", "Plugin " + pluginName + " not found");
+					}
+					else {
+						Log.d("SAVANNAH", "args is " + command.getString(3));
+						SavannahCommand cmd = new SavannahCommand(command.getString(3), command.getInt(0), this, webView);
+						plugin.execute(methodName, cmd.arguments, cmd);
+					}
+				}
 			}
-			else {
-				Log.d("SAVANNAH", "args is " + args.getString(3));
-				SavannahCommand command = new SavannahCommand(args.getString(3), args.getInt(0), this, webView);
-				plugin.execute(methodName, command.arguments, command);
-			}
-			
 		} catch (JSONException e) {
-			Log.d("Savannah", "Malformed JSON: " + cmd);
+			Log.d("Savannah", "Malformed JSON: " + commandsString);
 		}
 		
 	}

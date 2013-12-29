@@ -13,13 +13,11 @@
         <script type="text/javascript">
             document.body.innerHTML += "<br />Connecting to device...";
 
-            window.savannah.onReady(function() {
-                document.body.innerHTML += "<br />Device ready!<br/><br />Echo!";
+            document.body.innerHTML += "<br />Device ready!<br/><br />Echo!";
 
-                window.savannah.exec(function(message) {
-                    document.body.innerHTML += "<br />" + message;
-                }, null, "uk.co.tealspoon.savannah.echo", "echo", ["Echo!"]);
-            });
+            window.savannah.exec(function(message) {
+                document.body.innerHTML += "<br />" + message;
+            }, null, "uk.co.tealspoon.savannah.echo", "echo", ["Echo!"]);
         </script>
     </body>
 </html>
