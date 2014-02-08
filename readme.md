@@ -5,6 +5,8 @@ Savannah is a web-native bridge for hybrid apps with a plugin architecture, simi
 
 It is designed to be easy to drop into native apps, and enables you to use multiple isolated webviews with their own set of plugins.
 
+Version 0.1.0 - 8th February 2014
+
 ## Differences between Savannah and Cordova / Phonegap
 
 - You can create as many Savannah-managed webviews as you like. Each webview has its own manager, and is isolated from all others. Plugins are per-manager, which means your webviews can have different plugins available to them. You can use the same instance of a plugin in multiple managers, or create a new instance for each manager.
