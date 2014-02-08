@@ -30,12 +30,12 @@ public class SavannahPluginResult {
 
 	public SavannahPluginResult(boolean success, boolean keepCallback, JSONObject message) {
 		this(success, keepCallback);
-		this.message = "'" + message.toString().replace("'", "\\'") + "'";
+		this.message = message.toString().replace("'", "\\'");
 	}
 	
 	public SavannahPluginResult(boolean success, boolean keepCallback, JSONArray message) {
 		this(success, keepCallback);
-		this.message = "'" + message.toString().replace("'", "\\'") + "'";
+		this.message = message.toString().replace("'", "\\'");
 	}
 	
 	public SavannahPluginResult(boolean success, boolean keepCallback, boolean message) {
@@ -46,5 +46,4 @@ public class SavannahPluginResult {
 	public String argumentsAsJSON() {
 		return message;
 	}
-
 }
