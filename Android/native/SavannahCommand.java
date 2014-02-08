@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.util.Log;
 import android.webkit.WebView;
 
@@ -12,12 +13,14 @@ public class SavannahCommand {
 	private int callbackId;
 	public SavannahWebViewManager webViewManager;
 	public WebView webView;
+	public Activity activity;
 
-	public SavannahCommand(String arguments, int callbackId, SavannahWebViewManager webViewManager, WebView webView) {
+	public SavannahCommand(String arguments, int callbackId, SavannahWebViewManager webViewManager, WebView webView, Activity activity) {
 		this.arguments = massageArguments(arguments);
 		this.callbackId = callbackId;
 		this.webViewManager = webViewManager;
 		this.webView = webView;
+		this.activity = activity;
 	}
 	
 	private JSONArray massageArguments(String arguments) {

@@ -24,7 +24,8 @@ public class SavannahWebViewManager {
 
 	private WebView webView;
 	private HashMap<String, SavannahPlugin> plugins;
-	WebViewClient webViewClient;
+	private WebViewClient webViewClient;
+	private Activity activity;
 	
 	private class WebViewJavascriptInterface {
 		private SavannahWebViewManager manager;
@@ -40,9 +41,10 @@ public class SavannahWebViewManager {
 		}
 	}
 	
-	public SavannahWebViewManager(final WebView webView, Collection<SavannahPlugin> plugins, final String url) {
+	public SavannahWebViewManager(final WebView webView, final Activity activity, Collection<SavannahPlugin> plugins, final String url) {
 		
 		this.webView = webView;
+		this.activity = activity;
 		
 		int initialCapacity = (plugins == null) ? 0 : plugins.size();
 		
@@ -188,7 +190,7 @@ public class SavannahWebViewManager {
 					}
 					else {
 						Log.d("SAVANNAH", "args is " + command.getString(3));
-						SavannahCommand cmd = new SavannahCommand(command.getString(3), command.getInt(0), this, webView);
+						SavannahCommand cmd = new SavannahCommand(command.getString(3), command.getInt(0), this, webView, activity);
 						plugin.execute(methodName, cmd.arguments, cmd);
 					}
 				}
@@ -210,7 +212,7 @@ public class SavannahWebViewManager {
 	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 	    	final String execString = "window.savannah.nativeCallback('" + callbackId + "'," + status + "," + arguments + "," + keepCallback + ");";
 		    
-		    ((Activity)webView.getContext()).runOnUiThread(new Runnable() {
+		    activity.runOnUiThread(new Runnable() {
 		    	public void run() {
 		    		webView.evaluateJavascript(execString, null);
 		    	}
@@ -219,7 +221,7 @@ public class SavannahWebViewManager {
 	    else {
 		    final String execString = "javascript:window.savannah.nativeCallback('" + callbackId + "'," + status + "," + arguments + "," + keepCallback + ");";
 		    
-		    ((Activity)webView.getContext()).runOnUiThread(new Runnable() {
+		    activity.runOnUiThread(new Runnable() {
 		    	public void run() {
 		    		webView.loadUrl(execString);
 		    	}
