@@ -19,12 +19,20 @@
 
 #import "SVNHWebViewManager.h"
 #import "SVNHCommand.h"
+#import "SVNHPlugin.h"
+
+@interface SVNHWebViewManager()
+
+@property (nonatomic) NSMutableDictionary *plugins;
+@property (nonatomic) BOOL isFirstRequest;
+@property (nonatomic) BOOL isFirstLoad;
+@property (nonatomic) id<UIWebViewDelegate> delegate;
+@property (nonatomic) UIWebView *webView;
+@property (nonatomic) NSString *name;
+
+@end
 
 @implementation SVNHWebViewManager
-
-@synthesize isFirstRequest;
-@synthesize webView;
-@synthesize delegate;
 
 - (id) initWithName:(NSString *)name WebView:(UIWebView *)theWebView plugins:(NSArray *)plugins URL:(NSURL *)URL {
     self = [super init];
@@ -37,7 +45,7 @@
     for (id <SVNHPlugin> plugin in plugins) {
         [pluginsDictionary setObject:plugin forKey:[[plugin class] name]];
     }
-
+    
     self.plugins = pluginsDictionary;
     self.isFirstRequest = YES;
     self.isFirstLoad = YES;
@@ -77,7 +85,7 @@
                     SEL execSelector = NSSelectorFromString([NSString stringWithFormat:@"%@:",methodName]);
                     if ([plugin respondsToSelector:execSelector]) {
                         // create command and send
-                        SVNHCommand *command = [[SVNHCommand alloc] initWithArguments:[cmd objectAtIndex:3] callbackId:[cmd objectAtIndex:0] className:pluginName methodName:methodName webViewManager:self webView:theWebView];
+                        SVNHCommand *command = [[SVNHCommand alloc] initWithArguments:[cmd objectAtIndex:3] callbackId:[cmd objectAtIndex:0] webViewManager:self webView:theWebView];
                         [plugin performSelector:execSelector withObject:command];
                     }
                     else {
@@ -91,14 +99,16 @@
     else {
         // forward on to the user's delegate
         SEL selector = NSSelectorFromString([NSString stringWithFormat:@"webView:shouldStartLoadWithRequest:navigationType:"]);
-        if (delegate != nil && [delegate respondsToSelector:selector]) {
+        if (self.delegate != nil && [self.delegate respondsToSelector:selector]) {
             NSMethodSignature *signature;
             NSInvocation *invocation;
-            signature = [[delegate class] instanceMethodSignatureForSelector:selector];
+            signature = [[self.delegate class] instanceMethodSignatureForSelector:selector];
             invocation = [NSInvocation invocationWithMethodSignature:signature];
             [invocation setSelector:selector];
-            [invocation setTarget:delegate];
-            [invocation setArgument:&webView atIndex:2];
+            [invocation setTarget:self.delegate];
+            
+            UIWebView *theWebView = self.webView;
+            [invocation setArgument:&theWebView atIndex:2];
             [invocation setArgument:&request atIndex:3];
             [invocation setArgument:&navigationType atIndex:4];
             
@@ -112,10 +122,10 @@
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    if (delegate != nil) {
+    if (self.delegate != nil) {
         SEL selector = NSSelectorFromString([NSString stringWithFormat:@"webView:didFailLoadWithError:"]);
-        if ([delegate respondsToSelector:selector]) {
-            [delegate performSelector:selector withObject:webView withObject:error];
+        if ([self.delegate respondsToSelector:selector]) {
+            [self.delegate performSelector:selector withObject:webView withObject:error];
         }
     }
 }
@@ -125,29 +135,29 @@
         [theWebView stringByEvaluatingJavaScriptFromString:@"window.savannah.didFinishLoad()"];
         self.isFirstLoad = NO;
     }
-    if (delegate != nil) {
+    if (self.delegate != nil) {
         SEL selector = NSSelectorFromString([NSString stringWithFormat:@"webViewDidFinishLoad:"]);
-        if ([delegate respondsToSelector:selector]) {
-            [delegate performSelector:selector withObject:webView];
+        if ([self.delegate respondsToSelector:selector]) {
+            [self.delegate performSelector:selector withObject:self.webView];
         }
     }
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)theWebView {
-    if (delegate != nil) {
+    if (self.delegate != nil) {
         SEL selector = NSSelectorFromString([NSString stringWithFormat:@"webViewDidStartLoad:"]);
-        if ([delegate respondsToSelector:selector]) {
-            [delegate performSelector:selector withObject:webView];
+        if ([self.delegate respondsToSelector:selector]) {
+            [self.delegate performSelector:selector withObject:self.webView];
         }
     }
 }
 
-- (void) sendPluginResult:(SVNHPluginResult *)result toWebView:(UIWebView *)theWebView withCallbackId:(NSString *)callbackId {
-    NSString *arguments = [result argumentsAsJSON];
+- (void) sendPluginResult:(SVNHPluginResult *)result withCallbackId:(NSString *)callbackId {
+    NSString *arguments = result.message;
     NSString *status = result.status ? @"true" : @"false";
     BOOL keepCallback = result.keepCallback;
     NSString *execString = [NSString stringWithFormat:@"window.savannah.nativeCallback('%@',%@,%@,%d);", callbackId, status, arguments, keepCallback];
-    [theWebView stringByEvaluatingJavaScriptFromString:execString];
+    [self.webView stringByEvaluatingJavaScriptFromString:execString];
 }
 
 @end

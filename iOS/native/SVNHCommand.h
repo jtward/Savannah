@@ -17,32 +17,18 @@
  under the License.
  */
 
-#import <Foundation/Foundation.h>
+#import "SVNHWebViewManager.h"
 #import "SVNHPluginResult.h"
 
-@class SVNHWebViewManager;
-
-@interface SVNHCommand : NSObject {
-    NSString* _callbackId;
-    NSString* _className;
-    NSString* _methodName;
-    NSArray* _arguments;
-    SVNHWebViewManager* _webViewManager;
-    UIWebView *_webView;
-}
+@interface SVNHCommand : NSObject
 
 @property (nonatomic, readonly) NSArray* arguments;
-@property (nonatomic, readonly) NSString* callbackId;
-@property (nonatomic, readonly) NSString* className;
-@property (nonatomic, readonly) NSString* methodName;
 @property (nonatomic, readonly) SVNHWebViewManager* webViewManager;
 @property (nonatomic, readonly) UIWebView* webView;
 
 - (id) initWithArguments:(NSArray *)arguments
               callbackId:(NSString *)callbackId
-              className:(NSString *)className
-              methodName:(NSString *)methodName
-         webViewManager:(SVNHWebViewManager *)webViewManager
+          webViewManager:(SVNHWebViewManager *)webViewManager
                  webView:(UIWebView *)webView;
 
 // Returns the argument at the given index.

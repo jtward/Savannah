@@ -181,23 +181,31 @@ public class WebViewManager {
 	}
 
 	public void handleCommands(final String commandsString) {
-		Log.d("SAVANNAH", "HANDLING COMMANDS " + commandsString);
 		try {
 			JSONArray commands = new JSONArray(commandsString);
 			for(int i = 0; i < commands.length(); i += 1) {
+				
 				JSONArray command = commands.optJSONArray(i);
+				
 				if (command != null) {
+					int callbackId = command.getInt(0);
 					String pluginName = command.getString(1);
 					String methodName = command.getString(2);
+					String arguments = command.getString(3);
 					
 					Plugin plugin = plugins.get(pluginName);
 					if (plugin == null) {
 						Log.d("Savannah", "Plugin " + pluginName + " not found");
 					}
 					else {
-						Log.d("SAVANNAH", "args is " + command.getString(3));
-						Command cmd = new Command(command.getString(3), command.getInt(0), this, webView, activity);
-						plugin.execute(methodName, cmd.arguments, cmd);
+						try {
+							JSONArray args = new JSONArray(arguments);
+							Command cmd = new Command(callbackId, this, webView, activity);
+							plugin.execute(methodName, args, cmd);
+						}
+						catch (JSONException e) {
+							Log.d("Savannah", "Malformed JSON: " + arguments);
+						}
 					}
 				}
 			}

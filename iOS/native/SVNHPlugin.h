@@ -17,15 +17,12 @@
  under the License.
  */
 
-#import <Foundation/Foundation.h>
-
 @protocol SVNHPlugin <NSObject>
 
 @required
 
 // by convention, and to reduce the likelihood of conflicts,
 // a plugin's name should be a unique reversed FQDN
-//@property (nonatomic, retain) NSString *name;
 + (NSString *) name;
 
 @end

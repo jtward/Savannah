@@ -17,16 +17,12 @@
  under the License.
  */
 
-#import <Foundation/Foundation.h>
-
 @interface SVNHPluginResult : NSObject
 
-@property (nonatomic) BOOL status;
-@property (nonatomic, strong) id message;
-@property (nonatomic) BOOL keepCallback;
+@property (nonatomic, readonly) BOOL status;
+@property (nonatomic, readonly) BOOL keepCallback;
+@property (nonatomic, readonly) NSString *message;
 
 - (SVNHPluginResult*)initWithSuccess:(BOOL)success keepCallback:(BOOL)keepCallback message:(id)message;
-
-- (NSString*)argumentsAsJSON;
 
 @end

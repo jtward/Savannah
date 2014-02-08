@@ -17,23 +17,13 @@
  under the License.
  */
 
-
-#import <Foundation/Foundation.h>
-#import "SVNHPlugin.h"
 #import "SVNHPluginResult.h"
 
-@class SVNHCommand;
 @interface SVNHWebViewManager : NSObject <UIWebViewDelegate>
 
 - (id) initWithName:(NSString *)name WebView:(UIWebView *)webView plugins:(NSArray *)plugins URL:(NSURL *)URL;
-- (void) sendPluginResult:(SVNHPluginResult *)result toWebView:(UIWebView *)webView withCallbackId:(NSString *)callbackId;
+- (void) sendPluginResult:(SVNHPluginResult *)result withCallbackId:(NSString *)callbackId;
 
-@property (strong, nonatomic) NSMutableDictionary *plugins;
-@property (strong, nonatomic) UIWebView *webView;
-@property (strong, nonatomic) NSString *name;
-@property (nonatomic) BOOL isFirstRequest;
-@property (nonatomic) BOOL isFirstLoad;
-
-@property(strong, nonatomic) id<UIWebViewDelegate> delegate;
+@property (nonatomic, readonly) NSString *name;
 
 @end

@@ -20,38 +20,40 @@
 #import "SVNHCommand.h"
 #import "SVNHWebViewManager.h"
 
+@interface SVNHCommand()
+
+@property (nonatomic) NSArray* arguments;
+@property (nonatomic) NSString* callbackId;
+@property (nonatomic) SVNHWebViewManager* webViewManager;
+@property (nonatomic) UIWebView* webView;
+
+@end
+
 @implementation SVNHCommand
 
 - (id) initWithArguments:(NSArray *)arguments
               callbackId:(NSString *)callbackId
-               className:(NSString *)className
-              methodName:(NSString *)methodName
          webViewManager:(SVNHWebViewManager *)webViewManager
                  webView:(UIWebView *)webView {
     self = [super init];
-    if (self != nil) {
-        _arguments = arguments;
-        _callbackId = callbackId;
-        _className = className;
-        _methodName = methodName;
-        _webViewManager = webViewManager;
-        _webView = webView;
-    }
+    
+    self.arguments = arguments;
+    self.callbackId = callbackId;
+    self.webViewManager = webViewManager;
+    self.webView = webView;
+    
     return self;
 }
 
-- (id)argumentAtIndex:(NSUInteger)index
-{
+- (id)argumentAtIndex:(NSUInteger)index {
     return [self argumentAtIndex:index withDefault:nil];
 }
 
-- (id)argumentAtIndex:(NSUInteger)index withDefault:(id)defaultValue
-{
+- (id)argumentAtIndex:(NSUInteger)index withDefault:(id)defaultValue {
     return [self argumentAtIndex:index withDefault:defaultValue andClass:nil];
 }
 
-- (id)argumentAtIndex:(NSUInteger)index withDefault:(id)defaultValue andClass:(Class)aClass
-{
+- (id)argumentAtIndex:(NSUInteger)index withDefault:(id)defaultValue andClass:(Class)aClass {
     if (index >= [_arguments count]) {
         return defaultValue;
     }
@@ -66,7 +68,7 @@
 }
 
 - (void)sendPluginResult:(SVNHPluginResult *)result {
-    [self.webViewManager sendPluginResult:result toWebView:self.webView withCallbackId:self.callbackId];
+    [self.webViewManager sendPluginResult:result withCallbackId:self.callbackId];
 }
 
 - (void) successAndKeepCallback:(BOOL)keepCallback {

@@ -21,7 +21,9 @@
 
 @interface SVNHPluginResult ()
 
-- (SVNHPluginResult*)initWithSuccess:(BOOL)success keepCallback:(BOOL)keepCallback message:(id)message;
+@property (nonatomic) BOOL status;
+@property (nonatomic) BOOL keepCallback;
+@property (nonatomic) NSString *message;
 
 @end
 
@@ -30,27 +32,27 @@
 
 static NSArray* CommandStatusMsgs;
 
-- (SVNHPluginResult*)initWithSuccess:(BOOL)success keepCallback:(BOOL)shouldKeepCallback message:(id)theMessage {
+- (SVNHPluginResult*)initWithSuccess:(BOOL)success keepCallback:(BOOL)shouldKeepCallback message:(id)messageObject {
     self = [super init];
     self.status = success;
     self.keepCallback = shouldKeepCallback;
-    self.message = theMessage;
+    self.message = [self messageAsJSON:messageObject];
     return self;
 }
 
-- (NSString*)argumentsAsJSON
-{
-    id arguments = (self.message == nil ? [NSNull null] : self.message);
+- (NSString*)messageAsJSON:(id)messageObject {
     
-    NSData* argumentsJSON = [NSJSONSerialization dataWithJSONObject:[NSArray arrayWithObject:arguments]
-                                                            options:0
-                                                              error:nil];
+    if (messageObject == nil) {
+        messageObject = [NSNull null];
+    }
     
-    NSString *argumentsString = [[NSString alloc] initWithData:argumentsJSON encoding:NSUTF8StringEncoding];
+    NSData* messageData = [NSJSONSerialization dataWithJSONObject:[NSArray arrayWithObject:messageObject]
+                                                          options:0
+                                                            error:nil];
     
-    NSString *returnedArguments = [argumentsString substringWithRange:NSMakeRange(1, [argumentsString length] - 2)];
+    NSString *messageJSON = [[NSString alloc] initWithData:messageData encoding:NSUTF8StringEncoding];
     
-    return returnedArguments;
+    return [messageJSON substringWithRange:NSMakeRange(1, [messageJSON length] - 2)];
 }
 
 @end

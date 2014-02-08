@@ -1,36 +1,31 @@
 package uk.co.tealspoon.savannahechoexample;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.util.Log;
 import android.webkit.WebView;
 
 public class Command {
-	public JSONArray arguments;
+	
 	private int callbackId;
-	public WebViewManager webViewManager;
-	public WebView webView;
-	public Activity activity;
+	private WebViewManager webViewManager;
+	private WebView webView;
+	private Activity activity;
 
-	public Command(String arguments, int callbackId, WebViewManager webViewManager, WebView webView, Activity activity) {
-		this.arguments = massageArguments(arguments);
+	public Command(int callbackId, WebViewManager webViewManager, WebView webView, Activity activity) {
 		this.callbackId = callbackId;
 		this.webViewManager = webViewManager;
 		this.webView = webView;
 		this.activity = activity;
 	}
 	
-	private JSONArray massageArguments(String arguments) {
-		try {
-			JSONArray args = new JSONArray(arguments);
-			return args;
-		} catch (JSONException e) {
-			Log.d("Savannah", "Malformed JSON: " + arguments);
-			return new JSONArray();
-		}
+	public WebView getWebView() {
+		return webView;
+	}
+	
+	public Activity getActivity() {
+		return activity;
 	}
 	
 	private void sendPluginResult(PluginResult result) {
