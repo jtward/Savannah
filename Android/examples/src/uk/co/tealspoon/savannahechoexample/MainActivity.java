@@ -23,10 +23,10 @@ public class MainActivity extends Activity {
 		WebView echoWebView = (WebView) findViewById(R.id.echo_web_view);
 		echoWebView.getSettings().setJavaScriptEnabled(true);
 		
-		ArrayList<SavannahPlugin> plugins = new ArrayList<SavannahPlugin>(1);
+		ArrayList<Plugin> plugins = new ArrayList<Plugin>(1);
 		plugins.add(new EchoPlugin());
 		
-		SavannahWebViewManager manager = new SavannahWebViewManager(echoWebView, this, plugins, "file:///android_asset/www/index.html");
+		WebViewManager manager = new WebViewManager(echoWebView, this, plugins, "file:///android_asset/www/index.html");
 		
 		manager.setWebViewClient(new WebViewClient() {
 			@Override

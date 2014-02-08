@@ -26,9 +26,10 @@
 @synthesize webView;
 @synthesize delegate;
 
-- (id) initWithWebView:(UIWebView *)theWebView plugins:(NSArray *)plugins URL:(NSURL *)URL {
+- (id) initWithName:(NSString *)name WebView:(UIWebView *)theWebView plugins:(NSArray *)plugins URL:(NSURL *)URL {
     self = [super init];
     
+    self.name = name;
     self.webView = theWebView;
     [self.webView setDelegate:self];
     

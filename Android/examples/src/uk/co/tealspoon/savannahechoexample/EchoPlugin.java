@@ -2,7 +2,7 @@ package uk.co.tealspoon.savannahechoexample;
 
 import org.json.JSONArray;
 
-public class EchoPlugin implements SavannahPlugin {
+public class EchoPlugin implements Plugin {
 
 	@Override
 	public String getName() {
@@ -11,7 +11,7 @@ public class EchoPlugin implements SavannahPlugin {
 
 	@Override
 	public boolean execute(String action, JSONArray args,
-			SavannahCommand command) {
+			Command command) {
 		
 		if(action.equals("echo")) {
 			String message = args.optString(0);

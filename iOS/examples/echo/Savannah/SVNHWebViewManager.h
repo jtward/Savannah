@@ -25,11 +25,12 @@
 @class SVNHCommand;
 @interface SVNHWebViewManager : NSObject <UIWebViewDelegate>
 
-- (id) initWithWebView:(UIWebView *)webView plugins:(NSArray *)plugins URL:(NSURL *)URL;
+- (id) initWithName:(NSString *)name WebView:(UIWebView *)webView plugins:(NSArray *)plugins URL:(NSURL *)URL;
 - (void) sendPluginResult:(SVNHPluginResult *)result toWebView:(UIWebView *)webView withCallbackId:(NSString *)callbackId;
 
 @property (strong, nonatomic) NSMutableDictionary *plugins;
 @property (strong, nonatomic) UIWebView *webView;
+@property (strong, nonatomic) NSString *name;
 @property (nonatomic) BOOL isFirstRequest;
 @property (nonatomic) BOOL isFirstLoad;
 

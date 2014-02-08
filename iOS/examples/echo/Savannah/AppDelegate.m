@@ -34,9 +34,10 @@
     webView.frame = controller.view.bounds;
     
     // create a SVNHWebViewDelegate and pass in the plugins
-    self.webViewManager = [[SVNHWebViewManager alloc] initWithWebView:webView
-                                                                plugins:@[[SVNHEchoPlugin new]]
-                                                                    URL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"www/index" ofType:@"html"]]];
+    self.webViewManager = [[SVNHWebViewManager alloc] initWithName:@"mainWebView"
+                                                           WebView:webView
+                                                            plugins:@[[SVNHEchoPlugin new]]
+                                                                URL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"www/index" ofType:@"html"]]];
     
     // add the webview to the view controller
     [controller.view addSubview:webView];
