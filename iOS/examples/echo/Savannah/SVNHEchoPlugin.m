@@ -1,11 +1,3 @@
-//
-//  SVNHLogPlugin.m
-//  Savannah
-//
-//  Created by James Ward on 11/10/2013.
-//
-//
-
 #import "SVNHEchoPlugin.h"
 
 @implementation SVNHEchoPlugin
