@@ -33,10 +33,12 @@ To use Savannah:
 UIWebView *webView = [UIWebView new];
 
 // create a SVNHWebViewDelegate and pass in the webview, plugins and the url to load into the webview
-self.webViewManager = [[SVNHWebViewManager alloc] initWithWebView:webView
-                                                          plugins:@[[MyPlugin new]]
-                                                              URL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"www/index" ofType:@"html"]]];
-
+self.webViewManager = [[SVNHWebViewManager alloc] initWithName:@"main"
+                                                       WebView:webView
+                                                       plugins:@[[MyPlugin new]]
+                                                           URL:[NSURL fileURLWithPath:[[NSBundle mainBundle]
+                                                            pathForResource:@"www/index"
+                                                                     ofType:@"html"]]];
 ```
 
 Don't forget to include the iOS savannah.js file in your web page!
@@ -81,7 +83,7 @@ ArrayList<Plugin> plugins = new ArrayList<Plugin>(1);
 plugins.add(new MyPlugin());
 
 // create a WebViewManager and pass in the webview, plugins and the url to load into the webview
-new WebViewManager(webView, plugins, "file:///android_asset/www/index.html");
+new WebViewManager("main", webView, plugins, "file:///android_asset/www/index.html");
 
 ```
 
