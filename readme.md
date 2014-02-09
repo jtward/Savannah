@@ -32,7 +32,7 @@ To use Savannah:
 // create a webview
 UIWebView *webView = [UIWebView new];
 
-// create a SVNHWebViewDelegate and pass in the webview, plugins and the url to load into the webview
+// create a SVNHWebViewManager and pass in a name, the webview, plugins and the url to load into the webview
 self.webViewManager = [[SVNHWebViewManager alloc] initWithName:@"main"
                                                        WebView:webView
                                                        plugins:@[[MyPlugin new]]
@@ -82,7 +82,7 @@ webView.getSettings().setJavaScriptEnabled(true);
 ArrayList<Plugin> plugins = new ArrayList<Plugin>(1);
 plugins.add(new MyPlugin());
 
-// create a WebViewManager and pass in the webview, plugins and the url to load into the webview
+// create a WebViewManager and pass in a name, the webview, plugins and the url to load into the webview
 new WebViewManager("main", webView, plugins, "file:///android_asset/www/index.html");
 
 ```
@@ -104,8 +104,8 @@ public class MyPlugin implements SavannahPlugin {
 
     // check for the `foo` action
     if(action.equals("foo")) {
-            // report success and pass back the string "foo!"
-            // we don't need to return more than one response so return NO for keepCallback
+      // report success and pass back the string "foo!"
+      // we don't need to return more than one response so return NO for keepCallback
       command.success("foo!", false);
       return true;
     }
