@@ -6,5 +6,7 @@
 
 + (NSString *) name;
 
-- (void) echo:(SVNHCommand *)command;
+- (void) echo:(UIWebView *)webView
+         name:(NSString *)name
+      command:(SVNHCommand *)command;
 @end

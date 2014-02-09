@@ -6,7 +6,6 @@ import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
@@ -288,12 +287,10 @@ public class WebViewManager {
 	 * @param result the result to send.
 	 * @param callbackId the id of the callback that should receive the result.
 	 */
-	protected void sendPluginResult(PluginResult result, String callbackId) {
-		String status = Boolean.toString(result.getStatus());
-		String message = result.getMessage();
-	    boolean keepCallback = result.getKeepCallback();
+	protected void sendPluginResult(boolean status, String message, boolean keepCallback, String callbackId) {
+		String statusString = Boolean.toString(status);
 	    
-	    String execString = "window.savannah.nativeCallback('" + callbackId + "'," + status + "," +
+	    String execString = "window.savannah.nativeCallback('" + callbackId + "'," + statusString + "," +
 	    		message + "," + keepCallback + ");";
 	    
 	    executeJavaScript(execString, null);

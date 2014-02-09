@@ -83,6 +83,7 @@
                                                                            callbackId:[cmd objectAtIndex:0]
                                                                        webViewManager:self webView:theWebView];
                         
+                        
                         [plugin performSelector:execSelector withObject:command];
                     }
                     else {
@@ -153,13 +154,13 @@
     }
 }
 
-- (void) sendPluginResult:(SVNHPluginResult *)result
-           withCallbackId:(NSString *)callbackId {
+- (void) sendPluginResponseWithStatus:(BOOL)status
+                              message:(NSString *)message
+                         keepCallback:(BOOL)keepCallback
+                           callbackId:(NSString *)callbackId {
     
-    NSString *arguments = result.message;
-    NSString *status = result.status ? @"true" : @"false";
-    BOOL keepCallback = result.keepCallback;
-    NSString *execString = [NSString stringWithFormat:@"window.savannah.nativeCallback('%@',%@,%@,%d);", callbackId, status, arguments, keepCallback];
+    NSString *stringStatus = status ? @"true" : @"false";
+    NSString *execString = [NSString stringWithFormat:@"window.savannah.nativeCallback('%@',%@,%@,%d);", callbackId, stringStatus, message, keepCallback];
     [self executeJavaScript:execString];
 }
 

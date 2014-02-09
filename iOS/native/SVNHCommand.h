@@ -1,5 +1,4 @@
 #import "SVNHWebViewManager.h"
-#import "SVNHPluginResult.h"
 
 /*!
  * A Command is used to send the result of a Plugin execution back to the UIWebView that called it.
@@ -7,14 +6,9 @@
 @interface SVNHCommand : NSObject
 
 /*!
- * The arguments passed to the Plugin by the UIWebView.
- */
-@property (nonatomic, readonly) NSArray* arguments;
-
-/*!
  * The WebViewManager for the UIWebView.
  */
-@property (nonatomic, readonly) SVNHWebViewManager* webViewManager;
+@property (nonatomic, readonly) NSString* webViewManagerName;
 
 /*!
  * The UIWebView that executed this Command.
@@ -59,12 +53,6 @@
 - (id) argumentAtIndex:(NSUInteger)index
            withDefault:(id)defaultValue
               andClass:(Class)aClass;
-
-/*!
- * Sends the given result to the WebViewManager to pass on to the UIWebView.
- * @param result The result of the Command.
- */
-- (void)sendPluginResult:(SVNHPluginResult *)result;
 
 /*!
  * Calls the success callback in the WebView for this command (if any).

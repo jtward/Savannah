@@ -1,6 +1,4 @@
-#import "SVNHPluginResult.h"
-
-/*! 
+/*!
  * A manager for a single UIWebView instance. Handles communication between the web page loaded in the UIWebView and a collection of Plugins.
  */
 @interface SVNHWebViewManager : NSObject <UIWebViewDelegate>
@@ -22,8 +20,10 @@
  * @param result the result to send.
  * @param callbackId the id of the callback that should receive the result.
  */
-- (void) sendPluginResult:(SVNHPluginResult *)result
-           withCallbackId:(NSString *)callbackId;
+- (void) sendPluginResponseWithStatus:(BOOL)status
+                              message:(NSString *)message
+                         keepCallback:(BOOL)keepCallback
+                           callbackId:(NSString *)callbackId;
 
 /*!
  * Executes the given script in the WebViewManager's WebView.

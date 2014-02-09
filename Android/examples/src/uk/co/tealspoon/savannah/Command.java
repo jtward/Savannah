@@ -3,8 +3,8 @@ package uk.co.tealspoon.savannah;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-
 import android.app.Activity;
+import android.util.Log;
 import android.webkit.WebView;
 
 /**
@@ -16,7 +16,9 @@ public class Command {
 	
 	private String callbackId;
 	private WebViewManager webViewManager;
+	private boolean keepCallback;
 	private WebView webView;
+	private String webViewManagerName;
 	private Activity activity;
 
 	/**
@@ -31,38 +33,41 @@ public class Command {
 		this.webViewManager = webViewManager;
 		this.webView = webView;
 		this.activity = activity;
+		webViewManagerName = webViewManager.getName();
+		keepCallback = true;
 	}
 	
 	/**
-	 * Returns the WebView that executed this command.
-	 * @return the WebView.
+	 * Returns whether a response can be sent back to the WebView.
+	 * @return true if the WebView's callbacks have not yet been discarded, false otherwise.
 	 */
+	public boolean canSendResponse() {
+		return keepCallback;
+	}
+	
 	public WebView getWebView() {
 		return webView;
 	}
 	
-	/**
-	 * Returns the Activity that contains the WebView that executed this command.
-	 * @return the Activity.
-	 */
+	public String getWebViewManagerName() {
+		return webViewManagerName;
+	}
 	public Activity getActivity() {
 		return activity;
-	}
-	
-	/**
-	 * Returns the WebViewManager that manages the WebView that executed this command.
-	 * @return the WebViewManager.
-	 */
-	public WebViewManager getWebViewManager() {
-		return webViewManager;
 	}
 	
 	/**
 	 * Sends the given result to the WebViewManager to pass on to the WebView.
 	 * @param result The result of the Command.
 	 */
-	private void sendPluginResult(PluginResult result) {
-		webViewManager.sendPluginResult(result, callbackId);
+	private synchronized void sendPluginResult(boolean status, boolean keepCallback, String message) {
+		if (canSendResponse()) {
+			this.keepCallback = keepCallback;
+			webViewManager.sendPluginResult(status, message, keepCallback, callbackId);
+		}
+		else {
+			Log.e("Savannah", "Response not sent because callbacks have already been discarded.");
+		}
 	}
 	
 	/**
@@ -70,7 +75,7 @@ public class Command {
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
 	public void success(boolean keepCallback) {
-		sendPluginResult(new PluginResult(true, keepCallback));
+		sendPluginResult(true, keepCallback, null);
 	}
 	
 	/**
@@ -79,7 +84,7 @@ public class Command {
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
 	public void success(JSONArray message, boolean keepCallback) {
-		sendPluginResult(new PluginResult(true, keepCallback, message));
+		sendPluginResult(true, keepCallback, messageAsString(message));
 	}
 	
 	/**
@@ -88,7 +93,7 @@ public class Command {
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
 	public void success(boolean message, boolean keepCallback) {
-		sendPluginResult(new PluginResult(true, keepCallback, message));
+		sendPluginResult(true, keepCallback, messageAsString(message));
 	}
 	
 	/**
@@ -97,7 +102,7 @@ public class Command {
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
 	public void success(double message, boolean keepCallback) {
-		sendPluginResult(new PluginResult(true, keepCallback, message));
+		sendPluginResult(true, keepCallback, messageAsString(message));
 	}
 	
 	/**
@@ -106,7 +111,7 @@ public class Command {
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
 	public void success(int message, boolean keepCallback) {
-		sendPluginResult(new PluginResult(true, keepCallback, message));
+		sendPluginResult(true, keepCallback, messageAsString(message));
 	}
 	
 	/**
@@ -115,7 +120,7 @@ public class Command {
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
 	public void success(JSONObject message, boolean keepCallback) {
-		sendPluginResult(new PluginResult(true, keepCallback, message));
+		sendPluginResult(true, keepCallback, messageAsString(message));
 	}
 	
 	/**
@@ -124,7 +129,7 @@ public class Command {
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
 	public void success(String message, boolean keepCallback) {
-		sendPluginResult(new PluginResult(true, keepCallback, message));
+		sendPluginResult(true, keepCallback, messageAsString(message));
 	}
 	
 	/**
@@ -132,7 +137,7 @@ public class Command {
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
 	public void error(boolean keepCallback) {
-		sendPluginResult(new PluginResult(false, keepCallback));
+		sendPluginResult(false, keepCallback, null);
 	}
 	
 	/**
@@ -141,7 +146,7 @@ public class Command {
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
 	public void error(JSONArray message, boolean keepCallback) {
-		sendPluginResult(new PluginResult(false, keepCallback, message));
+		sendPluginResult(false, keepCallback, messageAsString(message));
 	}
 	
 	/**
@@ -150,7 +155,7 @@ public class Command {
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
 	public void error(boolean message, boolean keepCallback) {
-		sendPluginResult(new PluginResult(false, keepCallback, message));
+		sendPluginResult(false, keepCallback, messageAsString(message));
 	}
 	
 	/**
@@ -159,7 +164,7 @@ public class Command {
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
 	public void error(double message, boolean keepCallback) {
-		sendPluginResult(new PluginResult(false, keepCallback, message));
+		sendPluginResult(false, keepCallback, messageAsString(message));
 	}
 	
 	/**
@@ -168,7 +173,7 @@ public class Command {
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
 	public void error(int message, boolean keepCallback) {
-		sendPluginResult(new PluginResult(false, keepCallback, message));
+		sendPluginResult(true, keepCallback, messageAsString(message));
 	}
 	
 	/**
@@ -177,7 +182,7 @@ public class Command {
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
 	public void error(JSONObject message, boolean keepCallback) {
-		sendPluginResult(new PluginResult(false, keepCallback, message));
+		sendPluginResult(false, keepCallback, messageAsString(message));
 	}
 	
 	/**
@@ -186,6 +191,30 @@ public class Command {
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
 	public void error(String message, boolean keepCallback) {
-		sendPluginResult(new PluginResult(false, keepCallback, message));
+		sendPluginResult(true, keepCallback, messageAsString(message));
+	}
+	
+	private String messageAsString(boolean message) {
+		return Boolean.toString(message);
+	}
+	
+	private String messageAsString(int message) {
+		return Integer.toString(message);
+	}
+	
+	private String messageAsString(double message) {
+		return Double.toString(message);
+	}
+	
+	private String messageAsString(JSONObject message) {
+		return message.toString().replace("'", "\\'");
+	}
+	
+	private String messageAsString(JSONArray message) {
+		return message.toString().replace("'", "\\'");
+	}
+	
+	private String messageAsString(String message) {
+		return "'" + message.replace("'", "\\'") + "'";
 	}
 }
