@@ -16,6 +16,7 @@ import android.view.KeyEvent;
 import android.webkit.HttpAuthHandler;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
+import android.webkit.ValueCallback;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -42,7 +43,8 @@ public class WebViewManager {
 		}
 	}
 	
-	public WebViewManager(String name, final WebView webView, final Activity activity, Collection<Plugin> plugins, final String url) {
+	public WebViewManager(String name, final WebView webView, final Activity activity,
+			Collection<Plugin> plugins, final String url) {
 		
 		this.name = name;
 		this.webView = webView;
@@ -64,14 +66,14 @@ public class WebViewManager {
 			@Override
 			public void onPageFinished(WebView view, String loadedUrl) {
 				if (loadedUrl.equals(url)) {
-					webView.loadUrl("javascript:window.savannah.didFinishLoad();");
+					executeJavaScript("window.savannah.didFinishLoad();", null);
 				}
 				if (webViewClient != null) {
 					webViewClient.onPageFinished(view, loadedUrl);
 				}
 			}
 			
-			// proxy all WebViewClient methods
+			// proxy all other WebViewClient methods
 			@Override
 			public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
 				if (webViewClient != null) {
@@ -176,6 +178,22 @@ public class WebViewManager {
 		this.webView.loadUrl(url);
 	}
 	
+	public void executeJavaScript(String script, final ValueCallback<String> callback) {
+		final boolean useEval = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+		final String execString = useEval ? script : ("javascript:" + script);
+		
+		activity.runOnUiThread(new Runnable() {
+	    	public void run() {
+	    		if (useEval) {
+	    			webView.evaluateJavascript(execString, callback);
+	    		}
+	    		else {
+	    			webView.loadUrl(execString);
+	    		}
+	    	}
+	    });
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -188,14 +206,14 @@ public class WebViewManager {
 				JSONArray command = commands.optJSONArray(i);
 				
 				if (command != null) {
-					int callbackId = command.getInt(0);
+					String callbackId = command.getString(0);
 					String pluginName = command.getString(1);
 					String methodName = command.getString(2);
 					String arguments = command.getString(3);
 					
 					Plugin plugin = plugins.get(pluginName);
 					if (plugin == null) {
-						Log.d("Savannah", "Plugin " + pluginName + " not found");
+						Log.e("Savannah", "Plugin " + pluginName + " not found");
 					}
 					else {
 						try {
@@ -204,13 +222,13 @@ public class WebViewManager {
 							plugin.execute(methodName, args, cmd);
 						}
 						catch (JSONException e) {
-							Log.d("Savannah", "Malformed JSON: " + arguments);
+							Log.e("Savannah", "Malformed JSON in arguments to " + pluginName + " " + methodName + ". JSON: " + arguments);
 						}
 					}
 				}
 			}
 		} catch (JSONException e) {
-			Log.d("Savannah", "Malformed JSON: " + commandsString);
+			Log.e("Savannah", "Malformed JSON in command batch. JSON: " + commandsString);
 		}
 	}
 	
@@ -218,28 +236,14 @@ public class WebViewManager {
 		this.plugins.put(plugin.getName(), plugin);
 	}
 
-	public void sendPluginResult(PluginResult result, int callbackId) {
+	public void sendPluginResult(PluginResult result, String callbackId) {
 		String arguments = result.argumentsAsJSON();
 		String status = Boolean.toString(result.status);
 	    boolean keepCallback = result.keepCallback;
-	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-	    	final String execString = "window.savannah.nativeCallback('" + callbackId + "'," + status + "," + arguments + "," + keepCallback + ");";
-		    
-		    activity.runOnUiThread(new Runnable() {
-		    	public void run() {
-		    		webView.evaluateJavascript(execString, null);
-		    	}
-		    });
-	    }
-	    else {
-		    final String execString = "javascript:window.savannah.nativeCallback('" + callbackId + "'," + status + "," + arguments + "," + keepCallback + ");";
-		    
-		    activity.runOnUiThread(new Runnable() {
-		    	public void run() {
-		    		webView.loadUrl(execString);
-		    	}
-		    });
-	    }
+	    String execString = "window.savannah.nativeCallback('" + callbackId + "'," + status + "," +
+	    		arguments + "," + keepCallback + ");";
+	    
+	    executeJavaScript(execString, null);
 	}
 	
 	void setWebViewClient(WebViewClient client) {

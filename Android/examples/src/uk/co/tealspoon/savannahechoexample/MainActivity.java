@@ -26,7 +26,8 @@ public class MainActivity extends Activity {
 		ArrayList<Plugin> plugins = new ArrayList<Plugin>(1);
 		plugins.add(new EchoPlugin());
 		
-		WebViewManager manager = new WebViewManager(echoWebView, this, plugins, "file:///android_asset/www/index.html");
+		WebViewManager manager = new WebViewManager("main", echoWebView, this, plugins,
+				"file:///android_asset/www/index.html");
 		
 		manager.setWebViewClient(new WebViewClient() {
 			@Override

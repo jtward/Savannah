@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class PluginResult {
+	
 	public boolean status;
 	public boolean keepCallback;
 	public String message;

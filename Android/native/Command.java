@@ -8,12 +8,12 @@ import android.webkit.WebView;
 
 public class Command {
 	
-	private int callbackId;
+	private String callbackId;
 	private WebViewManager webViewManager;
 	private WebView webView;
 	private Activity activity;
 
-	public Command(int callbackId, WebViewManager webViewManager, WebView webView, Activity activity) {
+	public Command(String callbackId, WebViewManager webViewManager, WebView webView, Activity activity) {
 		this.callbackId = callbackId;
 		this.webViewManager = webViewManager;
 		this.webView = webView;

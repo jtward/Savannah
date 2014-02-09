@@ -2,7 +2,7 @@
 
 @implementation SVNHEchoPlugin
 
-+(NSString *)name {
++ (NSString *) name {
     return @"uk.co.tealspoon.savannah.echo";
 };
 

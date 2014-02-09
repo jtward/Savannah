@@ -6,5 +6,5 @@
 
 + (NSString *) name;
 
-- (void)echo:(SVNHCommand *)command;
+- (void) echo:(SVNHCommand *)command;
 @end

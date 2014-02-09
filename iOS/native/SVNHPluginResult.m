@@ -9,11 +9,13 @@
 @end
 
 @implementation SVNHPluginResult
-@synthesize status, message, keepCallback;
 
 static NSArray* CommandStatusMsgs;
 
-- (SVNHPluginResult*)initWithSuccess:(BOOL)success keepCallback:(BOOL)shouldKeepCallback message:(id)messageObject {
+- (SVNHPluginResult*) initWithSuccess:(BOOL)success
+                         keepCallback:(BOOL)shouldKeepCallback
+                              message:(id)messageObject {
+    
     self = [super init];
     self.status = success;
     self.keepCallback = shouldKeepCallback;
@@ -21,7 +23,7 @@ static NSArray* CommandStatusMsgs;
     return self;
 }
 
-- (NSString*)messageAsJSON:(id)messageObject {
+- (NSString*) messageAsJSON:(id)messageObject {
     
     if (messageObject == nil) {
         messageObject = [NSNull null];
@@ -31,7 +33,8 @@ static NSArray* CommandStatusMsgs;
                                                           options:0
                                                             error:nil];
     
-    NSString *messageJSON = [[NSString alloc] initWithData:messageData encoding:NSUTF8StringEncoding];
+    NSString *messageJSON = [[NSString alloc] initWithData:messageData
+                                                  encoding:NSUTF8StringEncoding];
     
     return [messageJSON substringWithRange:NSMakeRange(1, [messageJSON length] - 2)];
 }
