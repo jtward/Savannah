@@ -4,6 +4,16 @@
 @interface SVNHWebViewManager : NSObject <UIWebViewDelegate>
 
 /*!
+ * Returns the name given to this WebViewManager.
+ * @return the name given to this WebViewManager.
+ */
+@property (nonatomic, readonly) NSString *name;
+
+@property (nonatomic, readonly) UIWebView *webView;
+
+@property (nonatomic) id<UIWebViewDelegate> delegate;
+
+/*!
  * Creates a new WebViewManager which manages the given WebView.
  * @param name the name of this WebViewManager. Useful for identifying WebViewManagers. Uniqueness is not enforced.
  * @param webView the WebView managed by this WebViewManager.
@@ -16,7 +26,7 @@
                 URL:(NSURL *)URL;
 
 /*!
- * Send the result of a Plugin execution to the UIWebView.
+ * Sends the result of a Plugin execution to the UIWebView.
  * @param result the result to send.
  * @param callbackId the id of the callback that should receive the result.
  */
@@ -31,11 +41,5 @@
  * @return the result of the execution.
  */
 - (NSString *) executeJavaScript:(NSString *)script;
-
-/*!
- * Returns the name given to this WebViewManager.
- * @return the name given to this WebViewManager.
- */
-@property (nonatomic, readonly) NSString *name;
 
 @end

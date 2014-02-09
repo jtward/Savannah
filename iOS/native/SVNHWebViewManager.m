@@ -7,7 +7,6 @@
 @property (nonatomic) NSMutableDictionary *plugins;
 @property (nonatomic) BOOL isFirstRequest;
 @property (nonatomic) BOOL isFirstLoad;
-@property (nonatomic) id<UIWebViewDelegate> delegate;
 @property (nonatomic) UIWebView *webView;
 @property (nonatomic) NSString *name;
 
@@ -39,6 +38,10 @@
     [self.webView loadRequest:appReq];
     
     return self;
+}
+
+- (void) setDelegate:(id<UIWebViewDelegate>)delegate {
+    self.delegate = delegate;
 }
 
 - (NSString *) executeJavaScript:(NSString *)script {

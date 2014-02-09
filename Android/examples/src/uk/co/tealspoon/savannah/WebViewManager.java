@@ -235,6 +235,14 @@ public class WebViewManager {
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * Returns the WebView managed by this WebViewManager.
+	 * @return the WebView.
+	 */
+	public WebView getWebView() {
+		return webView;
+	}
 
 	/**
 	 * Handle an array of commands.
