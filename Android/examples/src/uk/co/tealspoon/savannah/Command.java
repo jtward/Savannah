@@ -50,6 +50,14 @@ public class Command {
 	}
 	
 	/**
+	 * Returns the WebViewManager that manages the WebView that executed this command.
+	 * @return the WebViewManager.
+	 */
+	public WebViewManager getWebViewManager() {
+		return webViewManager;
+	}
+	
+	/**
 	 * Sends the given result to the WebViewManager to pass on to the WebView.
 	 * @param result The result of the Command.
 	 */
