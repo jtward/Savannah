@@ -2,6 +2,9 @@ package uk.co.tealspoon.savannahechoexample;
 
 import org.json.JSONArray;
 
+import uk.co.tealspoon.savannah.Command;
+import uk.co.tealspoon.savannah.Plugin;
+
 public class EchoPlugin implements Plugin {
 
 	@Override

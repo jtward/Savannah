@@ -1,10 +1,11 @@
-package uk.co.tealspoon.savannahechoexample;
+package uk.co.tealspoon.savannah;
 
 import java.util.Collection;
 import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -21,6 +22,11 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+/**
+ * A manager for a single {@link android.webkit.WebView WebView} instance. Handles communication between the web page loaded in the WebView and a collection of {@link uk.co.tealspoon.savannah.Plugin Plugins}.
+ * @author james.ward
+ *
+ */
 public class WebViewManager {
 
 	private String name;
@@ -29,20 +35,42 @@ public class WebViewManager {
 	private WebViewClient webViewClient;
 	private Activity activity;
 	
+	/**
+	 * Internal class for low-level communication with the WebView.
+	 * @author james.ward
+	 *
+	 */
 	private class WebViewJavascriptInterface {
 		private WebViewManager manager;
 
+		/**
+		 * Creates a new interface which reports to the given WebViewManager.
+		 * @param manager the WebViewManager to report commands to.
+		 */
 		public WebViewJavascriptInterface(WebViewManager manager) {
 			this.manager = manager;
 		}
 		
+		/**
+		 * Method called by the WebView to send commands to the native application.
+		 * @param commands an array of commands represented as a JSON string.
+		 * @return the empty string.
+		 */
 		@JavascriptInterface
-		public String exec(String command) {
-			manager.handleCommands(command);
+		public String exec(String commands) {
+			manager.handleCommands(commands);
 			return "";
 		}
 	}
 	
+	/**
+	 * Creates a new WebViewManager which manages the given WebView. 
+	 * @param name the name of this WebViewManager. Useful for identifying WebViewManagers. Uniqueness is not enforced.
+	 * @param webView the WebView managed by this WebViewManager.
+	 * @param activity the Activity that contains the given WebView.
+	 * @param plugins a collection of Plugins to be made available to the WebView.
+	 * @param url the initial URL to load into the WebView.
+	 */
 	public WebViewManager(String name, final WebView webView, final Activity activity,
 			Collection<Plugin> plugins, final String url) {
 		
@@ -178,6 +206,13 @@ public class WebViewManager {
 		this.webView.loadUrl(url);
 	}
 	
+	/**
+	 * Executes the given script in the WebViewManager's WebView.
+	 * @param script the script to execute.
+	 * @param callback a callback to be invoked when the script execution completes with the result of the execution 
+	 * (if any). May be null if no notification of the result is required. This parameter is not used if the target device is running 
+	 * Android Jelly Bean MR2 (18) or earlier.
+	 */
 	public void executeJavaScript(String script, final ValueCallback<String> callback) {
 		final boolean useEval = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 		final String execString = useEval ? script : ("javascript:" + script);
@@ -194,11 +229,15 @@ public class WebViewManager {
 	    });
 	}
 	
+	/**
+	 * Returns the name given to this manager.
+	 * @return the name given to this manager.
+	 */
 	public String getName() {
 		return name;
 	}
 
-	public void handleCommands(final String commandsString) {
+	private void handleCommands(final String commandsString) {
 		try {
 			JSONArray commands = new JSONArray(commandsString);
 			for(int i = 0; i < commands.length(); i += 1) {
@@ -232,21 +271,30 @@ public class WebViewManager {
 		}
 	}
 	
+	/**
+	 * Register an additional plugin to be made available to the webview.
+	 * @param plugin an implementation of Plugin.
+	 */
 	public void registerPlugin(Plugin plugin) {
 		this.plugins.put(plugin.getName(), plugin);
 	}
 
-	public void sendPluginResult(PluginResult result, String callbackId) {
-		String arguments = result.argumentsAsJSON();
-		String status = Boolean.toString(result.status);
-	    boolean keepCallback = result.keepCallback;
+	protected void sendPluginResult(PluginResult result, String callbackId) {
+		String status = Boolean.toString(result.getStatus());
+		String message = result.getMessage();
+	    boolean keepCallback = result.getKeepCallback();
+	    
 	    String execString = "window.savannah.nativeCallback('" + callbackId + "'," + status + "," +
-	    		arguments + "," + keepCallback + ");";
+	    		message + "," + keepCallback + ");";
 	    
 	    executeJavaScript(execString, null);
 	}
 	
-	void setWebViewClient(WebViewClient client) {
+	/**
+	 * Sets the WebViewClient that will receive various notifications and requests.
+	 * @param client an implementation of WebViewClient 
+	 */
+	public void setWebViewClient(WebViewClient client) {
 		webViewClient = client;
 	}
 }

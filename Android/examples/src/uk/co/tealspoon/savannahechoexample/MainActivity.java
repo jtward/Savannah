@@ -1,15 +1,14 @@
 package uk.co.tealspoon.savannahechoexample;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import uk.co.tealspoon.savannah.Plugin;
+import uk.co.tealspoon.savannah.WebViewManager;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.Menu;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
