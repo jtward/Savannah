@@ -77,17 +77,17 @@ WebView webView = (WebView) findViewById(R.id.web_view);
 webView.getSettings().setJavaScriptEnabled(true);
 
 // create a list for the plugins and add the plugins
-ArrayList<SavannahPlugin> plugins = new ArrayList<SavannahPlugin>(1);
+ArrayList<Plugin> plugins = new ArrayList<Plugin>(1);
 plugins.add(new MyPlugin());
 
-// create a SavannahWebViewManager and pass in the webview, plugins and the url to load into the webview
-new SavannahWebViewManager(webView, plugins, "file:///android_asset/www/index.html");
+// create a WebViewManager and pass in the webview, plugins and the url to load into the webview
+new WebViewManager(webView, plugins, "file:///android_asset/www/index.html");
 
 ```
 
 Don't forget to include the Android savannah.js file in your web page!
 
-A plugin class just implements `SavannahPlugin`. You need to implement an `execute` method, similar to Cordova, and a `getName` method.
+A plugin class just implements `Plugin`. You need to implement an `execute` method, similar to Cordova, and a `getName` method.
 
 ```Java
 public class MyPlugin implements SavannahPlugin {
@@ -98,7 +98,7 @@ public class MyPlugin implements SavannahPlugin {
   }
 
   @Override
-  public boolean execute(String action, JSONArray args, SavannahCommand command) {
+  public boolean execute(String action, JSONArray args, Command command) {
 
     // check for the `foo` action
     if(action.equals("foo")) {
