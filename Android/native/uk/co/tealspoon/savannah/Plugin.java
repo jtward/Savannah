@@ -2,9 +2,6 @@ package uk.co.tealspoon.savannah;
 
 import org.json.JSONArray;
 
-import android.app.Activity;
-import android.webkit.WebView;
-
 /**
  * A Plugin is a class whose {@link #execute execute} method can be invoked by a {@link android.webkit.WebView WebView}. 
  * @author james.ward
