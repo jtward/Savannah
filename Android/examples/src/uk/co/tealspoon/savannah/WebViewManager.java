@@ -230,13 +230,17 @@ public class WebViewManager {
 	}
 	
 	/**
-	 * Returns the name given to this manager.
-	 * @return the name given to this manager.
+	 * Returns the name given to this WebViewManager.
+	 * @return the name given to this WebViewManager.
 	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Handle an array of commands.
+	 * @param commandsString a JSON array of commands.
+	 */
 	private void handleCommands(final String commandsString) {
 		try {
 			JSONArray commands = new JSONArray(commandsString);
@@ -272,13 +276,18 @@ public class WebViewManager {
 	}
 	
 	/**
-	 * Register an additional plugin to be made available to the webview.
+	 * Register an additional Plugin to be made available to the WebView.
 	 * @param plugin an implementation of Plugin.
 	 */
 	public void registerPlugin(Plugin plugin) {
 		this.plugins.put(plugin.getName(), plugin);
 	}
 
+	/**
+	 * Send the result of a Plugin execution to the WebView.
+	 * @param result the result to send.
+	 * @param callbackId the id of the callback that should receive the result.
+	 */
 	protected void sendPluginResult(PluginResult result, String callbackId) {
 		String status = Boolean.toString(result.getStatus());
 		String message = result.getMessage();

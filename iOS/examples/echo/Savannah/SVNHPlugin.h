@@ -1,9 +1,14 @@
+/*!
+ * A Plugin is a class whose methods can be invoked by a UIWebView.
+ */
 @protocol SVNHPlugin <NSObject>
 
 @required
 
-// by convention, and to reduce the likelihood of conflicts,
-// a plugin's name should be a unique reversed FQDN
+/*!
+ * Returns the name of the Plugin. This name is used in the WebView to identify the Plugin that should receive the command and should be a reversed FQDN.
+ * @return the name of the Plugin.
+ */
 + (NSString *) name;
 
 @end

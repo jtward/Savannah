@@ -23,8 +23,8 @@ public class Command {
 	 * Create a new Command
 	 * @param callbackId the value used to identify the callbacks for this Command in the WebView.
 	 * @param webViewManager the manager for this Command.
-	 * @param webView The WebView for this Command.
-	 * @param activity The Activity which contains the given WebView.
+	 * @param webView the WebView for this Command.
+	 * @param activity the Activity which contains the given WebView.
 	 */
 	protected Command(String callbackId, WebViewManager webViewManager, WebView webView, Activity activity) {
 		this.callbackId = callbackId;
@@ -67,56 +67,56 @@ public class Command {
 	
 	/**
 	 * Calls the success callback in the WebView for this command (if any), passing back a JSON array.
-	 * @param arrayMessage the result of the Command, to send to the WebView.
+	 * @param message the result of the Command, to send to the WebView.
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
-	public void success(JSONArray arrayMessage, boolean keepCallback) {
-		sendPluginResult(new PluginResult(true, keepCallback, arrayMessage));
+	public void success(JSONArray message, boolean keepCallback) {
+		sendPluginResult(new PluginResult(true, keepCallback, message));
 	}
 	
 	/**
 	 * Calls the success callback in the WebView for this command (if any), passing back a boolean.
-	 * @param booleanMessage the result of the Command, to send to the WebView.
+	 * @param message the result of the Command, to send to the WebView.
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
-	public void success(boolean booleanMessage, boolean keepCallback) {
-		sendPluginResult(new PluginResult(true, keepCallback, booleanMessage));
+	public void success(boolean message, boolean keepCallback) {
+		sendPluginResult(new PluginResult(true, keepCallback, message));
 	}
 	
 	/**
 	 * Calls the success callback in the WebView for this command (if any), passing back a double.
-	 * @param doubleMessage the result of the Command, to send to the WebView.
+	 * @param message the result of the Command, to send to the WebView.
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
-	public void success(double doubleMessage, boolean keepCallback) {
-		sendPluginResult(new PluginResult(true, keepCallback, doubleMessage));
+	public void success(double message, boolean keepCallback) {
+		sendPluginResult(new PluginResult(true, keepCallback, message));
 	}
 	
 	/**
 	 * Calls the success callback in the WebView for this command (if any), passing back an int.
-	 * @param intMessage the result of the Command, to send to the WebView.
+	 * @param message the result of the Command, to send to the WebView.
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
-	public void success(int intMessage, boolean keepCallback) {
-		sendPluginResult(new PluginResult(true, keepCallback, intMessage));
+	public void success(int message, boolean keepCallback) {
+		sendPluginResult(new PluginResult(true, keepCallback, message));
 	}
 	
 	/**
 	 * Calls the success callback in the WebView for this command (if any), passing back a JSON object.
-	 * @param objectMessage the result of the Command, to send to the WebView.
+	 * @param message the result of the Command, to send to the WebView.
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
-	public void success(JSONObject objectMessage, boolean keepCallback) {
-		sendPluginResult(new PluginResult(true, keepCallback, objectMessage));
+	public void success(JSONObject message, boolean keepCallback) {
+		sendPluginResult(new PluginResult(true, keepCallback, message));
 	}
 	
 	/**
 	 * Calls the success callback in the WebView for this command (if any), passing back a string.
-	 * @param stringMessage the result of the Command, to send to the WebView.
+	 * @param message the result of the Command, to send to the WebView.
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
-	public void success(String stringMessage, boolean keepCallback) {
-		sendPluginResult(new PluginResult(true, keepCallback, stringMessage));
+	public void success(String message, boolean keepCallback) {
+		sendPluginResult(new PluginResult(true, keepCallback, message));
 	}
 	
 	/**
@@ -129,55 +129,55 @@ public class Command {
 	
 	/**
 	 * Calls the error callback in the WebView for this command (if any), passing back a JSON array.
-	 * @param arrayMessage the result of the Command, to send to the WebView.
+	 * @param message the result of the Command, to send to the WebView.
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
-	public void error(JSONArray arrayMessage, boolean keepCallback) {
-		sendPluginResult(new PluginResult(false, keepCallback, arrayMessage));
+	public void error(JSONArray message, boolean keepCallback) {
+		sendPluginResult(new PluginResult(false, keepCallback, message));
 	}
 	
 	/**
 	 * Calls the error callback in the WebView for this command (if any), passing back a boolean.
-	 * @param booleanMessage the result of the Command, to send to the WebView.
+	 * @param message the result of the Command, to send to the WebView.
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
-	public void error(boolean booleanMessage, boolean keepCallback) {
-		sendPluginResult(new PluginResult(false, keepCallback, booleanMessage));
+	public void error(boolean message, boolean keepCallback) {
+		sendPluginResult(new PluginResult(false, keepCallback, message));
 	}
 	
 	/**
 	 * Calls the error callback in the WebView for this command (if any), passing back a double.
-	 * @param doubleMessage the result of the Command, to send to the WebView.
+	 * @param message the result of the Command, to send to the WebView.
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
-	public void error(double doubleMessage, boolean keepCallback) {
-		sendPluginResult(new PluginResult(false, keepCallback, doubleMessage));
+	public void error(double message, boolean keepCallback) {
+		sendPluginResult(new PluginResult(false, keepCallback, message));
 	}
 	
 	/**
 	 * Calls the error callback in the WebView for this command (if any), passing back an int.
-	 * @param intMessage the result of the Command, to send to the WebView.
+	 * @param message the result of the Command, to send to the WebView.
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
-	public void error(int intMessage, boolean keepCallback) {
-		sendPluginResult(new PluginResult(false, keepCallback, intMessage));
+	public void error(int message, boolean keepCallback) {
+		sendPluginResult(new PluginResult(false, keepCallback, message));
 	}
 	
 	/**
 	 * Calls the error callback in the WebView for this command (if any), passing back a JSON object.
-	 * @param objectMessage the result of the Command, to send to the WebView.
+	 * @param message the result of the Command, to send to the WebView.
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
-	public void error(JSONObject objectMessage, boolean keepCallback) {
-		sendPluginResult(new PluginResult(false, keepCallback, objectMessage));
+	public void error(JSONObject message, boolean keepCallback) {
+		sendPluginResult(new PluginResult(false, keepCallback, message));
 	}
 	
 	/**
 	 * Calls the error callback in the WebView for this command (if any), passing back a string.
-	 * @param stringMessage the result of the Command, to send to the WebView.
+	 * @param message the result of the Command, to send to the WebView.
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
-	public void error(String stringMessage, boolean keepCallback) {
-		sendPluginResult(new PluginResult(false, keepCallback, stringMessage));
+	public void error(String message, boolean keepCallback) {
+		sendPluginResult(new PluginResult(false, keepCallback, message));
 	}
 }

@@ -10,8 +10,7 @@ import org.json.JSONArray;
 public interface Plugin {
 	
 	/**
-	 * Returns the name of the Plugin. This name is used in the WebView to identify the Plugin that should receive the command.
-	 * By convention all instances of a Plugin class should return the same value (i.e. getName should be functionally static).
+	 * Returns the name of the Plugin. This name is used in the WebView to identify the Plugin that should receive the command and should be a reversed FQDN.
 	 * @return the name of the Plugin.
 	 */
 	public String getName();

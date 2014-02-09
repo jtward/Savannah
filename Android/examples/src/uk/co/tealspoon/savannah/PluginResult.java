@@ -3,6 +3,11 @@ package uk.co.tealspoon.savannah;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * A PluginResult holds the data to be sent back to the WebView.
+ * @author james.ward
+ *
+ */
 class PluginResult {
 	
 	private boolean status;
@@ -87,7 +92,7 @@ class PluginResult {
 	
 	/**
 	 * Return the status of the result.
-	 * @return true if execution of the Command was successful, false otherwise 
+	 * @return true if execution of the Command was successful, false otherwise.
 	 */
 	protected boolean getStatus() {
 		return status;
