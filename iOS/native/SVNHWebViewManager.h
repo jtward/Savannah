@@ -1,3 +1,5 @@
+#import "SVNHPlugin.h"
+
 /*!
  * A manager for a single UIWebView instance. Handles communication between the web page loaded in the UIWebView and a collection of Plugins.
  */
@@ -24,6 +26,13 @@
             WebView:(UIWebView *)webView
             plugins:(NSArray *)plugins
                 URL:(NSURL *)URL;
+
+
+/*!
+ * Registers a plugin to be made available to the WebView.
+ * @param plugin a plugin to be made available to the WebView.
+ */
+- (void) registerPlugin:(id <SVNHPlugin>)plugin;
 
 /*!
  * Sends the result of a Plugin execution to the UIWebView.

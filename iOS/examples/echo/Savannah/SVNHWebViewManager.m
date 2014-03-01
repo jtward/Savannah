@@ -1,6 +1,5 @@
 #import "SVNHWebViewManager.h"
 #import "SVNHCommand.h"
-#import "SVNHPlugin.h"
 
 @interface SVNHWebViewManager()
 
@@ -52,7 +51,7 @@
 // allow plugins to be registered to a webview after initializing the delegate
 - (void) registerPlugin:(id <SVNHPlugin>)plugin {
     
-    [self.plugins setObject:plugin forKey:[plugin name]];
+    [self.plugins setObject:plugin forKey:[[plugin class] name]];
 }
 
 - (BOOL) webView:(UIWebView *)theWebView
