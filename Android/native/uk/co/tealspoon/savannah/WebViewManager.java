@@ -217,15 +217,18 @@ public class WebViewManager {
 		final String execString = useEval ? script : ("javascript:" + script);
 		
 		activity.runOnUiThread(new Runnable() {
-	    	public void run() {
-	    		if (useEval) {
-	    			webView.evaluateJavascript(execString, callback);
-	    		}
-	    		else {
-	    			webView.loadUrl(execString);
-	    		}
-	    	}
-	    });
+			public void run() {
+				// if the activity is stopped before this runs, the webview will be null
+				if (webView != null) {
+					if (useEval) {
+						webView.evaluateJavascript(execString, callback);
+					}
+					else {
+						webView.loadUrl(execString);
+					}
+				}
+			}
+		});
 	}
 	
 	/**
@@ -297,11 +300,11 @@ public class WebViewManager {
 	 */
 	protected void sendPluginResult(boolean status, String message, boolean keepCallback, String callbackId) {
 		String statusString = Boolean.toString(status);
-	    
-	    String execString = "window.savannah.nativeCallback('" + callbackId + "'," + statusString + "," +
-	    		message + "," + keepCallback + ");";
-	    
-	    executeJavaScript(execString, null);
+
+		String execString = "window.savannah.nativeCallback('" + callbackId + "'," + statusString + "," +
+				message + "," + keepCallback + ");";
+
+		executeJavaScript(execString, null);
 	}
 	
 	/**
