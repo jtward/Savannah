@@ -292,6 +292,31 @@ public class WebViewManager {
 	public void registerPlugin(Plugin plugin) {
 		this.plugins.put(plugin.getName(), plugin);
 	}
+	
+	/**
+	 * Unregister a Plugin, making it unavailable to the WebView.
+	 * Does nothing if the Plugin is not currently registered.
+	 * Any messages returned from the Plugin to the WebView after the Plugin is unregistered are not affected and will be passed back to the WebView as normal.
+	 * @param plugin the name of the Plugin to unregister.
+	 */
+	public void unregisterPlugin(String pluginName) {
+		this.plugins.remove(pluginName);
+	}
+	
+	/**
+	 * Returns the registered Plugin with the given name, or null if no Plugin with the given name is registered.
+	 * @param pluginName the name of the registered Plugin to return.
+	 */
+	public Plugin getPlugin(String pluginName) {
+		return this.plugins.get(pluginName);
+	}
+	
+	/**
+	 * Unregister all Plugins, making them unavailable to the WebView. 
+	 */
+	public void clearPlugins() {
+		this.plugins.clear();
+	}
 
 	/**
 	 * Send the result of a Plugin execution to the WebView.

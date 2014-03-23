@@ -44,14 +44,23 @@
 }
 
 - (NSString *) executeJavaScript:(NSString *)script {
-    
     return [self.webView stringByEvaluatingJavaScriptFromString:script];
 }
 
-// allow plugins to be registered to a webview after initializing the delegate
 - (void) registerPlugin:(id <SVNHPlugin>)plugin {
-    
     [self.plugins setObject:plugin forKey:[[plugin class] name]];
+}
+
+- (void) unregisterPluginByName:(NSString *)pluginName {
+    [self.plugins removeObjectForKey:pluginName];
+}
+
+- (id <SVNHPlugin>) getPluginByName:(NSString *)pluginName {
+    return [self.plugins objectForKey:pluginName];
+}
+
+- (void) clearPlugins {
+    [self.plugins removeAllObjects];
 }
 
 - (BOOL) webView:(UIWebView *)theWebView
