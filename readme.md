@@ -5,6 +5,7 @@ Savannah is a web-native bridge for hybrid apps with a plugin architecture, simi
 
 It is designed to be easy to drop into native apps, and enables you to use multiple isolated webviews with their own set of plugins.
 
+Version 0.2.0 - 23rd March 2014
 Version 0.1.0 - 8th February 2014
 
 ## Differences between Savannah and Cordova / Phonegap
@@ -127,3 +128,9 @@ savannah.exec(function success(result) {}, // success callback
   "foo",                                   // plugin method
   []);                                     // plugin arguments
 ```
+
+
+## Changelog
+### 0.2.0
+- Added methods for getting and removing plugins from managers.
+- Fixed a bug in Android where a null pointer exception could occur when executing JavaScript on the WebView after it had been destroyed.
