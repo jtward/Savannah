@@ -2,9 +2,10 @@ package uk.co.tealspoon.savannahechoexample;
 
 import java.util.ArrayList;
 
+import org.json.JSONObject;
+
 import uk.co.tealspoon.savannah.Plugin;
 import uk.co.tealspoon.savannah.WebViewManager;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
@@ -25,7 +26,11 @@ public class MainActivity extends Activity {
 		ArrayList<Plugin> plugins = new ArrayList<Plugin>(1);
 		plugins.add(new EchoPlugin());
 		
-		WebViewManager manager = new WebViewManager("main", echoWebView, this, plugins,
+		JSONObject settings = new JSONObject();
+		try {
+			settings.put("foo", "bar");
+		
+		WebViewManager manager = new WebViewManager("main", echoWebView, this, settings, plugins,
 				"file:///android_asset/www/index.html");
 		
 		manager.setWebViewClient(new WebViewClient() {
@@ -34,6 +39,10 @@ public class MainActivity extends Activity {
 				Log.d("SAVANNAH", "Load finished for page " + loadedUrl + "!");
 			}
 		});
+		}
+		catch (Exception e) {
+			
+		}
 	}
 
 	@Override

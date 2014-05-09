@@ -24,6 +24,7 @@
  */
 - (id) initWithName:(NSString *)name
             WebView:(UIWebView *)webView
+           settings:(NSDictionary *)settings
             plugins:(NSArray *)plugins
                 URL:(NSURL *)URL;
 

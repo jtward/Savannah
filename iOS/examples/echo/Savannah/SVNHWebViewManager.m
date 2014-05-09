@@ -8,33 +8,53 @@
 @property (nonatomic) BOOL isFirstLoad;
 @property (nonatomic) UIWebView *webView;
 @property (nonatomic) NSString *name;
+@property (nonatomic) NSString *settingsJSON;
 
 @end
 
 @implementation SVNHWebViewManager
 
 - (id) initWithName:(NSString *)name
-            WebView:(UIWebView *)theWebView
+            WebView:(UIWebView *)webView
+           settings:(NSDictionary *)settings
             plugins:(NSArray *)plugins
                 URL:(NSURL *)URL {
     
     self = [super init];
     
-    self.name = name;
-    self.webView = theWebView;
-    [self.webView setDelegate:self];
-    
-    NSMutableDictionary *pluginsDictionary = [[NSMutableDictionary alloc] initWithCapacity:(plugins == nil ? 0 : [plugins count])];
-    for (id <SVNHPlugin> plugin in plugins) {
-        [pluginsDictionary setObject:plugin forKey:[[plugin class] name]];
-    }
-    
-    self.plugins = pluginsDictionary;
     self.isFirstRequest = YES;
     self.isFirstLoad = YES;
     
-    NSURLRequest* appReq = [NSURLRequest requestWithURL:URL];
-    [self.webView loadRequest:appReq];
+    self.name = name;
+    self.webView = webView;
+    
+    int pluginsCount = plugins == nil ? 0 : [plugins count];
+    
+    NSMutableDictionary *pluginsDictionary = [[NSMutableDictionary alloc] initWithCapacity:pluginsCount];
+
+    for (id <SVNHPlugin> plugin in plugins) {
+        
+        [pluginsDictionary setObject:plugin
+                              forKey:[[plugin class] name]];
+    }
+    
+    self.plugins = pluginsDictionary;
+    
+    if (settings == nil) {
+        settings = [NSDictionary new];
+    }
+    
+    NSData* settingsData = [NSJSONSerialization dataWithJSONObject:settings
+                                                          options:0
+                                                            error:nil];
+        
+    NSString *settingsJSON = [[NSString alloc] initWithData:settingsData
+                                                  encoding:NSUTF8StringEncoding];
+    
+    self.settingsJSON = [settingsJSON substringWithRange:NSMakeRange(0, [settingsJSON length])];
+    
+    [self.webView setDelegate:self];
+    [self.webView loadRequest:[NSURLRequest requestWithURL:URL]];
     
     return self;
 }
@@ -74,28 +94,38 @@
     else if ([[request.URL path] isEqualToString:@"/!svnh_exec"]) {
         NSString *cmds = [self executeJavaScript:@"window.savannah.nativeFetchMessages();"];
         NSError *error;
-        NSArray *cmdsArray = [NSJSONSerialization JSONObjectWithData:[cmds dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSArray *cmdsArray = [NSJSONSerialization JSONObjectWithData:[cmds dataUsingEncoding:NSUTF8StringEncoding]
+                                                             options:0
+                                                               error:&error];
         if (error != nil) {
             NSLog(@"Malformed JSON in command batch. JSON: %@", cmds);
         }
         else {
             for(NSArray *cmd in cmdsArray) {
+                
                 NSString *pluginName = [cmd objectAtIndex:1];
                 NSString *methodName = [cmd objectAtIndex:2];
+                
                 id <SVNHPlugin> plugin = [self.plugins objectForKey:pluginName];
+                
                 if (plugin == nil) {
                     NSLog(@"Plugin %@ not found", pluginName);
                 }
                 else {
-                    SEL execSelector = NSSelectorFromString([NSString stringWithFormat:@"%@:",methodName]);
+                    SEL execSelector = NSSelectorFromString([NSString stringWithFormat:@"%@:",
+                                                             methodName]);
+                    
                     if ([plugin respondsToSelector:execSelector]) {
+                        
                         // create command and send
                         SVNHCommand *command = [[SVNHCommand alloc] initWithArguments:[cmd objectAtIndex:3]
                                                                            callbackId:[cmd objectAtIndex:0]
-                                                                       webViewManager:self webView:theWebView];
+                                                                       webViewManager:self
+                                                                              webView:theWebView];
                         
                         
-                        [plugin performSelector:execSelector withObject:command];
+                        [plugin performSelector:execSelector
+                                     withObject:command];
                     }
                     else {
                         NSLog(@"Plugin %@ has no method %@", pluginName, methodName);
@@ -117,13 +147,21 @@
             [invocation setTarget:self.delegate];
             
             UIWebView *theWebView = self.webView;
-            [invocation setArgument:&theWebView atIndex:2];
-            [invocation setArgument:&request atIndex:3];
-            [invocation setArgument:&navigationType atIndex:4];
+            
+            [invocation setArgument:&theWebView
+                            atIndex:2];
+            
+            [invocation setArgument:&request
+                            atIndex:3];
+            
+            [invocation setArgument:&navigationType
+                            atIndex:4];
             
             [invocation invoke];
+            
             BOOL result;
             [invocation getReturnValue:&result];
+            
             return result;
         }
         return YES;
@@ -135,8 +173,11 @@
     
     if (self.delegate != nil) {
         SEL selector = NSSelectorFromString([NSString stringWithFormat:@"webView:didFailLoadWithError:"]);
+        
         if ([self.delegate respondsToSelector:selector]) {
-            [self.delegate performSelector:selector withObject:webView withObject:error];
+            
+            [self.delegate performSelector:selector withObject:webView
+                                withObject:error];
         }
     }
 }
@@ -144,13 +185,16 @@
 - (void) webViewDidFinishLoad:(UIWebView *)theWebView {
     
     if (self.isFirstLoad) {
-        [self executeJavaScript:@"window.savannah.didFinishLoad();"];
+        [self executeJavaScript:[NSString stringWithFormat:@"window.savannah.didFinishLoad(%@);", self.settingsJSON]];
         self.isFirstLoad = NO;
     }
     if (self.delegate != nil) {
         SEL selector = NSSelectorFromString([NSString stringWithFormat:@"webViewDidFinishLoad:"]);
+        
         if ([self.delegate respondsToSelector:selector]) {
-            [self.delegate performSelector:selector withObject:self.webView];
+            
+            [self.delegate performSelector:selector
+                                withObject:self.webView];
         }
     }
 }
@@ -159,8 +203,11 @@
     
     if (self.delegate != nil) {
         SEL selector = NSSelectorFromString([NSString stringWithFormat:@"webViewDidStartLoad:"]);
+        
         if ([self.delegate respondsToSelector:selector]) {
-            [self.delegate performSelector:selector withObject:self.webView];
+            
+            [self.delegate performSelector:selector
+                                withObject:self.webView];
         }
     }
 }
@@ -171,7 +218,13 @@
                            callbackId:(NSString *)callbackId {
     
     NSString *stringStatus = status ? @"true" : @"false";
-    NSString *execString = [NSString stringWithFormat:@"window.savannah.nativeCallback('%@',%@,%@,%d);", callbackId, stringStatus, message, keepCallback];
+    
+    NSString *execString = [NSString stringWithFormat:@"window.savannah.nativeCallback('%@',%@,%@,%d);",
+                            callbackId,
+                            stringStatus,
+                            message,
+                            keepCallback];
+    
     [self executeJavaScript:execString];
 }
 

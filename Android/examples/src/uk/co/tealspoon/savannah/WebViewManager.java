@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -71,7 +72,7 @@ public class WebViewManager {
 	 * @param url the initial URL to load into the WebView.
 	 */
 	public WebViewManager(String name, final WebView webView, final Activity activity,
-			Collection<Plugin> plugins, final String url) {
+			JSONObject settings, Collection<Plugin> plugins, final String url) {
 		
 		this.name = name;
 		this.webView = webView;
@@ -87,13 +88,17 @@ public class WebViewManager {
 			}
 		}
 		
+		final String settingsJSON = settings == null ? "{}" : settings.toString().replace("'", "\\'");
+		
+		Log.d("Savannah", settingsJSON);
+		
 		this.webView.addJavascriptInterface(new WebViewJavascriptInterface(this), "savannahJSI");
 		
 		this.webView.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageFinished(WebView view, String loadedUrl) {
 				if (loadedUrl.equals(url)) {
-					executeJavaScript("window.savannah.didFinishLoad();", null);
+					executeJavaScript("window.savannah.didFinishLoad(" + settingsJSON + ");", null);
 				}
 				if (webViewClient != null) {
 					webViewClient.onPageFinished(view, loadedUrl);

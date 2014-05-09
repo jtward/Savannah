@@ -88,9 +88,13 @@
         callbackFromNative(callbackId, success, [message], keepCallback);
     };
 
-    var didFinishLoad = function() {
+    var didFinishLoad = function(settings) {
         if (!isLoadFinished) {
             isLoadFinished = true;
+            window.savannah.settings = settings;
+            if (typeof window.savannah.onDeviceReady === "function") {
+                window.savannah.onDeviceReady();
+            }
             if (commandQueue.length > 0) {
                 window.location = "/!svnh_exec?";
             }

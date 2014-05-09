@@ -6,9 +6,7 @@
     return @"uk.co.tealspoon.savannah.echo";
 };
 
-- (void) echo:(UIWebView *)webView
-         name:(NSString *)name
-      command:(SVNHCommand *)command {
+- (void) echo:(SVNHCommand *)command {
     
     NSString *message = [command argumentAtIndex:0];
     [command successWithMessageAsString:message keepCallback:NO];

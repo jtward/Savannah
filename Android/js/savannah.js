@@ -1,6 +1,6 @@
 (function(window) {
     "use strict";
-    var version = "0.2.0";
+    var version = "0.0.1dev";
 
     // a container for all the unresolved callbacks
     var callbacks = {};
@@ -66,9 +66,13 @@
         callbackFromNative(callbackId, success, [message], keepCallback);
     };
 
-    var didFinishLoad = function() {
+    var didFinishLoad = function(settings) {
         if (!isLoadFinished) {
             isLoadFinished = true;
+            window.savannah.settings = settings;
+            if (typeof window.savannah.onDeviceReady === "function") {
+                window.savannah.onDeviceReady();
+            }
             if (commandQueue.length > 0) {
                 window.savannahJSI.exec(JSON.stringify(commandQueue));
             }

@@ -15,6 +15,10 @@
 
             document.body.innerHTML += "<br />Device ready!<br/><br />Echo!";
 
+            window.savannah.onDeviceReady = function() {
+                document.body.innerHTML += "<br />Native settings: " + JSON.stringify(window.savannah.settings);
+            };
+
             window.savannah.exec(function(message) {
                 document.body.innerHTML += "<br />" + message;
             }, null, "uk.co.tealspoon.savannah.echo", "echo", ["Echo!"]);

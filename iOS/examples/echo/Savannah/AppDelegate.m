@@ -42,6 +42,7 @@
     // create a SVNHWebViewDelegate and pass in the plugins
     self.webViewManager = [[SVNHWebViewManager alloc] initWithName:@"mainWebView"
                                                            WebView:webView
+                                                          settings:@{@"foo": @"bar"}
                                                            plugins:@[[SVNHEchoPlugin new]]
                                                                URL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"www/index"
                                                                                                                            ofType:@"html"]]];
