@@ -5,6 +5,9 @@ Savannah is a web-native bridge for hybrid apps with a plugin architecture, simi
 
 It is designed to be easy to drop into native apps, and enables you to use multiple isolated webviews with their own set of plugins.
 
+
+Version 0.3.0 - 9th May 2014
+
 Version 0.2.0 - 23rd March 2014
 
 Version 0.1.0 - 8th February 2014
@@ -34,13 +37,15 @@ To use Savannah:
 // create a webview
 UIWebView *webView = [UIWebView new];
 
-// create a SVNHWebViewManager and pass in a name, the webview, plugins and the url to load into the webview
+// create a SVNHWebViewManager and pass in a name, the webview, settings, plugins and the url to load into the webview
 self.webViewManager = [[SVNHWebViewManager alloc] initWithName:@"main"
                                                        WebView:webView
+                                                      settings:@{}
                                                        plugins:@[[MyPlugin new]]
                                                            URL:[NSURL fileURLWithPath:[[NSBundle mainBundle]
                                                             pathForResource:@"www/index"
                                                                      ofType:@"html"]]];
+                                                      }
 ```
 
 Don't forget to include the iOS savannah.js file in your web page!
@@ -84,8 +89,11 @@ webView.getSettings().setJavaScriptEnabled(true);
 ArrayList<Plugin> plugins = new ArrayList<Plugin>(1);
 plugins.add(new MyPlugin());
 
-// create a WebViewManager and pass in a name, the webview, plugins and the url to load into the webview
-new WebViewManager("main", webView, plugins, "file:///android_asset/www/index.html");
+// create a JSON object which contains whatever data needs to be passed to the webview
+JSONObject settings = new JSONObject();
+
+// create a WebViewManager and pass in a name, the webview, settings, plugins and the url to load into the webview
+new WebViewManager("main", webView, settings, plugins, "file:///android_asset/www/index.html");
 
 ```
 
@@ -120,7 +128,7 @@ public class MyPlugin implements SavannahPlugin {
 
 ## JavaScript
 
-To execute a plugin from JavaScript, just call `savannah.exec`, in exactly the same way you would call `Cordova.exec`.
+To execute a plugin from JavaScript, just call `savannah.exec`, in exactly the same way you would call `Cordova.exec`. If you call `exec` before the `onDeviceReady` callback is called, and those requests will be queued and sent after `onDeviceReady` is called.
 
 ```JavaScript
 savannah.exec(function success(result) {}, // success callback
@@ -132,6 +140,10 @@ savannah.exec(function success(result) {}, // success callback
 
 
 ## Changelog
+### 0.3.0
+- Added settings to managers, which get passed to the webview.
+- Added an optional onDeviceReady callback, which gets called when settings are known.
+
 ### 0.2.0
 - Added methods for getting and removing plugins from managers.
 - Fixed a bug in Android where a null pointer exception could occur when executing JavaScript on the WebView after it had been destroyed.
