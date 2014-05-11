@@ -19,6 +19,7 @@
  * Creates a new WebViewManager which manages the given WebView.
  * @param name the name of this WebViewManager. Useful for identifying WebViewManagers. Uniqueness is not enforced.
  * @param webView the WebView managed by this WebViewManager.
+ * @param settings the settings to pass to the WebView.
  * @param plugins a collection of Plugins to be made available to the WebView.
  * @param URL the initial URL to load into the WebView.
  */

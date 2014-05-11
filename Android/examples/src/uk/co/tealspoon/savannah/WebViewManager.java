@@ -68,6 +68,7 @@ public class WebViewManager {
 	 * @param name the name of this WebViewManager. Useful for identifying WebViewManagers. Uniqueness is not enforced.
 	 * @param webView the WebView managed by this WebViewManager.
 	 * @param activity the Activity that contains the given WebView.
+	 * @param settings the settings to pass to the WebView.
 	 * @param plugins a collection of Plugins to be made available to the WebView.
 	 * @param url the initial URL to load into the WebView.
 	 */
@@ -89,8 +90,6 @@ public class WebViewManager {
 		}
 		
 		final String settingsJSON = settings == null ? "{}" : settings.toString().replace("'", "\\'");
-		
-		Log.d("Savannah", settingsJSON);
 		
 		this.webView.addJavascriptInterface(new WebViewJavascriptInterface(this), "savannahJSI");
 		
