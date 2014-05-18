@@ -131,7 +131,7 @@ public class MyPlugin implements SavannahPlugin {
 
 ## JavaScript
 
-To execute a plugin from JavaScript, just call `savannah.exec`, in exactly the same way you would call `Cordova.exec`. If you call `exec` before the `onDeviceReady` callback is called, and those requests will be queued and sent after `onDeviceReady` is called.
+To execute a plugin from JavaScript, just call `savannah.exec`, in exactly the same way you would call `Cordova.exec`. If you call `savannah.exec` before `onDeviceReady`, those requests will be queued and sent immediately after `onDeviceReady` is called.
 
 ```JavaScript
 savannah.exec(function success(result) {}, // success callback
