@@ -5,6 +5,7 @@ Savannah is a web-native bridge for hybrid apps with a plugin architecture, simi
 
 It is designed to be easy to drop into native apps, and enables you to use multiple isolated webviews with their own set of plugins.
 
+Version 0.4.0 - 18th May 2014
 
 Version 0.3.0 - 9th May 2014
 
@@ -18,9 +19,11 @@ Version 0.1.0 - 8th February 2014
 
 - Savannah is intentionally lightweight, giving you, the developer, as much control as possible. You should expect to write native code when using Savannah in your apps.
 
-- The native plugin APIs are deliberately similar to Cordova's, to ease transitions, but there are several notable differences intended to make writing plugins simpler, and more consistent between platforms. For example, there are no plugin result codes, just success and error. Other differences are down to Savannah's multiple-webview model.
+- The native plugin APIs are deliberately similar to Cordova's, to ease transitions, but there are several notable differences intended to make writing plugins simpler, and more consistent between platforms. For example, there are no plugin result codes, just success and error, and JavaScript in plugins is not supported. Other differences are down to Savannah's multiple-webview model.
 
 - No JavaScript events (pause, resume, et cetera).
+
+- Exactly the same tiny savannah.js file for both iOS and Android, which means you can concat and minify it in with the rest of your JavaScript.
 
 - Sending JavaScript typed arrays across the native bridge is not currently supported.
 
@@ -48,7 +51,7 @@ self.webViewManager = [[SVNHWebViewManager alloc] initWithName:@"main"
                                                       }
 ```
 
-Don't forget to include the iOS savannah.js file in your web page!
+Don't forget to include the savannah.js file in your web page!
 
 
 A plugin class just implements SVNHPlugin. Plugin methods take a SVNHCommand as their only argument.
@@ -97,7 +100,7 @@ new WebViewManager("main", webView, settings, plugins, "file:///android_asset/ww
 
 ```
 
-Don't forget to include the Android savannah.js file in your web page!
+Don't forget to include the savannah.js file in your web page!
 
 A plugin class just implements `Plugin`. You need to implement an `execute` method, similar to Cordova, and a `getName` method.
 
@@ -140,6 +143,9 @@ savannah.exec(function success(result) {}, // success callback
 
 
 ## Changelog
+### 0.4.0
+- Unified savannah.js: the same JS file is now used across both iOS and Android.
+
 ### 0.3.0
 - Added settings to managers, which get passed to the webview.
 - Added an optional onDeviceReady callback, which gets called when settings are known.
