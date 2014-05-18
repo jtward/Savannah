@@ -1,6 +1,6 @@
 (function(window) {
     "use strict";
-    var version = "0.0.1dev";
+    var version = "0.4.0";
 
     // a container for all the unresolved callbacks
     var callbacks = {};
@@ -11,18 +11,27 @@
     // keeps track of whether load is finished
     var isLoadFinished = false;
 
+    var notifyNative = (function() {
+        if (window.savannahJSI) {
+            return function() {
+                window.savannahJSI.exec(JSON.stringify(commandQueue));
+                commandQueue.length = 0;
+            };
+        }
+        else {
+            return function() {
+                window.location = "/!svnh_exec?";
+            };
+        }
+    }());
+
     var exec = (function() {
 
         // a callback id that's randomized to minimize the possibility of clashes
         // after refreshes and navigations
         var callbackId = Math.floor(Math.random() * 2000000000);
 
-        return function() {
-            var successCallback = arguments[0];
-            var failCallback = arguments[1];
-            var service = arguments[2];
-            var action = arguments[3];
-            var actionArgs = arguments[4];
+        return function(successCallback, failCallback, service, action, actionArgs) {
 
             var command = [callbackId, service, action, actionArgs];
 
@@ -36,15 +45,20 @@
 
             callbackId += 1;
 
-            if (!isLoadFinished) {
-                commandQueue.push(command);
-            }
+            commandQueue.push(command);
 
-            else {
-                window.savannahJSI.exec(JSON.stringify([command]));
+            if (isLoadFinished) {
+                notifyNative();
             }
         };
     }());
+
+    var nativeFetchMessages = function() {
+        // Each entry in commandQueue is a JSON string already.
+        var json = JSON.stringify(commandQueue);
+        commandQueue.length = 0;
+        return json;
+    };
 
     var callbackFromNative = function(callbackId, success, args, keepCallback) {
         var callback = callbacks[callbackId];
@@ -74,14 +88,15 @@
                 window.savannah.onDeviceReady();
             }
             if (commandQueue.length > 0) {
-                window.savannahJSI.exec(JSON.stringify(commandQueue));
+                notifyNative();
             }
         }
-    }
+    };
 
     window.savannah = {
         version: version,
         exec: exec,
+        nativeFetchMessages: nativeFetchMessages,
         nativeCallback: nativeCallback,
         didFinishLoad: didFinishLoad
     };
