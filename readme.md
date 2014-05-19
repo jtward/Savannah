@@ -71,8 +71,7 @@ A plugin class just implements SVNHPlugin. Plugin methods take a SVNHCommand as 
 
 - (void) foo:(SVNHCommand *)command {
     // report success and pass back the string "foo!"
-    // we don't need to return more than one response so return NO for keepCallback
-    [command successWithMessageAsString:@"foo!" keepCallback:NO];
+    [command successWithString:@"foo!"];
 }
 ```
 
@@ -118,8 +117,7 @@ public class MyPlugin implements SavannahPlugin {
     // check for the `foo` action
     if(action.equals("foo")) {
       // report success and pass back the string "foo!"
-      // we don't need to return more than one response so return NO for keepCallback
-      command.success("foo!", false);
+      command.success("foo!");
       return true;
     }
 
@@ -131,7 +129,16 @@ public class MyPlugin implements SavannahPlugin {
 
 ## JavaScript
 
-To execute a plugin from JavaScript, just call `savannah.exec`, in exactly the same way you would call `Cordova.exec`. If you call `savannah.exec` before `onDeviceReady`, those requests will be queued and sent immediately after `onDeviceReady` is called.
+To execute a plugin from JavaScript, just call `savannah.exec`. If you provide a Promises/A+ compatible promise library, or native promises are available, a promise is returned. You can call `exec` in exactly the same way you would call `Cordova.exec`, or omit the success and error callbacks and use the promise instead. If you call `savannah.exec` before `onDeviceReady`, those requests will be queued and sent immediately after `onDeviceReady` is called.
+
+```JavaScript
+savannah.exec("com.example.foo",        // plugin identifier / name
+  "foo",                                // plugin method
+  [])                                   // plugin arguments
+  .progress(function(result) {})
+  .then(function(result) {})
+  .fail(function(error) {});
+```
 
 ```JavaScript
 savannah.exec(function success(result) {}, // success callback
@@ -143,6 +150,10 @@ savannah.exec(function success(result) {}, // success callback
 
 
 ## Changelog
+### 0.5.0
+- Added promise support to savannah.exec.
+- Added progress methods to Command, and removed keepCallback arguments from success and error methods in favour of a deprecated Cordova-style setKeepCallback method.
+
 ### 0.4.0
 - Unified savannah.js: the same JS file is now used across both iOS and Android.
 

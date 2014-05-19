@@ -16,6 +16,14 @@
 @property (nonatomic, readonly) UIWebView* webView;
 
 /*!
+ * The command's keep callback flag.
+ * @deprecated
+ * @param keepCallback true if the next call to success or error should keep this Command and not discard it, false otherwise.
+ * @discussion You should only set this property when porting over plugins that use Cordova syntax. Use progress instead.
+ */
+@property (nonatomic) BOOL keepCallback __attribute__((deprecated));
+
+/*!
  * Create a new Command.
  * @param arguments the arguments passed to the plugin by the UIWebVeiw.
  * @param callbackId the value used to identify the callbacks for this Command in the UIWebView.
@@ -54,112 +62,128 @@
            withDefault:(id)defaultValue
               andClass:(Class)aClass;
 
-/*!
- * Calls the success callback in the WebView for this command (if any).
- * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
- */
-- (void) successAndKeepCallback:(BOOL)keepCallback;
 
 /*!
- * Calls the success callback in the UIWebView for this command (if any), passing back a JSON array.
- * @param message the result of the Command, to send to the UIWebView.
- * @param keepCallback true if additional responses will be sent back to the UIWebView for this Command, false otherwise.
+ * Calls the success callback in the WebView for this command (if any), and discards the Command.
  */
-- (void) successWithMessageAsArray:(NSArray *)message
-                      keepCallback:(BOOL)keepCallback;
+- (void) success;
 
 /*!
- * Calls the success callback in the UIWebView for this command (if any), passing back a boolean.
+ * Calls the success callback in the UIWebView for this command (if any), passing back a JSON array, and discards the Command.
  * @param message the result of the Command, to send to the UIWebView.
- * @param keepCallback true if additional responses will be sent back to the UIWebView for this Command, false otherwise.
  */
-- (void) successWithMessageAsBool:(BOOL)message
-                     keepCallback:(BOOL)keepCallback;
+- (void) successWithArray:(NSArray *)message;
 
 /*!
- * Calls the success callback in the UIWebView for this command (if any), passing back a JSON object.
+ * Calls the success callback in the UIWebView for this command (if any), passing back a boolean, and discards the Command.
  * @param message the result of the Command, to send to the UIWebView.
- * @param keepCallback true if additional responses will be sent back to the UIWebView for this Command, false otherwise.
  */
-- (void) successWithMessageAsDictionary:(NSDictionary *)message
-                           keepCallback:(BOOL)keepCallback;
+- (void) successWithBool:(BOOL)message;
 
 /*!
- * Calls the success callback in the UIWebView for this command (if any), passing back a double.
+ * Calls the success callback in the UIWebView for this command (if any), passing back a JSON object, and discards the Command.
  * @param message the result of the Command, to send to the UIWebView.
- * @param keepCallback true if additional responses will be sent back to the UIWebView for this Command, false otherwise.
  */
-- (void) successWithMessageAsDouble:(double)message
-                       keepCallback:(BOOL)keepCallback;
+- (void) successWithDictionary:(NSDictionary *)message;
 
 /*!
- * Calls the success callback in the UIWebView for this command (if any), passing back an int.
+ * Calls the success callback in the UIWebView for this command (if any), passing back a double, and discards the Command.
  * @param message the result of the Command, to send to the UIWebView.
- * @param keepCallback true if additional responses will be sent back to the UIWebView for this Command, false otherwise.
  */
-- (void) successWithMessageAsInt:(int)message
-                    keepCallback:(BOOL)keepCallback;
+- (void) successWithDouble:(double)message;
 
 /*!
- * Calls the success callback in the UIWebView for this command (if any), passing back a string.
+ * Calls the success callback in the UIWebView for this command (if any), passing back an int, and discards the Command.
  * @param message the result of the Command, to send to the UIWebView.
- * @param keepCallback true if additional responses will be sent back to the UIWebView for this Command, false otherwise.
  */
-- (void) successWithMessageAsString:(NSString *)message
-                       keepCallback:(BOOL)keepCallback;
+- (void) successWithInt:(int)message;
+
+/*!
+ * Calls the success callback in the UIWebView for this command (if any), passing back a string, and discards the Command.
+ * @param message the result of the Command, to send to the UIWebView.
+ */
+- (void) successWithString:(NSString *)message;
+
+/*!
+ * Calls the error callback in the UIWebView for this command (if any), and discards the Command.
+ */
+- (void) error;
+
+/*!
+ * Calls the error callback in the UIWebView for this command (if any), passing back a JSON array, and discards the Command.
+ * @param message the result of the Command, to send to the UIWebView.
+ */
+- (void) errorWithArray:(NSArray *)message;
+
+/*!
+ * Calls the error callback in the UIWebView for this command (if any), passing back a boolean, and discards the Command.
+ * @param message the result of the Command, to send to the UIWebView.
+ */
+- (void) errorWithBool:(BOOL)message;
+
+/*!
+ * Calls the error callback in the UIWebView for this command (if any), passing back a JSON object, and discards the Command.
+ * @param message the result of the Command, to send to the UIWebView.
+ */
+- (void) errorWithDictionary:(NSDictionary *)message;
+
+/*!
+ * Calls the error callback in the UIWebView for this command (if any), passing back a double, and discards the Command.
+ * @param message the result of the Command, to send to the UIWebView.
+ */
+- (void) errorWithDouble:(double)message;
+
+/*!
+ * Calls the error callback in the UIWebView for this command (if any), passing back an int, and discards the Command.
+ * @param message the result of the Command, to send to the UIWebView.
+ */
+- (void) errorWithInt:(int)message;
+
+/*!
+ * Calls the error callback in the UIWebView for this command (if any), passing back a string, and discards the Command.
+ * @param message the result of the Command, to send to the UIWebView.
+ */
+- (void) errorWithString:(NSString *)message;
 
 /*!
  * Calls the error callback in the UIWebView for this command (if any).
- * @param keepCallback true if additional responses will be sent back to the UIWebView for this Command, false otherwise.
  */
-- (void) errorAndKeepCallback:(BOOL)keepCallback;
+- (void) progress;
 
 /*!
  * Calls the error callback in the UIWebView for this command (if any), passing back a JSON array.
  * @param message the result of the Command, to send to the UIWebView.
- * @param keepCallback true if additional responses will be sent back to the UIWebView for this Command, false otherwise.
  */
-- (void) errorWithMessageAsArray:(NSArray *)message
-                    keepCallback:(BOOL)keepCallback;
+- (void) progressWithArray:(NSArray *)message;
 
 /*!
  * Calls the error callback in the UIWebView for this command (if any), passing back a boolean.
  * @param message the result of the Command, to send to the UIWebView.
- * @param keepCallback true if additional responses will be sent back to the UIWebView for this Command, false otherwise.
  */
-- (void) errorWithMessageAsBool:(BOOL)message
-                   keepCallback:(BOOL)keepCallback;
+- (void) progressWithBool:(BOOL)message;
 
 /*!
  * Calls the error callback in the UIWebView for this command (if any), passing back a JSON object.
  * @param message the result of the Command, to send to the UIWebView.
- * @param keepCallback true if additional responses will be sent back to the UIWebView for this Command, false otherwise.
  */
-- (void) errorWithMessageAsDictionary:(NSDictionary *)message
-                         keepCallback:(BOOL)keepCallback;
+- (void) progressWithDictionary:(NSDictionary *)message;
 
 /*!
  * Calls the error callback in the UIWebView for this command (if any), passing back a double.
  * @param message the result of the Command, to send to the UIWebView.
- * @param keepCallback true if additional responses will be sent back to the UIWebView for this Command, false otherwise.
  */
-- (void) errorWithMessageAsDouble:(double)message
-                     keepCallback:(BOOL)keepCallback;
+- (void) progressWithDouble:(double)message;
 
 /*!
  * Calls the error callback in the UIWebView for this command (if any), passing back an int.
  * @param message the result of the Command, to send to the UIWebView.
- * @param keepCallback true if additional responses will be sent back to the UIWebView for this Command, false otherwise.
  */
-- (void) errorWithMessageAsInt:(int)message
-                  keepCallback:(BOOL)keepCallback;
+- (void) progressWithInt:(int)message;
 
 /*!
  * Calls the error callback in the UIWebView for this command (if any), passing back a string.
  * @param message the result of the Command, to send to the UIWebView.
- * @param keepCallback true if additional responses will be sent back to the UIWebView for this Command, false otherwise.
  */
-- (void) errorWithMessageAsString:(NSString *)message
-                     keepCallback:(BOOL)keepCallback;
+- (void) progressWithString:(NSString *)message;
 
 @end

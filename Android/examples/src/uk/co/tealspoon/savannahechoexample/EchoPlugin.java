@@ -21,7 +21,7 @@ public class EchoPlugin implements Plugin {
 		
 		if(action.equals("echo")) {
 			String message = args.optString(0);
-			command.success(message, false);
+			command.success(message);
 			return true;
 		}
 		

@@ -1,16 +1,24 @@
 (function(window) {
     "use strict";
-    var version = "0.4.0";
+    var version = "0.5.0";
 
     // a container for all the unresolved callbacks
     var callbacks = {};
 
-    // Contains pending JS->Native messages.
+    // a container for promises
+    var promises = {};
+
+    // a container for progress callbacks
+    var progressCallbacks = {};
+
+    // a list of pending JS->Native messages.
     var commandQueue = [];
 
     // keeps track of whether load is finished
     var isLoadFinished = false;
 
+    // notify the native app that there are commands waiting
+    // send the command data if possible to avoid a round trip
     var notifyNative = (function() {
         if (window.savannahJSI) {
             return function() {
@@ -25,23 +33,44 @@
         }
     }());
 
+    // IIFE; returns a function which is the entry point for all plugin execution
     var exec = (function() {
+
+        // keep a record of the given callback for progress for the given callback ID
+        var promiseProgress = function(callbackId, callback) {
+            var callbacks = progressCallbacks[callbackId];
+            if (!callbacks) {
+                callbacks = (progressCallbacks[callbackId] = []);
+            }
+            callbacks.push(callback);
+        };
 
         // a callback id that's randomized to minimize the possibility of clashes
         // after refreshes and navigations
         var callbackId = Math.floor(Math.random() * 2000000000);
 
+        // the real exec
         return function(successCallback, failCallback, service, action, actionArgs) {
+            var Promise = window.savannah.Promise || window.Promise;
+            var tmpService;
 
-            var command = [callbackId, service, action, actionArgs];
-
-            // remember the callbacks if given
-            if (successCallback || failCallback) {
+            // exec can be called with or without leading success/fail params.
+            // if the first param is a string, there were no success/fail params.
+            if (typeof successCallback === "string") {
+                tmpService = service;
+                service = successCallback;
+                action = failCallback;
+                actionArgs = tmpService;
+            }
+            else if (successCallback || failCallback) {
+                // if there were success/fail params, keep a record of them
                 callbacks[callbackId] = {
                     "success": successCallback,
                     "fail": failCallback
                 };
             }
+
+            var command = [callbackId, service, action, actionArgs];
 
             callbackId += 1;
 
@@ -50,9 +79,26 @@
             if (isLoadFinished) {
                 notifyNative();
             }
+
+            if (Promise) {
+                var promise = new Promise(function(resolve, reject) {
+                    promises[command[0]] = {
+                        resolve: resolve,
+                        reject: reject
+                    };
+                });
+
+                promise.progress = function(callback) {
+                    promiseProgress(command[0], callback);
+                    return this;
+                };
+                
+                return promise;
+            }
         };
     }());
 
+    // let the native app pull commands
     var nativeFetchMessages = function() {
         // Each entry in commandQueue is a JSON string already.
         var json = JSON.stringify(commandQueue);
@@ -60,13 +106,24 @@
         return json;
     };
 
-    var callbackFromNative = function(callbackId, success, args, keepCallback) {
+    // call all progress listeners for the callback with the given arguments
+    var notifyProgress = function(callbackId, args) {
+        var listeners = progressCallbacks[callbackId];
+        for (var i = 0; i < (listeners && listeners.length); i += 1) {
+            listeners[i](args);
+        }
+    };
+
+    // called when a response (success, fail or progress) is returned from the native app
+    var nativeCallback = function(callbackId, success, args, keepCallback) {
         var callback = callbacks[callbackId];
+        var promise = promises[callbackId];
+
         if (callback) {
             if (success && callback.success) {
-                callback.success.apply(null, args);
+                callback.success.apply(null, [args]);
             } else if (!success && callback.fail) {
-                callback.fail.apply(null, args);
+                callback.fail.apply(null, [args]);
             }
 
             // Clear callback if not expecting any more results
@@ -74,12 +131,19 @@
                 delete callbacks[callbackId];
             }
         }
+        
+        if (promise) {
+            if (keepCallback) {
+                notifyProgress(callbackId, args);
+            }
+            else {
+                (success ? promise.resolve : promise.reject)(args);
+                delete promises[callbackId];
+            }
+        }
     };
 
-    var nativeCallback = function(callbackId, success, message, keepCallback) {
-        callbackFromNative(callbackId, success, [message], keepCallback);
-    };
-
+    // called by the native app when the page load is complete, sending app-specific settings 
     var didFinishLoad = function(settings) {
         if (!isLoadFinished) {
             isLoadFinished = true;
@@ -93,12 +157,14 @@
         }
     };
 
+    // exposed functions
     window.savannah = {
         version: version,
         exec: exec,
         nativeFetchMessages: nativeFetchMessages,
         nativeCallback: nativeCallback,
-        didFinishLoad: didFinishLoad
+        didFinishLoad: didFinishLoad,
+        Promise: undefined
     };
 
 }(window));

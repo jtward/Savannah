@@ -8,7 +8,7 @@
 @property (nonatomic) SVNHWebViewManager* webViewManager;
 @property (nonatomic) NSString* webViewManagerName;
 @property (nonatomic) UIWebView* webView;
-@property (nonatomic) BOOL keepCallback;
+@property (nonatomic) BOOL isDiscarded;
 
 @end
 
@@ -21,7 +21,8 @@
     
     self = [super init];
     
-    self.keepCallback = YES;
+    self.keepCallback = NO;
+    self.isDiscarded = NO;
     self.arguments = arguments;
     self.callbackId = callbackId;
     self.webViewManager = webViewManager;
@@ -62,12 +63,17 @@
     return ret;
 }
 
-- (void)sendPluginResultWithSuccess:(BOOL)success
-                       keepCallback:(BOOL)keepCallback
-                            message:(id)messageObject {
+- (void) sendPluginResultWithSuccess:(BOOL)success
+                        keepCallback:(BOOL)keepCallback
+                             message:(id)messageObject {
     
-    if (self.keepCallback) {
+    if (!self.isDiscarded) {
         self.keepCallback = keepCallback;
+        
+        if (!self.keepCallback) {
+            self.isDiscarded = YES;
+        }
+        
         [self.webViewManager sendPluginResponseWithStatus:success
                                                   message:[self messageAsJSON:messageObject]
                                              keepCallback:self.keepCallback
@@ -78,112 +84,149 @@
     }
 }
 
-- (void) successAndKeepCallback:(BOOL)keepCallback {
+- (void) success {
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:keepCallback
+                         keepCallback:self.keepCallback
                               message:nil];
 }
 
-- (void) successWithMessageAsArray:(NSArray *)message
-                      keepCallback:(BOOL)keepCallback {
+- (void) successWithArray:(NSArray *)message {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:keepCallback
+                         keepCallback:self.keepCallback
                               message:message];
 }
 
-- (void) successWithMessageAsBool:(BOOL)message
-                     keepCallback:(BOOL)keepCallback {
+- (void) successWithBool:(BOOL)message {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:keepCallback
+                         keepCallback:self.keepCallback
                               message:[NSNumber numberWithBool:message]];
 }
 
-- (void) successWithMessageAsDictionary:(NSDictionary *)message
-                           keepCallback:(BOOL)keepCallback {
+- (void) successWithDictionary:(NSDictionary *)message {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:keepCallback
+                         keepCallback:self.keepCallback
                               message:message];
 }
 
-- (void) successWithMessageAsDouble:(double)message
-                       keepCallback:(BOOL)keepCallback {
+- (void) successWithDouble:(double)message {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:keepCallback
+                         keepCallback:self.keepCallback
                               message:[NSNumber numberWithInt:message]];
 }
 
-- (void) successWithMessageAsInt:(int)message
-                    keepCallback:(BOOL)keepCallback {
+- (void) successWithInt:(int)message {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:keepCallback
+                         keepCallback:self.keepCallback
                               message:[NSNumber numberWithDouble:message]];
 }
 
-- (void) successWithMessageAsString:(NSString *)message
-                       keepCallback:(BOOL)keepCallback {
+- (void) successWithString:(NSString *)message {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:keepCallback
+                         keepCallback:self.keepCallback
                               message:message];
 }
 
-- (void) errorAndKeepCallback:(BOOL)keepCallback {
+- (void) error {
     
     [self sendPluginResultWithSuccess:NO
-                         keepCallback:keepCallback
+                         keepCallback:self.keepCallback
                               message:nil];
 }
 
-- (void) errorWithMessageAsArray:(NSArray *)message
-                    keepCallback:(BOOL)keepCallback {
+- (void) errorWithArray:(NSArray *)message {
     
     [self sendPluginResultWithSuccess:NO
-                         keepCallback:keepCallback
+                         keepCallback:self.keepCallback
                               message:message];
 }
 
-- (void) errorWithMessageAsBool:(BOOL)message
-                   keepCallback:(BOOL)keepCallback {
+- (void) errorWithBool:(BOOL)message {
     
     [self sendPluginResultWithSuccess:NO
-                         keepCallback:keepCallback
+                         keepCallback:self.keepCallback
                               message:[NSNumber numberWithBool:message]];
 }
 
-- (void) errorWithMessageAsDictionary:(NSDictionary *)message
-                         keepCallback:(BOOL)keepCallback {
+- (void) errorWithDictionary:(NSDictionary *)message {
     
     [self sendPluginResultWithSuccess:NO
-                         keepCallback:keepCallback
+                         keepCallback:self.keepCallback
                               message:message];
 }
 
-- (void) errorWithMessageAsDouble:(double)message
-                     keepCallback:(BOOL)keepCallback {
+- (void) errorWithDouble:(double)message {
     
     [self sendPluginResultWithSuccess:NO
-                         keepCallback:keepCallback
+                         keepCallback:self.keepCallback
                               message:[NSNumber numberWithInt:message]];
 }
 
-- (void) errorWithMessageAsInt:(int)message
-                  keepCallback:(BOOL)keepCallback {
+- (void) errorWithInt:(int)message {
     
     [self sendPluginResultWithSuccess:NO
-                         keepCallback:keepCallback
+                         keepCallback:self.keepCallback
                               message:[NSNumber numberWithDouble:message]];
 }
 
-- (void) errorWithMessageAsString:(NSString *)message
-                     keepCallback:(BOOL)keepCallback {
+- (void) errorWithString:(NSString *)message {
     
     [self sendPluginResultWithSuccess:NO
-                         keepCallback:keepCallback
+                         keepCallback:self.keepCallback
+                              message:message];
+}
+
+- (void) progress {
+    
+    [self sendPluginResultWithSuccess:YES
+                         keepCallback:YES
+                              message:nil];
+}
+
+- (void) progressyWithArray:(NSArray *)message {
+    
+    [self sendPluginResultWithSuccess:YES
+                         keepCallback:YES
+                              message:message];
+}
+
+- (void) progressWithBool:(BOOL)message {
+    
+    [self sendPluginResultWithSuccess:YES
+                         keepCallback:YES
+                              message:[NSNumber numberWithBool:message]];
+}
+
+- (void) progressWithDictionary:(NSDictionary *)message {
+    
+    [self sendPluginResultWithSuccess:YES
+                         keepCallback:YES
+                              message:message];
+}
+
+- (void) progressWithDouble:(double)message {
+
+    [self sendPluginResultWithSuccess:YES
+                         keepCallback:YES
+                              message:[NSNumber numberWithInt:message]];
+}
+
+- (void) progressWithInt:(int)message {
+    
+    [self sendPluginResultWithSuccess:YES
+                         keepCallback:YES
+                              message:[NSNumber numberWithDouble:message]];
+}
+
+- (void) progressWithString:(NSString *)message {
+    
+    [self sendPluginResultWithSuccess:YES
+                         keepCallback:YES
                               message:message];
 }
 

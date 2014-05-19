@@ -9,7 +9,7 @@
 - (void) echo:(SVNHCommand *)command {
     
     NSString *message = [command argumentAtIndex:0];
-    [command successWithMessageAsString:message keepCallback:NO];
+    [command successWithString:message];
 }
 
 @end

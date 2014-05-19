@@ -10,7 +10,10 @@
             <h1>Savannah Example Echo</h1>
         </div>
         <script type="text/javascript" src="savannah.js"></script>
+        <script type="text/javascript" src="promise.js"></script>
         <script type="text/javascript">
+            window.savannah.Promise = window.Promise;
+
             document.body.innerHTML += "<br />Connecting to device...";
 
             document.body.innerHTML += "<br />Device ready!<br/><br />Echo!";
@@ -20,8 +23,10 @@
             };
 
             window.savannah.exec(function(message) {
-                document.body.innerHTML += "<br />" + message;
-            }, null, "uk.co.tealspoon.savannah.echo", "echo", ["Echo!"]);
+                document.body.innerHTML += "<br />Cordova-compat: " + message;
+            }, undefined, "uk.co.tealspoon.savannah.echo", "echo", ["Echo!"]).then(function(message) {
+                document.body.innerHTML += "<br />Promise: " + message;
+            });
         </script>
     </body>
 </html>
