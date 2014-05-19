@@ -173,7 +173,7 @@ public class Command {
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
 	public void error(int message, boolean keepCallback) {
-		sendPluginResult(true, keepCallback, messageAsString(message));
+		sendPluginResult(false, keepCallback, messageAsString(message));
 	}
 	
 	/**
@@ -191,7 +191,7 @@ public class Command {
 	 * @param keepCallback true if additional responses will be sent back to the WebView for this Command, false otherwise.
 	 */
 	public void error(String message, boolean keepCallback) {
-		sendPluginResult(true, keepCallback, messageAsString(message));
+		sendPluginResult(false, keepCallback, messageAsString(message));
 	}
 	
 	private String messageAsString(boolean message) {

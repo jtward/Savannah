@@ -150,7 +150,7 @@
 - (void) errorWithMessageAsBool:(BOOL)message
                    keepCallback:(BOOL)keepCallback {
     
-    [self sendPluginResultWithSuccess:YES
+    [self sendPluginResultWithSuccess:NO
                          keepCallback:keepCallback
                               message:[NSNumber numberWithBool:message]];
 }
@@ -158,7 +158,7 @@
 - (void) errorWithMessageAsDictionary:(NSDictionary *)message
                          keepCallback:(BOOL)keepCallback {
     
-    [self sendPluginResultWithSuccess:YES
+    [self sendPluginResultWithSuccess:NO
                          keepCallback:keepCallback
                               message:message];
 }
@@ -166,7 +166,7 @@
 - (void) errorWithMessageAsDouble:(double)message
                      keepCallback:(BOOL)keepCallback {
     
-    [self sendPluginResultWithSuccess:YES
+    [self sendPluginResultWithSuccess:NO
                          keepCallback:keepCallback
                               message:[NSNumber numberWithInt:message]];
 }
@@ -174,7 +174,7 @@
 - (void) errorWithMessageAsInt:(int)message
                   keepCallback:(BOOL)keepCallback {
     
-    [self sendPluginResultWithSuccess:YES
+    [self sendPluginResultWithSuccess:NO
                          keepCallback:keepCallback
                               message:[NSNumber numberWithDouble:message]];
 }
@@ -182,7 +182,7 @@
 - (void) errorWithMessageAsString:(NSString *)message
                      keepCallback:(BOOL)keepCallback {
     
-    [self sendPluginResultWithSuccess:YES
+    [self sendPluginResultWithSuccess:NO
                          keepCallback:keepCallback
                               message:message];
 }
