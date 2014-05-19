@@ -137,7 +137,7 @@ savannah.exec("com.example.foo",        // plugin identifier / name
   [])                                   // plugin arguments
   .progress(function(result) {})
   .then(function(result) {})
-  .fail(function(error) {});
+  .catch(function(error) {});
 ```
 
 ```JavaScript
