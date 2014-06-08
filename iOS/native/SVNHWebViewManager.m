@@ -68,10 +68,13 @@
 }
 
 - (void) registerPlugin:(id <SVNHPlugin>)plugin {
-    [self.plugins setObject:plugin forKey:[[plugin class] name]];
+    NSString *pluginName = [[plugin class] name];
+    [self executeJavaScript:[NSString stringWithFormat:@"window.savannah.nativeRegisterPlugin('%@');", pluginName]];
+    [self.plugins setObject:plugin forKey:pluginName];
 }
 
 - (void) unregisterPluginByName:(NSString *)pluginName {
+    [self executeJavaScript:[NSString stringWithFormat:@"window.savannah.nativeUnregisterPlugin('%@');", pluginName]];
     [self.plugins removeObjectForKey:pluginName];
 }
 
@@ -80,6 +83,7 @@
 }
 
 - (void) clearPlugins {
+    [self executeJavaScript:@"window.savannah.nativeClearPlugins();"];
     [self.plugins removeAllObjects];
 }
 
@@ -185,7 +189,16 @@
 - (void) webViewDidFinishLoad:(UIWebView *)theWebView {
     
     if (self.isFirstLoad) {
-        [self executeJavaScript:[NSString stringWithFormat:@"window.savannah.didFinishLoad(%@);", self.settingsJSON]];
+        
+        NSData* pluginNamesData = [NSJSONSerialization dataWithJSONObject:[self.plugins allKeys]
+                                                              options:0
+                                                                error:nil];
+        
+        NSString *pluginNamesJSON = [[NSString alloc] initWithData:pluginNamesData
+                                                      encoding:NSUTF8StringEncoding];
+        
+        [self executeJavaScript:[NSString stringWithFormat:@"window.savannah.didFinishLoad(%@, %@);", self.settingsJSON, pluginNamesJSON]];
+        
         self.isFirstLoad = NO;
     }
     if (self.delegate != nil) {

@@ -69,23 +69,23 @@ public class WebViewManager {
 	 * @param webView the WebView managed by this WebViewManager.
 	 * @param activity the Activity that contains the given WebView.
 	 * @param settings the settings to pass to the WebView.
-	 * @param plugins a collection of Plugins to be made available to the WebView.
+	 * @param pluginsCollection a collection of Plugins to be made available to the WebView.
 	 * @param url the initial URL to load into the WebView.
 	 */
 	public WebViewManager(String name, final WebView webView, final Activity activity,
-			JSONObject settings, Collection<Plugin> plugins, final String url) {
+			JSONObject settings, Collection<Plugin> pluginsCollection, final String url) {
 		
 		this.name = name;
 		this.webView = webView;
 		this.activity = activity;
 		
-		int initialCapacity = (plugins == null) ? 0 : plugins.size();
+		int initialCapacity = (pluginsCollection == null) ? 0 : pluginsCollection.size();
 		
-		this.plugins = new HashMap<String, Plugin>(initialCapacity);
+		plugins = new HashMap<String, Plugin>(initialCapacity);
 		
 		if (initialCapacity > 0) { 
-			for(Plugin p : plugins) {
-				this.plugins.put(p.getName(), p);
+			for(Plugin p : pluginsCollection) {
+				plugins.put(p.getName(), p);
 			}
 		}
 		
@@ -97,7 +97,7 @@ public class WebViewManager {
 			@Override
 			public void onPageFinished(WebView view, String loadedUrl) {
 				if (loadedUrl.equals(url)) {
-					executeJavaScript("window.savannah.didFinishLoad(" + settingsJSON + ");", null);
+					executeJavaScript("window.savannah.didFinishLoad(" + settingsJSON + ", " + new JSONArray(plugins.keySet()).toString() + ");", null);
 				}
 				if (webViewClient != null) {
 					webViewClient.onPageFinished(view, loadedUrl);
@@ -294,6 +294,7 @@ public class WebViewManager {
 	 * @param plugin an implementation of Plugin.
 	 */
 	public void registerPlugin(Plugin plugin) {
+		executeJavaScript("window.savannah.nativeRegisterPlugin('" + plugin.getName() + "');", null);
 		this.plugins.put(plugin.getName(), plugin);
 	}
 	
@@ -304,6 +305,7 @@ public class WebViewManager {
 	 * @param plugin the name of the Plugin to unregister.
 	 */
 	public void unregisterPlugin(String pluginName) {
+		executeJavaScript("window.savannah.nativeUnregisterPlugin('" + pluginName + "');", null);
 		this.plugins.remove(pluginName);
 	}
 	
@@ -319,6 +321,7 @@ public class WebViewManager {
 	 * Unregister all Plugins, making them unavailable to the WebView. 
 	 */
 	public void clearPlugins() {
+		executeJavaScript("window.savannah.nativeClearPlugins();", null);
 		this.plugins.clear();
 	}
 

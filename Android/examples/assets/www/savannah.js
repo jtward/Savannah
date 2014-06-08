@@ -143,11 +143,35 @@
         }
     };
 
+    // called by the native app to register a plugin
+    var nativeRegisterPlugin = function(pluginName) {
+        window.savannah.plugins[pluginName] = function() {
+            var args = Array.prototype.slice.call(arguments, 0);
+            args.unshift(pluginName);
+            return window.savannah.exec.apply(window.savannah, args);
+        };
+    };
+
+    // called by the native app to unregister a plugin
+    var nativeUnregisterPlugin = function(pluginName) {
+        delete window.savannah.plugins[pluginName];
+    };
+
+    // called by the native app to unregister all plugins
+    var nativeClearPlugins = function() {
+        window.savannah.plugins = {};
+    };
+
     // called by the native app when the page load is complete, sending app-specific settings 
-    var didFinishLoad = function(settings) {
+    var didFinishLoad = function(settings, plugins) {
+        var pluginName;
+
         if (!isLoadFinished) {
             isLoadFinished = true;
             window.savannah.settings = settings;
+            for (var i = 0; i < plugins.length; i += 1) {
+                nativeRegisterPlugin(plugins[i]);
+            }
             if (typeof window.savannah.onDeviceReady === "function") {
                 window.savannah.onDeviceReady();
             }
@@ -163,7 +187,11 @@
         exec: exec,
         nativeFetchMessages: nativeFetchMessages,
         nativeCallback: nativeCallback,
+        nativeRegisterPlugin: nativeRegisterPlugin,
+        nativeUnregisterPlugin: nativeUnregisterPlugin,
+        nativeClearPlugins: nativeClearPlugins,
         didFinishLoad: didFinishLoad,
+        plugins: {},
         Promise: undefined
     };
 

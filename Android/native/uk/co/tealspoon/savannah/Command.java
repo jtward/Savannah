@@ -81,14 +81,14 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the success callback in the WebView for this command (if any).
+	 * Calls the success callback and handlers in the WebView for this command (if any).
 	 */
 	public void success() {
 		sendPluginResult(true, keepCallback, null);
 	}
 	
 	/**
-	 * Calls the success callback in the WebView for this command (if any), passing back a JSON array.
+	 * Calls the success callback and handlers in the WebView for this command (if any), passing back a JSON array.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void success(JSONArray message) {
@@ -96,7 +96,7 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the success callback in the WebView for this command (if any), passing back a boolean.
+	 * Calls the success callback and handlers in the WebView for this command (if any), passing back a boolean.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void success(boolean message) {
@@ -104,7 +104,7 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the success callback in the WebView for this command (if any), passing back a double.
+	 * Calls the success callback and handlers in the WebView for this command (if any), passing back a double.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void success(double message) {
@@ -112,7 +112,7 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the success callback in the WebView for this command (if any), passing back an int.
+	 * Calls the success callback and handlers in the WebView for this command (if any), passing back an int.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void success(int message) {
@@ -120,7 +120,7 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the success callback in the WebView for this command (if any), passing back a JSON object.
+	 * Calls the success callback and handlers in the WebView for this command (if any), passing back a JSON object.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void success(JSONObject message) {
@@ -128,7 +128,7 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the success callback in the WebView for this command (if any), passing back a string.
+	 * Calls the success callback and handlers in the WebView for this command (if any), passing back a string.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void success(String message) {
@@ -136,14 +136,14 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the error callback in the WebView for this command (if any).
+	 * Calls the error callback and handlers in the WebView for this command (if any).
 	 */
 	public void error() {
 		sendPluginResult(false, keepCallback, null);
 	}
 	
 	/**
-	 * Calls the error callback in the WebView for this command (if any), passing back a JSON array.
+	 * Calls the error callback and handlers in the WebView for this command (if any), passing back a JSON array.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void error(JSONArray message) {
@@ -151,7 +151,7 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the error callback in the WebView for this command (if any), passing back a boolean.
+	 * Calls the error callback and handlers in the WebView for this command (if any), passing back a boolean.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void error(boolean message) {
@@ -159,7 +159,7 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the error callback in the WebView for this command (if any), passing back a double.
+	 * Calls the error callback and handlers in the WebView for this command (if any), passing back a double.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void error(double message) {
@@ -167,7 +167,7 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the error callback in the WebView for this command (if any), passing back an int.
+	 * Calls the error callback and handlers in the WebView for this command (if any), passing back an int.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void error(int message) {
@@ -175,7 +175,7 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the error callback in the WebView for this command (if any), passing back a JSON object.
+	 * Calls the error callback and handlers in the WebView for this command (if any), passing back a JSON object.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void error(JSONObject message) {
@@ -183,7 +183,7 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the error callback in the WebView for this command (if any), passing back a string.
+	 * Calls the error callback and handlers in the WebView for this command (if any), passing back a string.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void error(String message) {
@@ -191,14 +191,14 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the error callback in the WebView for this command (if any).
+	 * Calls the success callback and progress handlers in the WebView for this command (if any).
 	 */
 	public void progress() {
 		sendPluginResult(false, true, null);
 	}
 	
 	/**
-	 * Calls the error callback in the WebView for this command (if any), passing back a JSON array.
+	 * Calls the success callback and progress handlers in the WebView for this command (if any), passing back a JSON array.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void progress(JSONArray message) {
@@ -206,7 +206,7 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the error callback in the WebView for this command (if any), passing back a boolean.
+	 * Calls the success callback and progress handlers in the WebView for this command (if any), passing back a boolean.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void progress(boolean message) {
@@ -214,7 +214,7 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the error callback in the WebView for this command (if any), passing back a double.
+	 * Calls the success callback and progress handlers in the WebView for this command (if any), passing back a double.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void progress(double message) {
@@ -222,7 +222,7 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the error callback in the WebView for this command (if any), passing back an int.
+	 * Calls the success callback and progress handlers in the WebView for this command (if any), passing back an int.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void progress(int message) {
@@ -230,7 +230,7 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the error callback in the WebView for this command (if any), passing back a JSON object.
+	 * Calls the success callback and progress handlers in the WebView for this command (if any), passing back a JSON object.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void progress(JSONObject message) {
@@ -238,7 +238,7 @@ public class Command {
 	}
 	
 	/**
-	 * Calls the error callback in the WebView for this command (if any), passing back a string.
+	 * Calls the success callback and progress handlers in the WebView for this command (if any), passing back a string.
 	 * @param message the result of the Command, to send to the WebView.
 	 */
 	public void progress(String message) {
