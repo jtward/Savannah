@@ -5,6 +5,10 @@ Savannah is a web-native bridge for hybrid apps with a plugin architecture, simi
 
 It is designed to be easy to drop into native apps, and enables you to use multiple isolated webviews with their own set of plugins.
 
+Version 0.6.0 - 8th June 2014
+
+Version 0.5.0 - 19th May 2014
+
 Version 0.4.0 - 18th May 2014
 
 Version 0.3.0 - 9th May 2014
@@ -150,6 +154,10 @@ savannah.exec(function success(result) {}, // success callback
 
 
 ## Changelog
+### 0.6.0
+- Made currently available plugins visible in the webview.
+- Now use only window.Promise. 
+
 ### 0.5.0
 - Added promise support to savannah.exec.
 - Added progress methods to Command, and removed keepCallback arguments from success and error methods in favour of a deprecated Cordova-style setKeepCallback method.
