@@ -69,12 +69,12 @@
 
 - (void) registerPlugin:(id <SVNHPlugin>)plugin {
     NSString *pluginName = [[plugin class] name];
-    [self executeJavaScript:[NSString stringWithFormat:@"window.savannah.nativeRegisterPlugin('%@');", pluginName]];
+    [self executeJavaScript:[NSString stringWithFormat:@"window.savannah._registerPlugin('%@');", pluginName]];
     [self.plugins setObject:plugin forKey:pluginName];
 }
 
 - (void) unregisterPluginByName:(NSString *)pluginName {
-    [self executeJavaScript:[NSString stringWithFormat:@"window.savannah.nativeUnregisterPlugin('%@');", pluginName]];
+    [self executeJavaScript:[NSString stringWithFormat:@"window.savannah._unregisterPlugin('%@');", pluginName]];
     [self.plugins removeObjectForKey:pluginName];
 }
 
@@ -83,7 +83,7 @@
 }
 
 - (void) clearPlugins {
-    [self executeJavaScript:@"window.savannah.nativeClearPlugins();"];
+    [self executeJavaScript:@"window.savannah._clearPlugins();"];
     [self.plugins removeAllObjects];
 }
 
@@ -96,7 +96,7 @@
         return YES;
     }
     else if ([[request.URL path] isEqualToString:@"/!svnh_exec"]) {
-        NSString *cmds = [self executeJavaScript:@"window.savannah.nativeFetchMessages();"];
+        NSString *cmds = [self executeJavaScript:@"window.savannah._fetchMessages();"];
         NSError *error;
         NSArray *cmdsArray = [NSJSONSerialization JSONObjectWithData:[cmds dataUsingEncoding:NSUTF8StringEncoding]
                                                              options:0
@@ -197,7 +197,7 @@
         NSString *pluginNamesJSON = [[NSString alloc] initWithData:pluginNamesData
                                                       encoding:NSUTF8StringEncoding];
         
-        [self executeJavaScript:[NSString stringWithFormat:@"window.savannah.didFinishLoad(%@, %@);", self.settingsJSON, pluginNamesJSON]];
+        [self executeJavaScript:[NSString stringWithFormat:@"window.savannah._didFinishLoad(%@, %@);", self.settingsJSON, pluginNamesJSON]];
         
         self.isFirstLoad = NO;
     }
@@ -232,7 +232,7 @@
     
     NSString *stringStatus = status ? @"true" : @"false";
     
-    NSString *execString = [NSString stringWithFormat:@"window.savannah.nativeCallback('%@',%@,%@,%d);",
+    NSString *execString = [NSString stringWithFormat:@"window.savannah._callback('%@',%@,%@,%d);",
                             callbackId,
                             stringStatus,
                             message,

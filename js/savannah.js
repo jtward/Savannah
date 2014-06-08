@@ -99,7 +99,7 @@
     }());
 
     // let the native app pull commands
-    var nativeFetchMessages = function() {
+    var _fetchMessages = function() {
         // Each entry in commandQueue is a JSON string already.
         var json = JSON.stringify(commandQueue);
         commandQueue.length = 0;
@@ -115,7 +115,7 @@
     };
 
     // called when a response (success, fail or progress) is returned from the native app
-    var nativeCallback = function(callbackId, success, args, keepCallback) {
+    var _callback = function(callbackId, success, args, keepCallback) {
         var callback = callbacks[callbackId];
         var promise = promises[callbackId];
 
@@ -144,7 +144,7 @@
     };
 
     // called by the native app to register a plugin
-    var nativeRegisterPlugin = function(pluginName) {
+    var _registerPlugin = function(pluginName) {
         window.savannah.plugins[pluginName] = function() {
             var args = Array.prototype.slice.call(arguments, 0);
             args.unshift(pluginName);
@@ -153,24 +153,24 @@
     };
 
     // called by the native app to unregister a plugin
-    var nativeUnregisterPlugin = function(pluginName) {
+    var _unregisterPlugin = function(pluginName) {
         delete window.savannah.plugins[pluginName];
     };
 
     // called by the native app to unregister all plugins
-    var nativeClearPlugins = function() {
+    var _clearPlugins = function() {
         window.savannah.plugins = {};
     };
 
     // called by the native app when the page load is complete, sending app-specific settings 
-    var didFinishLoad = function(settings, plugins) {
+    var _didFinishLoad = function(settings, plugins) {
         var pluginName;
 
         if (!isLoadFinished) {
             isLoadFinished = true;
             window.savannah.settings = settings;
             for (var i = 0; i < plugins.length; i += 1) {
-                nativeRegisterPlugin(plugins[i]);
+                _registerPlugin(plugins[i]);
             }
             if (typeof window.savannah.onDeviceReady === "function") {
                 window.savannah.onDeviceReady();
@@ -183,15 +183,15 @@
 
     // exposed functions
     window.savannah = {
-        version: version,
+        _fetchMessages: _fetchMessages,
+        _callback: _callback,
+        _registerPlugin: _registerPlugin,
+        _unregisterPlugin: _unregisterPlugin,
+        _clearPlugins: _clearPlugins,
+        _didFinishLoad: _didFinishLoad,
         exec: exec,
-        nativeFetchMessages: nativeFetchMessages,
-        nativeCallback: nativeCallback,
-        nativeRegisterPlugin: nativeRegisterPlugin,
-        nativeUnregisterPlugin: nativeUnregisterPlugin,
-        nativeClearPlugins: nativeClearPlugins,
-        didFinishLoad: didFinishLoad,
         plugins: {},
+        version: version,
         Promise: undefined
     };
 

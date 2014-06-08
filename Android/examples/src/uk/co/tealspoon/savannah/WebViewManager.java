@@ -97,7 +97,7 @@ public class WebViewManager {
 			@Override
 			public void onPageFinished(WebView view, String loadedUrl) {
 				if (loadedUrl.equals(url)) {
-					executeJavaScript("window.savannah.didFinishLoad(" + settingsJSON + ", " + new JSONArray(plugins.keySet()).toString() + ");", null);
+					executeJavaScript("window.savannah._didFinishLoad(" + settingsJSON + ", " + new JSONArray(plugins.keySet()).toString() + ");", null);
 				}
 				if (webViewClient != null) {
 					webViewClient.onPageFinished(view, loadedUrl);
@@ -294,7 +294,7 @@ public class WebViewManager {
 	 * @param plugin an implementation of Plugin.
 	 */
 	public void registerPlugin(Plugin plugin) {
-		executeJavaScript("window.savannah.nativeRegisterPlugin('" + plugin.getName() + "');", null);
+		executeJavaScript("window.savannah._registerPlugin('" + plugin.getName() + "');", null);
 		this.plugins.put(plugin.getName(), plugin);
 	}
 	
@@ -305,7 +305,7 @@ public class WebViewManager {
 	 * @param plugin the name of the Plugin to unregister.
 	 */
 	public void unregisterPlugin(String pluginName) {
-		executeJavaScript("window.savannah.nativeUnregisterPlugin('" + pluginName + "');", null);
+		executeJavaScript("window.savannah._unregisterPlugin('" + pluginName + "');", null);
 		this.plugins.remove(pluginName);
 	}
 	
@@ -321,7 +321,7 @@ public class WebViewManager {
 	 * Unregister all Plugins, making them unavailable to the WebView. 
 	 */
 	public void clearPlugins() {
-		executeJavaScript("window.savannah.nativeClearPlugins();", null);
+		executeJavaScript("window.savannah._clearPlugins();", null);
 		this.plugins.clear();
 	}
 
@@ -333,7 +333,7 @@ public class WebViewManager {
 	protected void sendPluginResult(boolean status, String message, boolean keepCallback, String callbackId) {
 		String statusString = Boolean.toString(status);
 
-		String execString = "window.savannah.nativeCallback('" + callbackId + "'," + statusString + "," +
+		String execString = "window.savannah._callback('" + callbackId + "'," + statusString + "," +
 				message + "," + keepCallback + ");";
 
 		executeJavaScript(execString, null);
