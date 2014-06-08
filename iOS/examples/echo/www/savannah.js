@@ -51,7 +51,7 @@
 
         // the real exec
         return function(successCallback, failCallback, service, action, actionArgs) {
-            var Promise = window.savannah.Promise || window.Promise;
+            var Promise = window.Promise;
             var tmpService;
 
             // exec can be called with or without leading success/fail params.
@@ -191,8 +191,7 @@
         _didFinishLoad: _didFinishLoad,
         exec: exec,
         plugins: {},
-        version: version,
-        Promise: undefined
+        version: version
     };
 
 }(window));
