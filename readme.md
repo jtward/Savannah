@@ -5,6 +5,8 @@ Savannah is a web-native bridge for hybrid apps with a plugin architecture, simi
 
 It is designed to be easy to drop into native apps, and enables you to use multiple isolated webviews with their own set of plugins.
 
+Version 0.7.0 - 10th June 2014
+
 Version 0.6.0 - 8th June 2014
 
 Version 0.5.0 - 19th May 2014
@@ -130,19 +132,26 @@ public class MyPlugin implements SavannahPlugin {
 }
 ```
 
-
 ## JavaScript
 
-To execute a plugin from JavaScript, just call `savannah.exec`. If you provide a Promises/A+ compatible promise library, or native promises are available, a promise is returned. You can call `exec` in exactly the same way you would call `Cordova.exec`, or omit the success and error callbacks and use the promise instead. If you call `savannah.exec` before `onDeviceReady`, those requests will be queued and sent immediately after `onDeviceReady` is called.
+There are two main ways to call a plugin from JavaScript:
+
+### Plugin execution via savannah.plugins
+When plugins are registered from the native app, they are made available on `savannah.plugins` by name, so you don't have to pass the name to the function. You can only use this method with promises, not callbacks:
 
 ```JavaScript
-savannah.exec("com.example.foo",        // plugin identifier / name
-  "foo",                                // plugin method
-  [])                                   // plugin arguments
+savannah.plugins["com.example.foo"](  // plugin identifier / name
+  "foo",                              // plugin method
+  [])                                 // plugin arguments
   .progress(function(result) {})
   .then(function(result) {})
   .catch(function(error) {});
 ```
+
+Be careful when using `progress`: it is added by Savannah and not part of the promises spec, and therefore is not available when chained after `then` or `catch`.
+
+### Plugin execution via savannah.exec
+This method lets you use exactly the same syntax with `savannah.exec` as you would use with `cordova.exec`:
 
 ```JavaScript
 savannah.exec(function success(result) {}, // success callback
@@ -152,8 +161,24 @@ savannah.exec(function success(result) {}, // success callback
   []);                                     // plugin arguments
 ```
 
+You can also use this method with promises:
+```JavaScript
+savannah.exec("com.example.foo",        // plugin identifier / name
+  "foo",                                // plugin method
+  [])                                   // plugin arguments
+  .progress(function(result) {})
+  .then(function(result) {})
+  .catch(function(error) {});
+```
+
+Savannah user either promises or callbacks, but not both. If you pass callbacks to `savannah.exec`, a promise will not be returned. As of Savannah 0.7, savannah.js depends on `window.Promise` or a polyfill.
 
 ## Changelog
+### 0.7.0
+- Plugin execution from savannah.js is now debounced for better efficiency.
+- Removed onDeviceReady callback and added a ready promise in savannah.js.
+- savannah.js now depends on window.Promise or a polyfill.
+
 ### 0.6.0
 - Made currently available plugins visible in the webview.
 - Now use only window.Promise. 
