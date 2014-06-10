@@ -24,6 +24,10 @@
                 });
             };
 
+            window.savannah.ready.then(function() {
+                document.body.innerHTML += "<br />Savannah ready";
+            });
+
             window.savannah.exec(function(message) {
                 document.body.innerHTML += "<br />Cordova-compat: " + message;
             }, undefined, "uk.co.tealspoon.savannah.echo", "echo", ["Echo!"]).then(function(message) {

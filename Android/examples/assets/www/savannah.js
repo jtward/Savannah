@@ -21,12 +21,14 @@
     // send the command data if possible to avoid a round trip
     var notifyNative = (function() {
         if (window.savannahJSI) {
+            // Android
             return function() {
                 window.savannahJSI.exec(JSON.stringify(commandQueue));
                 commandQueue.length = 0;
             };
         }
         else {
+            // iOS
             return function() {
                 window.location = "/!svnh_exec?";
             };
@@ -35,6 +37,10 @@
 
     // IIFE; returns a function which is the entry point for all plugin execution
     var exec = (function() {
+
+        // a callback id that's randomized to minimize the possibility of clashes
+        // after refreshes and navigations
+        var callbackId = Math.floor(Math.random() * 2000000000);
 
         // keep a record of the given callback for progress for the given callback ID
         var promiseProgress = function(callbackId, callback) {
@@ -45,14 +51,11 @@
             callbacks.push(callback);
         };
 
-        // a callback id that's randomized to minimize the possibility of clashes
-        // after refreshes and navigations
-        var callbackId = Math.floor(Math.random() * 2000000000);
-
         // the real exec
         return function(successCallback, failCallback, service, action, actionArgs) {
-            var Promise = window.Promise;
             var tmpService;
+            var command;
+            var promise;
 
             // exec can be called with or without leading success/fail params.
             // if the first param is a string, there were no success/fail params.
@@ -70,7 +73,7 @@
                 };
             }
 
-            var command = [callbackId, service, action, actionArgs];
+            command = [callbackId, service, action, actionArgs];
 
             callbackId += 1;
 
@@ -80,21 +83,19 @@
                 notifyNative();
             }
 
-            if (Promise) {
-                var promise = new Promise(function(resolve, reject) {
-                    promises[command[0]] = {
-                        resolve: resolve,
-                        reject: reject
-                    };
-                });
-
-                promise.progress = function(callback) {
-                    promiseProgress(command[0], callback);
-                    return this;
+            promise = new window.Promise(function(resolve, reject) {
+                promises[command[0]] = {
+                    resolve: resolve,
+                    reject: reject
                 };
-                
-                return promise;
-            }
+            });
+
+            promise.progress = function(callback) {
+                promiseProgress(command[0], callback);
+                return this;
+            };
+
+            return promise;
         };
     }());
 
@@ -109,7 +110,8 @@
     // call all progress listeners for the callback with the given arguments
     var notifyProgress = function(callbackId, args) {
         var listeners = progressCallbacks[callbackId];
-        for (var i = 0; i < (listeners && listeners.length); i += 1) {
+        var i;
+        for (i = 0; i < (listeners && listeners.length); i += 1) {
             listeners[i](args);
         }
     };
@@ -122,7 +124,8 @@
         if (callback) {
             if (success && callback.success) {
                 callback.success.apply(null, [args]);
-            } else if (!success && callback.fail) {
+            }
+            else if (!success && callback.fail) {
                 callback.fail.apply(null, [args]);
             }
 
@@ -131,7 +134,7 @@
                 delete callbacks[callbackId];
             }
         }
-        
+
         if (promise) {
             if (keepCallback) {
                 notifyProgress(callbackId, args);
@@ -162,24 +165,27 @@
         window.savannah.plugins = {};
     };
 
-    // called by the native app when the page load is complete, sending app-specific settings 
-    var _didFinishLoad = function(settings, plugins) {
-        var pluginName;
+    // expose a promise, ready, that resolves once _didFinishLoad is called
+    // _didFinishLoad is called by the native app when the page load is complete,
+    // sending app-specific settings
+    var _didFinishLoad;
+    var ready = new window.Promise(function(resolve) {
+        _didFinishLoad = function(settings, plugins) {
+            var i;
 
-        if (!isLoadFinished) {
-            isLoadFinished = true;
-            window.savannah.settings = settings;
-            for (var i = 0; i < plugins.length; i += 1) {
-                _registerPlugin(plugins[i]);
+            if (!isLoadFinished) {
+                isLoadFinished = true;
+                window.savannah.settings = settings;
+                for (i = 0; i < plugins.length; i += 1) {
+                    _registerPlugin(plugins[i]);
+                }
+                if (commandQueue.length > 0) {
+                    notifyNative();
+                }
             }
-            if (typeof window.savannah.onDeviceReady === "function") {
-                window.savannah.onDeviceReady();
-            }
-            if (commandQueue.length > 0) {
-                notifyNative();
-            }
-        }
-    };
+            resolve();
+        };
+    });
 
     // exposed functions
     window.savannah = {
@@ -189,6 +195,7 @@
         _unregisterPlugin: _unregisterPlugin,
         _clearPlugins: _clearPlugins,
         _didFinishLoad: _didFinishLoad,
+        ready: ready,
         exec: exec,
         plugins: {},
         version: version
