@@ -57,6 +57,10 @@
             var command;
             var promise;
 
+            if (!isLoadFinished) {
+                throw "Unable to execute plugin before Savannah is ready.";
+            }
+
             // exec can be called with or without leading success/fail params.
             // if the first param is a string, there were no success/fail params.
             if (typeof successCallback === "string") {
@@ -79,9 +83,7 @@
 
             commandQueue.push(command);
 
-            if (isLoadFinished) {
-                notifyNative();
-            }
+            notifyNative();
 
             promise = new window.Promise(function(resolve, reject) {
                 promises[command[0]] = {
@@ -178,9 +180,6 @@
                 window.savannah.settings = settings;
                 for (i = 0; i < plugins.length; i += 1) {
                     _registerPlugin(plugins[i]);
-                }
-                if (commandQueue.length > 0) {
-                    notifyNative();
                 }
             }
             resolve();
