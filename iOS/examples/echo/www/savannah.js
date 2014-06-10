@@ -17,23 +17,52 @@
     // keeps track of whether load is finished
     var isLoadFinished = false;
 
+    // calls func on the leading edge and, if called again,
+    // the trailing edge, of the debounce window.
+    var debounce = function(func, wait) {
+        var timeout;
+        var didCallAgain;
+
+        var later = function() {
+            if (didCallAgain) {
+                func();
+            }
+            timeout = null;
+            didCallAgain = false;
+        };
+
+        return function() {
+            if (!timeout) {
+                timeout = setTimeout(later, wait);
+                setTimeout(func, 0);
+            }
+            else {
+                didCallAgain = true;
+            }
+        };
+    };
+
     // notify the native app that there are commands waiting
     // send the command data if possible to avoid a round trip
-    var notifyNative = (function() {
+    var notifyNative = debounce((function() {
         if (window.savannahJSI) {
             // Android
             return function() {
-                window.savannahJSI.exec(JSON.stringify(commandQueue));
-                commandQueue.length = 0;
+                if (commandQueue.length) {
+                    window.savannahJSI.exec(JSON.stringify(commandQueue));
+                    commandQueue.length = 0;
+                }
             };
         }
         else {
             // iOS
             return function() {
-                window.location = "/!svnh_exec?";
+                if (commandQueue.length) {
+                    window.location = "/!svnh_exec?";
+                }
             };
         }
-    }());
+    }()), 20);
 
     // IIFE; returns a function which is the entry point for all plugin execution
     var exec = (function() {
