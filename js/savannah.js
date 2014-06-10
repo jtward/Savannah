@@ -68,6 +68,18 @@
                 service = successCallback;
                 action = failCallback;
                 actionArgs = tmpService;
+
+                promise = new window.Promise(function(resolve, reject) {
+                    promises[callbackId] = {
+                        resolve: resolve,
+                        reject: reject
+                    };
+                });
+
+                promise.progress = function(callback) {
+                    promiseProgress(callbackId, callback);
+                    return this;
+                };
             }
             else if (successCallback || failCallback) {
                 // if there were success/fail params, keep a record of them
@@ -84,18 +96,6 @@
             commandQueue.push(command);
 
             notifyNative();
-
-            promise = new window.Promise(function(resolve, reject) {
-                promises[command[0]] = {
-                    resolve: resolve,
-                    reject: reject
-                };
-            });
-
-            promise.progress = function(callback) {
-                promiseProgress(command[0], callback);
-                return this;
-            };
 
             return promise;
         };
