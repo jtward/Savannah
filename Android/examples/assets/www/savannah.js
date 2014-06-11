@@ -1,6 +1,6 @@
 (function(window) {
     "use strict";
-    var version = "0.7.0";
+    var version = "0.8.0";
 
     // a container for all the unresolved callbacks
     var callbacks = {};
