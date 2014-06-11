@@ -14,6 +14,12 @@
     // a list of pending JS->Native messages.
     var commandQueue = [];
 
+    // a container for plugins
+    var plugins = {};
+
+    // a hash of fully qualified plugin names to their aliases
+    var aliases = {};
+
     // keeps track of whether load is finished
     var isLoadFinished = false;
 
@@ -177,23 +183,50 @@
         }
     };
 
-    // called by the native app to register a plugin
-    var _registerPlugin = function(pluginName) {
-        window.savannah.plugins[pluginName] = function() {
-            var args = Array.prototype.slice.call(arguments, 0);
+    var pluginMethod = function(pluginName, methodName) {
+        return function() {
+            var args = [Array.prototype.slice.call(arguments, 0)];
+            args.unshift(methodName);
             args.unshift(pluginName);
-            return window.savannah.exec.apply(window.savannah, args);
+            return exec.apply(null, args);
         };
+    };
+
+    // called by the native app to register a plugin
+    var _registerPlugin = function(pluginName, methods) {
+        var plugin = {};
+        var methodName;
+        
+        for (var i = 0; i < methods.length; i += 1) {
+            methodName = methods[i];
+            plugin[methodName] = pluginMethod(pluginName, methodName);
+        }
+
+        plugins[pluginName] = plugin;
+        
+        if (aliases[pluginName]) {
+            plugins[aliases[pluginName]] = plugins[pluginName];
+        }
     };
 
     // called by the native app to unregister a plugin
     var _unregisterPlugin = function(pluginName) {
-        delete window.savannah.plugins[pluginName];
+        delete plugins[pluginName];
+        var alias = aliases[pluginName];
+        if (alias) {
+            delete plugins[alias];
+        }
     };
 
     // called by the native app to unregister all plugins
     var _clearPlugins = function() {
-        window.savannah.plugins = {};
+        // delete all plugins rather than replacing with a new object,
+        // so that a user can keep a their own direct reference to plugins
+        var keys = Object.keys(plugins);
+        var i;
+        for (i = 0; i < keys.length; i += 1) {
+            delete plugins[keys[i]];
+        }
     };
 
     // expose a promise, ready, that resolves once _didFinishLoad is called
@@ -201,19 +234,37 @@
     // sending app-specific settings
     var _didFinishLoad;
     var ready = new window.Promise(function(resolve) {
-        _didFinishLoad = function(settings, plugins) {
+        _didFinishLoad = function(settings, plugins, pluginMethods) {
             var i;
 
             if (!isLoadFinished) {
                 isLoadFinished = true;
                 window.savannah.settings = settings;
                 for (i = 0; i < plugins.length; i += 1) {
-                    _registerPlugin(plugins[i]);
+                    _registerPlugin(plugins[i], pluginMethods[i]);
                 }
             }
             resolve();
         };
     });
+
+    // register aliases for plugins
+    var alias = function(newAliases) {
+        var names = Object.keys(newAliases);
+        var i;
+        var name;
+        var alias;
+        for (i = 0; i < names.length; i += 1) {
+            name = names[i];
+            alias = newAliases[name];
+            // keep a record of the alias
+            aliases[name] = alias;
+            // if the plugin already exists, make alias point to it
+            if (plugins[name]) {
+                plugins[alias] = plugins[name];
+            }
+        }
+    };
 
     // exposed functions
     window.savannah = {
@@ -223,9 +274,10 @@
         _unregisterPlugin: _unregisterPlugin,
         _clearPlugins: _clearPlugins,
         _didFinishLoad: _didFinishLoad,
+        alias: alias,
         ready: ready,
         exec: exec,
-        plugins: {},
+        plugins: plugins,
         version: version
     };
 

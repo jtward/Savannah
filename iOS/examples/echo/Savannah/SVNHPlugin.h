@@ -10,5 +10,6 @@
  * @return the name of the Plugin.
  */
 + (NSString *) name;
++ (NSArray *) methods;
 
 @end

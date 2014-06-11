@@ -24,8 +24,6 @@ import android.webkit.WebViewClient;
 
 /**
  * A manager for a single {@link android.webkit.WebView WebView} instance. Handles communication between the web page loaded in the WebView and a collection of {@link uk.co.tealspoon.savannah.Plugin Plugins}.
- * @author james.ward
- *
  */
 public class WebViewManager {
 
@@ -37,8 +35,6 @@ public class WebViewManager {
 	
 	/**
 	 * Internal class for low-level communication with the WebView.
-	 * @author james.ward
-	 *
 	 */
 	private class WebViewJavascriptInterface {
 		private WebViewManager manager;
@@ -97,7 +93,13 @@ public class WebViewManager {
 			@Override
 			public void onPageFinished(WebView view, String loadedUrl) {
 				if (loadedUrl.equals(url)) {
-					executeJavaScript("window.savannah._didFinishLoad(" + settingsJSON + ", " + new JSONArray(plugins.keySet()).toString() + ");", null);
+					JSONArray pluginMethods = new JSONArray(); 
+					for (Plugin p : plugins.values()) {
+						pluginMethods.put(new JSONArray(p.getMethods()));
+					}
+					executeJavaScript("window.savannah._didFinishLoad(" + settingsJSON + ", " +
+							new JSONArray(plugins.keySet()).toString() + ", " +
+							pluginMethods.toString() + ");", null);
 				}
 				if (webViewClient != null) {
 					webViewClient.onPageFinished(view, loadedUrl);
@@ -294,7 +296,7 @@ public class WebViewManager {
 	 * @param plugin an implementation of Plugin.
 	 */
 	public void registerPlugin(Plugin plugin) {
-		executeJavaScript("window.savannah._registerPlugin('" + plugin.getName() + "');", null);
+		executeJavaScript("window.savannah._registerPlugin('" + plugin.getName() + "', " + new JSONArray(plugin.getMethods()).toString() + ");", null);
 		this.plugins.put(plugin.getName(), plugin);
 	}
 	

@@ -1,19 +1,27 @@
 package uk.co.tealspoon.savannahechoexample;
 
-import org.json.JSONArray;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
-import android.app.Activity;
-import android.webkit.WebView;
+import org.json.JSONArray;
 
 import uk.co.tealspoon.savannah.Command;
 import uk.co.tealspoon.savannah.Plugin;
-import uk.co.tealspoon.savannah.WebViewManager;
 
 public class EchoPlugin implements Plugin {
+	
+	private static final String name = "uk.co.tealspoon.savannah.echo";
+	private static final List<String> methods = Arrays.asList("echo");
 
 	@Override
 	public String getName() {
-		return "uk.co.tealspoon.savannah.echo";
+		return name;
+	}
+	
+	@Override
+	public Collection<String> getMethods() {
+		return methods;
 	}
 
 	@Override

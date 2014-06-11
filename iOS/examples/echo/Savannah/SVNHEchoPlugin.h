@@ -5,6 +5,7 @@
 @interface SVNHEchoPlugin : NSObject <SVNHPlugin>
 
 + (NSString *) name;
++ (NSArray *) methods;
 
 - (void) echo:(SVNHCommand *)command;
 @end

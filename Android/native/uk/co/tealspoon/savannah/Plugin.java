@@ -1,5 +1,7 @@
 package uk.co.tealspoon.savannah;
 
+import java.util.Collection;
+
 import org.json.JSONArray;
 
 /**
@@ -14,6 +16,12 @@ public interface Plugin {
 	 * @return the name of the Plugin.
 	 */
 	public String getName();
+	
+	/**
+	 * Returns the available methods of the Plugin.
+	 * @return the available methods of the Plugin.
+	 */
+	public Collection<String> getMethods();
 	
 	/**
 	 * Called when a the WebView executes a command for this Plugin.

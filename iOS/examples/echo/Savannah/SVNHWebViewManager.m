@@ -69,7 +69,16 @@
 
 - (void) registerPlugin:(id <SVNHPlugin>)plugin {
     NSString *pluginName = [[plugin class] name];
-    [self executeJavaScript:[NSString stringWithFormat:@"window.savannah._registerPlugin('%@');", pluginName]];
+    NSArray *pluginMethods = [[plugin class] methods];
+    
+    NSData* pluginMethodsData = [NSJSONSerialization dataWithJSONObject:pluginMethods
+                                                              options:0
+                                                                error:nil];
+    
+    NSString *pluginMethodsJSON = [[NSString alloc] initWithData:pluginMethodsData
+                                                      encoding:NSUTF8StringEncoding];
+    
+    [self executeJavaScript:[NSString stringWithFormat:@"window.savannah._registerPlugin('%@', %@);", pluginName, pluginMethodsJSON]];
     [self.plugins setObject:plugin forKey:pluginName];
 }
 
@@ -190,14 +199,26 @@
     
     if (self.isFirstLoad) {
         
-        NSData* pluginNamesData = [NSJSONSerialization dataWithJSONObject:[self.plugins allKeys]
+        NSData *pluginNamesData = [NSJSONSerialization dataWithJSONObject:[self.plugins allKeys]
                                                               options:0
                                                                 error:nil];
         
         NSString *pluginNamesJSON = [[NSString alloc] initWithData:pluginNamesData
                                                       encoding:NSUTF8StringEncoding];
         
-        [self executeJavaScript:[NSString stringWithFormat:@"window.savannah._didFinishLoad(%@, %@);", self.settingsJSON, pluginNamesJSON]];
+        NSMutableArray *pluginMethods = [[NSMutableArray alloc] initWithCapacity:[self.plugins count]];
+        for (id <SVNHPlugin> plugin in [self.plugins allValues]) {
+            [pluginMethods addObject:[[plugin class] methods]];
+        }
+        
+        NSData *pluginMethodsData = [NSJSONSerialization dataWithJSONObject:pluginMethods
+                                                                    options:0
+                                                                      error:nil];
+        
+        NSString *pluginMethodsJSON = [[NSString alloc] initWithData:pluginMethodsData
+                                                            encoding:NSUTF8StringEncoding];
+        
+        [self executeJavaScript:[NSString stringWithFormat:@"window.savannah._didFinishLoad(%@, %@, %@);", self.settingsJSON, pluginNamesJSON, pluginMethodsJSON]];
         
         self.isFirstLoad = NO;
     }
