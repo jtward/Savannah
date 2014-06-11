@@ -5,6 +5,8 @@ Savannah is a web-native bridge for hybrid apps with a plugin architecture, simi
 
 It is designed to be easy to drop into native apps, and enables you to use multiple isolated webviews with their own set of plugins.
 
+Version 0.8.0 - 11th June 2014
+
 Version 0.7.0 - 10th June 2014
 
 Version 0.6.0 - 8th June 2014
@@ -65,19 +67,25 @@ A plugin class just implements SVNHPlugin. Plugin methods take a SVNHCommand as 
 ```Objective-C
 @interface MyPlugin : NSObject <SVNHPlugin>
 + (NSString *) name;
++ (NSArray *) methods;
 - (void) foo:(SVNHCommand *)command;
 @end
 ```
 
 ```Objective-C
 @implementation MyPlugin
+
 + (NSString *) name {
     return @"com.example.foo";
 };
 
-- (void) foo:(SVNHCommand *)command {
-    // report success and pass back the string "foo!"
-    [command successWithString:@"foo!"];
++ (NSString *) methods {
+    return @[@"bar"];
+};
+
+- (void) bar:(SVNHCommand *)command {
+    // report success and pass back the string "bar!"
+    [command successWithString:@"bar!"];
 }
 ```
 
@@ -102,7 +110,6 @@ JSONObject settings = new JSONObject();
 
 // create a WebViewManager and pass in a name, the webview, settings, plugins and the url to load into the webview
 new WebViewManager("main", webView, settings, plugins, "file:///android_asset/www/index.html");
-
 ```
 
 Don't forget to include the savannah.js file in your web page!
@@ -118,12 +125,17 @@ public class MyPlugin implements SavannahPlugin {
   }
 
   @Override
+  public Collection<String> getMethods() {
+    return Arrays.asList("bar");
+  }
+
+  @Override
   public boolean execute(String action, JSONArray args, Command command) {
 
-    // check for the `foo` action
-    if(action.equals("foo")) {
-      // report success and pass back the string "foo!"
-      command.success("foo!");
+    // check for the `bar` action
+    if(action.equals("bar")) {
+      // report success and pass back the string "bar!"
+      command.success("bar!");
       return true;
     }
 
@@ -134,21 +146,24 @@ public class MyPlugin implements SavannahPlugin {
 
 ## JavaScript
 
-There are two main ways to call a plugin from JavaScript:
+There are two main ways to call plugin methods from JavaScript:
 
 ### Plugin execution via savannah.plugins
-When plugins are registered from the native app, they are made available on `savannah.plugins` by name, so you don't have to pass the name to the function. You can only use this method with promises, not callbacks:
+When plugins are registered from the native app, they are made available on `savannah.plugins` by name with their methods. Because plugins' real names can be quite verbose, you can tell Savannah to alias them. You can only use this method with promises, not callbacks:
 
 ```JavaScript
-savannah.plugins["com.example.foo"](  // plugin identifier / name
-  "foo",                              // plugin method
-  [])                                 // plugin arguments
+savannah.alias({
+  "com.example.foo": "foo"
+});
+
+// call the bar method on the foo plugin with one argument, "baz"
+savannah.plugins.foo.bar("baz")
   .progress(function(result) {})
   .then(function(result) {})
   .catch(function(error) {});
 ```
 
-Be careful when using `progress`: it is added by Savannah and not part of the promises spec, and therefore is not available when chained after `then` or `catch`.
+Be careful when using `progress`: it is added by Savannah and not part of the promises spec, and is therefore not available when chained after `then` or `catch`.
 
 ### Plugin execution via savannah.exec
 This method lets you use exactly the same syntax with `savannah.exec` as you would use with `cordova.exec`:
@@ -157,23 +172,27 @@ This method lets you use exactly the same syntax with `savannah.exec` as you wou
 savannah.exec(function success(result) {}, // success callback
   function error(error) {},                // error callback
   "com.example.foo",                       // plugin identifier / name
-  "foo",                                   // plugin method
-  []);                                     // plugin arguments
+  "bar",                                   // plugin method
+  ["baz"]);                                // plugin arguments
 ```
 
 You can also use this method with promises:
 ```JavaScript
 savannah.exec("com.example.foo",        // plugin identifier / name
-  "foo",                                // plugin method
-  [])                                   // plugin arguments
+  "bar",                                // plugin method
+  ["baz"])                              // plugin arguments
   .progress(function(result) {})
   .then(function(result) {})
   .catch(function(error) {});
 ```
 
-Savannah user either promises or callbacks, but not both. If you pass callbacks to `savannah.exec`, a promise will not be returned. As of Savannah 0.7, savannah.js depends on `window.Promise` or a polyfill.
+Savannah user either promises or callbacks, but not both. If you pass callbacks to `savannah.exec`, a promise will not be returned. Savannah.js depends on `window.Promise` or a polyfill, and you must wait for the `savannah.ready` promise to resolve before calling plugin methods.
 
 ## Changelog
+### 0.8.0
+- Native plugins must now provide a list of the methods they support.
+- Plugins on savannah.plugins are now a hash of the plugin's methods, rather than just a single method. Those methods are called with separate arguments, rather than an arguments array.
+
 ### 0.7.0
 - Plugin execution from savannah.js is now debounced for better efficiency.
 - Removed onDeviceReady callback and added a ready promise in savannah.js.
