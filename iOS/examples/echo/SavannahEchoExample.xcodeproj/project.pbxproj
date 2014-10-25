@@ -7,322 +7,277 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D04CB0AA18081CEB00AC522D /* SVNHCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = D04CB0A918081CEB00AC522D /* SVNHCommand.m */; };
-		D064FEFE1808754D00DB51D7 /* SVNHEchoPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = D064FEFD1808754D00DB51D7 /* SVNHEchoPlugin.m */; };
-		D069C570180326510065FA7B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D069C56F180326510065FA7B /* Foundation.framework */; };
-		D069C572180326510065FA7B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D069C571180326510065FA7B /* CoreGraphics.framework */; };
-		D069C574180326510065FA7B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D069C573180326510065FA7B /* UIKit.framework */; };
-		D069C576180326510065FA7B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D069C575180326510065FA7B /* CoreData.framework */; };
-		D069C57C180326510065FA7B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D069C57A180326510065FA7B /* InfoPlist.strings */; };
-		D069C57E180326510065FA7B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D069C57D180326510065FA7B /* main.m */; };
-		D069C582180326510065FA7B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D069C581180326510065FA7B /* AppDelegate.m */; };
-		D069C585180326510065FA7B /* Savannah.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D069C583180326510065FA7B /* Savannah.xcdatamodeld */; };
-		D069C587180326510065FA7B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D069C586180326510065FA7B /* Images.xcassets */; };
-		D069C58E180326520065FA7B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D069C58D180326520065FA7B /* XCTest.framework */; };
-		D069C58F180326520065FA7B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D069C56F180326510065FA7B /* Foundation.framework */; };
-		D069C590180326520065FA7B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D069C573180326510065FA7B /* UIKit.framework */; };
-		D069C591180326520065FA7B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D069C575180326510065FA7B /* CoreData.framework */; };
-		D069C599180326520065FA7B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D069C597180326520065FA7B /* InfoPlist.strings */; };
-		D069C59B180326520065FA7B /* SavannahTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D069C59A180326520065FA7B /* SavannahTests.m */; };
-		D0F6241418032E62006919E0 /* www in Resources */ = {isa = PBXBuildFile; fileRef = D0F6241318032E62006919E0 /* www */; };
-		D0F624181803305F006919E0 /* SVNHWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F624171803305F006919E0 /* SVNHWebViewManager.m */; };
+		1AE19CB919FBB1AF00A716D5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AE19CB819FBB1AF00A716D5 /* main.m */; };
+		1AE19CBC19FBB1AF00A716D5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AE19CBB19FBB1AF00A716D5 /* AppDelegate.m */; };
+		1AE19CC419FBB1AF00A716D5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AE19CC319FBB1AF00A716D5 /* Images.xcassets */; };
+		1AE19CD319FBB1AF00A716D5 /* SavannahEchoExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AE19CD219FBB1AF00A716D5 /* SavannahEchoExampleTests.m */; };
+		1AE19CDE19FBB21B00A716D5 /* SVNHCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AE19CDD19FBB21B00A716D5 /* SVNHCommand.m */; };
+		1AE19CE119FBB26300A716D5 /* SVNHWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AE19CE019FBB26300A716D5 /* SVNHWebViewManager.m */; };
+		1AE19CE419FBB30100A716D5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AE19CE319FBB30100A716D5 /* UIKit.framework */; };
+		1AE19CE619FBB3F800A716D5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AE19CE519FBB3F800A716D5 /* Foundation.framework */; };
+		1AE19CE919FBC25700A716D5 /* SVNHEchoPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AE19CE819FBC25700A716D5 /* SVNHEchoPlugin.m */; };
+		1AE19CEB19FBC68700A716D5 /* www in Resources */ = {isa = PBXBuildFile; fileRef = 1AE19CEA19FBC68700A716D5 /* www */; };
+		1AE19CEE19FBDB1500A716D5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AE19CED19FBDB1500A716D5 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D069C592180326520065FA7B /* PBXContainerItemProxy */ = {
+		1AE19CCD19FBB1AF00A716D5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = D069C564180326510065FA7B /* Project object */;
+			containerPortal = 1AE19CAB19FBB1AF00A716D5 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D069C56B180326510065FA7B;
-			remoteInfo = Savannah;
+			remoteGlobalIDString = 1AE19CB219FBB1AF00A716D5;
+			remoteInfo = SavannahEchoExample;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D04CB0A71807FAD200AC522D /* SVNHPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SVNHPlugin.h; sourceTree = "<group>"; };
-		D04CB0A818081CEB00AC522D /* SVNHCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVNHCommand.h; sourceTree = "<group>"; };
-		D04CB0A918081CEB00AC522D /* SVNHCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVNHCommand.m; sourceTree = "<group>"; };
-		D064FEFC1808754D00DB51D7 /* SVNHEchoPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVNHEchoPlugin.h; sourceTree = "<group>"; };
-		D064FEFD1808754D00DB51D7 /* SVNHEchoPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVNHEchoPlugin.m; sourceTree = "<group>"; };
-		D069C56C180326510065FA7B /* SavannahEchoExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SavannahEchoExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D069C56F180326510065FA7B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		D069C571180326510065FA7B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		D069C573180326510065FA7B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		D069C575180326510065FA7B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		D069C579180326510065FA7B /* SavannahEchoExample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SavannahEchoExample-Info.plist"; sourceTree = "<group>"; };
-		D069C57B180326510065FA7B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		D069C57D180326510065FA7B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		D069C57F180326510065FA7B /* SavannahEchoExample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SavannahEchoExample-Prefix.pch"; sourceTree = "<group>"; };
-		D069C580180326510065FA7B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		D069C581180326510065FA7B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		D069C584180326510065FA7B /* Savannah.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Savannah.xcdatamodel; sourceTree = "<group>"; };
-		D069C586180326510065FA7B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		D069C58C180326520065FA7B /* SavannahEchoExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SavannahEchoExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D069C58D180326520065FA7B /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		D069C596180326520065FA7B /* SavannahEchoExampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SavannahEchoExampleTests-Info.plist"; sourceTree = "<group>"; };
-		D069C598180326520065FA7B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		D069C59A180326520065FA7B /* SavannahTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SavannahTests.m; sourceTree = "<group>"; };
-		D0F6241318032E62006919E0 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
-		D0F624161803305F006919E0 /* SVNHWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVNHWebViewManager.h; sourceTree = "<group>"; };
-		D0F624171803305F006919E0 /* SVNHWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVNHWebViewManager.m; sourceTree = "<group>"; };
+		1AE19CB319FBB1AF00A716D5 /* SavannahEchoExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SavannahEchoExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AE19CB719FBB1AF00A716D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1AE19CB819FBB1AF00A716D5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		1AE19CBA19FBB1AF00A716D5 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		1AE19CBB19FBB1AF00A716D5 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		1AE19CC319FBB1AF00A716D5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		1AE19CCC19FBB1AF00A716D5 /* SavannahEchoExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SavannahEchoExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AE19CD119FBB1AF00A716D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1AE19CD219FBB1AF00A716D5 /* SavannahEchoExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SavannahEchoExampleTests.m; sourceTree = "<group>"; };
+		1AE19CDC19FBB21B00A716D5 /* SVNHCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVNHCommand.h; sourceTree = "<group>"; };
+		1AE19CDD19FBB21B00A716D5 /* SVNHCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVNHCommand.m; sourceTree = "<group>"; };
+		1AE19CDF19FBB26300A716D5 /* SVNHWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVNHWebViewManager.h; sourceTree = "<group>"; };
+		1AE19CE019FBB26300A716D5 /* SVNHWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVNHWebViewManager.m; sourceTree = "<group>"; };
+		1AE19CE219FBB29500A716D5 /* SVNHPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SVNHPlugin.h; sourceTree = "<group>"; };
+		1AE19CE319FBB30100A716D5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		1AE19CE519FBB3F800A716D5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1AE19CE719FBC25700A716D5 /* SVNHEchoPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVNHEchoPlugin.h; sourceTree = "<group>"; };
+		1AE19CE819FBC25700A716D5 /* SVNHEchoPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVNHEchoPlugin.m; sourceTree = "<group>"; };
+		1AE19CEA19FBC68700A716D5 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
+		1AE19CED19FBDB1500A716D5 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D069C569180326510065FA7B /* Frameworks */ = {
+		1AE19CB019FBB1AF00A716D5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D069C572180326510065FA7B /* CoreGraphics.framework in Frameworks */,
-				D069C576180326510065FA7B /* CoreData.framework in Frameworks */,
-				D069C574180326510065FA7B /* UIKit.framework in Frameworks */,
-				D069C570180326510065FA7B /* Foundation.framework in Frameworks */,
+				1AE19CE619FBB3F800A716D5 /* Foundation.framework in Frameworks */,
+				1AE19CE419FBB30100A716D5 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D069C589180326520065FA7B /* Frameworks */ = {
+		1AE19CC919FBB1AF00A716D5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D069C58E180326520065FA7B /* XCTest.framework in Frameworks */,
-				D069C591180326520065FA7B /* CoreData.framework in Frameworks */,
-				D069C590180326520065FA7B /* UIKit.framework in Frameworks */,
-				D069C58F180326520065FA7B /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D069C563180326510065FA7B = {
+		1AE19CAA19FBB1AF00A716D5 = {
 			isa = PBXGroup;
 			children = (
-				D069C577180326510065FA7B /* SavannahEchoExample */,
-				D069C594180326520065FA7B /* SavannahEchoExampleTests */,
-				D069C56E180326510065FA7B /* Frameworks */,
-				D069C56D180326510065FA7B /* Products */,
-				D0F6241318032E62006919E0 /* www */,
+				1AE19CED19FBDB1500A716D5 /* Default-568h@2x.png */,
+				1AE19CB519FBB1AF00A716D5 /* SavannahEchoExample */,
+				1AE19CEC19FBC69700A716D5 /* Frameworks */,
+				1AE19CCF19FBB1AF00A716D5 /* SavannahEchoExampleTests */,
+				1AE19CB419FBB1AF00A716D5 /* Products */,
+				1AE19CEA19FBC68700A716D5 /* www */,
 			);
 			sourceTree = "<group>";
 		};
-		D069C56D180326510065FA7B /* Products */ = {
+		1AE19CB419FBB1AF00A716D5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D069C56C180326510065FA7B /* SavannahEchoExample.app */,
-				D069C58C180326520065FA7B /* SavannahEchoExampleTests.xctest */,
+				1AE19CB319FBB1AF00A716D5 /* SavannahEchoExample.app */,
+				1AE19CCC19FBB1AF00A716D5 /* SavannahEchoExampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D069C56E180326510065FA7B /* Frameworks */ = {
+		1AE19CB519FBB1AF00A716D5 /* SavannahEchoExample */ = {
 			isa = PBXGroup;
 			children = (
-				D069C56F180326510065FA7B /* Foundation.framework */,
-				D069C571180326510065FA7B /* CoreGraphics.framework */,
-				D069C573180326510065FA7B /* UIKit.framework */,
-				D069C575180326510065FA7B /* CoreData.framework */,
-				D069C58D180326520065FA7B /* XCTest.framework */,
+				1AE19CBA19FBB1AF00A716D5 /* AppDelegate.h */,
+				1AE19CBB19FBB1AF00A716D5 /* AppDelegate.m */,
+				1AE19CC319FBB1AF00A716D5 /* Images.xcassets */,
+				1AE19CB619FBB1AF00A716D5 /* Supporting Files */,
+				1AE19CDC19FBB21B00A716D5 /* SVNHCommand.h */,
+				1AE19CDD19FBB21B00A716D5 /* SVNHCommand.m */,
+				1AE19CDF19FBB26300A716D5 /* SVNHWebViewManager.h */,
+				1AE19CE019FBB26300A716D5 /* SVNHWebViewManager.m */,
+				1AE19CE219FBB29500A716D5 /* SVNHPlugin.h */,
+				1AE19CE719FBC25700A716D5 /* SVNHEchoPlugin.h */,
+				1AE19CE819FBC25700A716D5 /* SVNHEchoPlugin.m */,
+			);
+			path = SavannahEchoExample;
+			sourceTree = "<group>";
+		};
+		1AE19CB619FBB1AF00A716D5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				1AE19CB719FBB1AF00A716D5 /* Info.plist */,
+				1AE19CB819FBB1AF00A716D5 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		1AE19CCF19FBB1AF00A716D5 /* SavannahEchoExampleTests */ = {
+			isa = PBXGroup;
+			children = (
+				1AE19CD219FBB1AF00A716D5 /* SavannahEchoExampleTests.m */,
+				1AE19CD019FBB1AF00A716D5 /* Supporting Files */,
+			);
+			path = SavannahEchoExampleTests;
+			sourceTree = "<group>";
+		};
+		1AE19CD019FBB1AF00A716D5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				1AE19CD119FBB1AF00A716D5 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		1AE19CEC19FBC69700A716D5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1AE19CE519FBB3F800A716D5 /* Foundation.framework */,
+				1AE19CE319FBB30100A716D5 /* UIKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		D069C577180326510065FA7B /* SavannahEchoExample */ = {
-			isa = PBXGroup;
-			children = (
-				D069C580180326510065FA7B /* AppDelegate.h */,
-				D069C581180326510065FA7B /* AppDelegate.m */,
-				D069C586180326510065FA7B /* Images.xcassets */,
-				D069C583180326510065FA7B /* Savannah.xcdatamodeld */,
-				D069C578180326510065FA7B /* Supporting Files */,
-				D0F624161803305F006919E0 /* SVNHWebViewManager.h */,
-				D0F624171803305F006919E0 /* SVNHWebViewManager.m */,
-				D04CB0A71807FAD200AC522D /* SVNHPlugin.h */,
-				D04CB0A818081CEB00AC522D /* SVNHCommand.h */,
-				D04CB0A918081CEB00AC522D /* SVNHCommand.m */,
-				D064FEFC1808754D00DB51D7 /* SVNHEchoPlugin.h */,
-				D064FEFD1808754D00DB51D7 /* SVNHEchoPlugin.m */,
-			);
-			name = SavannahEchoExample;
-			path = Savannah;
-			sourceTree = "<group>";
-		};
-		D069C578180326510065FA7B /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				D069C579180326510065FA7B /* SavannahEchoExample-Info.plist */,
-				D069C57A180326510065FA7B /* InfoPlist.strings */,
-				D069C57D180326510065FA7B /* main.m */,
-				D069C57F180326510065FA7B /* SavannahEchoExample-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		D069C594180326520065FA7B /* SavannahEchoExampleTests */ = {
-			isa = PBXGroup;
-			children = (
-				D069C59A180326520065FA7B /* SavannahTests.m */,
-				D069C595180326520065FA7B /* Supporting Files */,
-			);
-			name = SavannahEchoExampleTests;
-			path = SavannahTests;
-			sourceTree = "<group>";
-		};
-		D069C595180326520065FA7B /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				D069C596180326520065FA7B /* SavannahEchoExampleTests-Info.plist */,
-				D069C597180326520065FA7B /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D069C56B180326510065FA7B /* SavannahEchoExample */ = {
+		1AE19CB219FBB1AF00A716D5 /* SavannahEchoExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D069C59E180326520065FA7B /* Build configuration list for PBXNativeTarget "SavannahEchoExample" */;
+			buildConfigurationList = 1AE19CD619FBB1AF00A716D5 /* Build configuration list for PBXNativeTarget "SavannahEchoExample" */;
 			buildPhases = (
-				D069C568180326510065FA7B /* Sources */,
-				D069C569180326510065FA7B /* Frameworks */,
-				D069C56A180326510065FA7B /* Resources */,
+				1AE19CAF19FBB1AF00A716D5 /* Sources */,
+				1AE19CB019FBB1AF00A716D5 /* Frameworks */,
+				1AE19CB119FBB1AF00A716D5 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = SavannahEchoExample;
-			productName = Savannah;
-			productReference = D069C56C180326510065FA7B /* SavannahEchoExample.app */;
+			productName = SavannahEchoExample;
+			productReference = 1AE19CB319FBB1AF00A716D5 /* SavannahEchoExample.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D069C58B180326520065FA7B /* SavannahEchoExampleTests */ = {
+		1AE19CCB19FBB1AF00A716D5 /* SavannahEchoExampleTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D069C5A1180326520065FA7B /* Build configuration list for PBXNativeTarget "SavannahEchoExampleTests" */;
+			buildConfigurationList = 1AE19CD919FBB1AF00A716D5 /* Build configuration list for PBXNativeTarget "SavannahEchoExampleTests" */;
 			buildPhases = (
-				D069C588180326520065FA7B /* Sources */,
-				D069C589180326520065FA7B /* Frameworks */,
-				D069C58A180326520065FA7B /* Resources */,
+				1AE19CC819FBB1AF00A716D5 /* Sources */,
+				1AE19CC919FBB1AF00A716D5 /* Frameworks */,
+				1AE19CCA19FBB1AF00A716D5 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				D069C593180326520065FA7B /* PBXTargetDependency */,
+				1AE19CCE19FBB1AF00A716D5 /* PBXTargetDependency */,
 			);
 			name = SavannahEchoExampleTests;
-			productName = SavannahTests;
-			productReference = D069C58C180326520065FA7B /* SavannahEchoExampleTests.xctest */;
+			productName = SavannahEchoExampleTests;
+			productReference = 1AE19CCC19FBB1AF00A716D5 /* SavannahEchoExampleTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		D069C564180326510065FA7B /* Project object */ = {
+		1AE19CAB19FBB1AF00A716D5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				CLASSPREFIX = SVNH;
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "James Ward";
 				TargetAttributes = {
-					D069C58B180326520065FA7B = {
-						TestTargetID = D069C56B180326510065FA7B;
+					1AE19CB219FBB1AF00A716D5 = {
+						CreatedOnToolsVersion = 6.1;
+					};
+					1AE19CCB19FBB1AF00A716D5 = {
+						CreatedOnToolsVersion = 6.1;
+						TestTargetID = 1AE19CB219FBB1AF00A716D5;
 					};
 				};
 			};
-			buildConfigurationList = D069C567180326510065FA7B /* Build configuration list for PBXProject "SavannahEchoExample" */;
+			buildConfigurationList = 1AE19CAE19FBB1AF00A716D5 /* Build configuration list for PBXProject "SavannahEchoExample" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
-			mainGroup = D069C563180326510065FA7B;
-			productRefGroup = D069C56D180326510065FA7B /* Products */;
+			mainGroup = 1AE19CAA19FBB1AF00A716D5;
+			productRefGroup = 1AE19CB419FBB1AF00A716D5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D069C56B180326510065FA7B /* SavannahEchoExample */,
-				D069C58B180326520065FA7B /* SavannahEchoExampleTests */,
+				1AE19CB219FBB1AF00A716D5 /* SavannahEchoExample */,
+				1AE19CCB19FBB1AF00A716D5 /* SavannahEchoExampleTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		D069C56A180326510065FA7B /* Resources */ = {
+		1AE19CB119FBB1AF00A716D5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0F6241418032E62006919E0 /* www in Resources */,
-				D069C57C180326510065FA7B /* InfoPlist.strings in Resources */,
-				D069C587180326510065FA7B /* Images.xcassets in Resources */,
+				1AE19CEB19FBC68700A716D5 /* www in Resources */,
+				1AE19CC419FBB1AF00A716D5 /* Images.xcassets in Resources */,
+				1AE19CEE19FBDB1500A716D5 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D069C58A180326520065FA7B /* Resources */ = {
+		1AE19CCA19FBB1AF00A716D5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D069C599180326520065FA7B /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		D069C568180326510065FA7B /* Sources */ = {
+		1AE19CAF19FBB1AF00A716D5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D069C585180326510065FA7B /* Savannah.xcdatamodeld in Sources */,
-				D069C57E180326510065FA7B /* main.m in Sources */,
-				D069C582180326510065FA7B /* AppDelegate.m in Sources */,
-				D064FEFE1808754D00DB51D7 /* SVNHEchoPlugin.m in Sources */,
-				D0F624181803305F006919E0 /* SVNHWebViewManager.m in Sources */,
-				D04CB0AA18081CEB00AC522D /* SVNHCommand.m in Sources */,
+				1AE19CBC19FBB1AF00A716D5 /* AppDelegate.m in Sources */,
+				1AE19CDE19FBB21B00A716D5 /* SVNHCommand.m in Sources */,
+				1AE19CB919FBB1AF00A716D5 /* main.m in Sources */,
+				1AE19CE919FBC25700A716D5 /* SVNHEchoPlugin.m in Sources */,
+				1AE19CE119FBB26300A716D5 /* SVNHWebViewManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D069C588180326520065FA7B /* Sources */ = {
+		1AE19CC819FBB1AF00A716D5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D069C59B180326520065FA7B /* SavannahTests.m in Sources */,
+				1AE19CD319FBB1AF00A716D5 /* SavannahEchoExampleTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D069C593180326520065FA7B /* PBXTargetDependency */ = {
+		1AE19CCE19FBB1AF00A716D5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D069C56B180326510065FA7B /* SavannahEchoExample */;
-			targetProxy = D069C592180326520065FA7B /* PBXContainerItemProxy */;
+			target = 1AE19CB219FBB1AF00A716D5 /* SavannahEchoExample */;
+			targetProxy = 1AE19CCD19FBB1AF00A716D5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		D069C57A180326510065FA7B /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D069C57B180326510065FA7B /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		D069C597180326520065FA7B /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D069C598180326520065FA7B /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
-		D069C59C180326520065FA7B /* Debug */ = {
+		1AE19CD419FBB1AF00A716D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -334,9 +289,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -348,21 +305,21 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		D069C59D180326520065FA7B /* Release */ = {
+		1AE19CD519FBB1AF00A716D5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -374,136 +331,112 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		D069C59F180326520065FA7B /* Debug */ = {
+		1AE19CD719FBB1AF00A716D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Savannah/SavannahEchoExample-Prefix.pch";
-				INFOPLIST_FILE = "Savannah/SavannahEchoExample-Info.plist";
-				PRODUCT_NAME = SavannahEchoExample;
-				WRAPPER_EXTENSION = app;
+				INFOPLIST_FILE = SavannahEchoExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
-		D069C5A0180326520065FA7B /* Release */ = {
+		1AE19CD819FBB1AF00A716D5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Savannah/SavannahEchoExample-Prefix.pch";
-				INFOPLIST_FILE = "Savannah/SavannahEchoExample-Info.plist";
-				PRODUCT_NAME = SavannahEchoExample;
-				WRAPPER_EXTENSION = app;
+				INFOPLIST_FILE = SavannahEchoExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
-		D069C5A2180326520065FA7B /* Debug */ = {
+		1AE19CDA19FBB1AF00A716D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Savannah.app/Savannah";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Savannah/Savannah-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "SavannahTests/SavannahEchoExampleTests-Info.plist";
-				PRODUCT_NAME = SavannahEchoExampleTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
+				INFOPLIST_FILE = SavannahEchoExampleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SavannahEchoExample.app/SavannahEchoExample";
 			};
 			name = Debug;
 		};
-		D069C5A3180326520065FA7B /* Release */ = {
+		1AE19CDB19FBB1AF00A716D5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Savannah.app/Savannah";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Savannah/Savannah-Prefix.pch";
-				INFOPLIST_FILE = "SavannahTests/SavannahEchoExampleTests-Info.plist";
-				PRODUCT_NAME = SavannahEchoExampleTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
+				INFOPLIST_FILE = SavannahEchoExampleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SavannahEchoExample.app/SavannahEchoExample";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D069C567180326510065FA7B /* Build configuration list for PBXProject "SavannahEchoExample" */ = {
+		1AE19CAE19FBB1AF00A716D5 /* Build configuration list for PBXProject "SavannahEchoExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D069C59C180326520065FA7B /* Debug */,
-				D069C59D180326520065FA7B /* Release */,
+				1AE19CD419FBB1AF00A716D5 /* Debug */,
+				1AE19CD519FBB1AF00A716D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D069C59E180326520065FA7B /* Build configuration list for PBXNativeTarget "SavannahEchoExample" */ = {
+		1AE19CD619FBB1AF00A716D5 /* Build configuration list for PBXNativeTarget "SavannahEchoExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D069C59F180326520065FA7B /* Debug */,
-				D069C5A0180326520065FA7B /* Release */,
+				1AE19CD719FBB1AF00A716D5 /* Debug */,
+				1AE19CD819FBB1AF00A716D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D069C5A1180326520065FA7B /* Build configuration list for PBXNativeTarget "SavannahEchoExampleTests" */ = {
+		1AE19CD919FBB1AF00A716D5 /* Build configuration list for PBXNativeTarget "SavannahEchoExampleTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D069C5A2180326520065FA7B /* Debug */,
-				D069C5A3180326520065FA7B /* Release */,
+				1AE19CDA19FBB1AF00A716D5 /* Debug */,
+				1AE19CDB19FBB1AF00A716D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		D069C583180326510065FA7B /* Savannah.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				D069C584180326510065FA7B /* Savannah.xcdatamodel */,
-			);
-			currentVersion = D069C584180326510065FA7B /* Savannah.xcdatamodel */;
-			path = Savannah.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
-	rootObject = D069C564180326510065FA7B /* Project object */;
+	rootObject = 1AE19CAB19FBB1AF00A716D5 /* Project object */;
 }

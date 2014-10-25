@@ -1,4 +1,3 @@
-#import <Foundation/Foundation.h>
 #import "SVNHPlugin.h"
 #import "SVNHCommand.h"
 

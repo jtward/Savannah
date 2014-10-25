@@ -45,11 +45,11 @@
     }
     
     NSData* settingsData = [NSJSONSerialization dataWithJSONObject:settings
-                                                          options:0
-                                                            error:nil];
+                                                           options:0
+                                                             error:nil];
         
     NSString *settingsJSON = [[NSString alloc] initWithData:settingsData
-                                                  encoding:NSUTF8StringEncoding];
+                                                   encoding:NSUTF8StringEncoding];
     
     self.settingsJSON = [settingsJSON substringWithRange:NSMakeRange(0, [settingsJSON length])];
     
@@ -175,11 +175,11 @@
     if (self.isFirstLoad) {
         
         NSData *pluginNamesData = [NSJSONSerialization dataWithJSONObject:[self.plugins allKeys]
-                                                              options:0
-                                                                error:nil];
+                                                                  options:0
+                                                                    error:nil];
         
         NSString *pluginNamesJSON = [[NSString alloc] initWithData:pluginNamesData
-                                                      encoding:NSUTF8StringEncoding];
+                                                          encoding:NSUTF8StringEncoding];
         
         NSMutableArray *pluginMethods = [[NSMutableArray alloc] initWithCapacity:[self.plugins count]];
         for (id <SVNHPlugin> plugin in [self.plugins allValues]) {

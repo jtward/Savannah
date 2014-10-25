@@ -1,5 +1,7 @@
+#import <Foundation/Foundation.h>
+
 /*!
- * A Plugin is a class whose methods can be invoked by a UIWebView.
+ * A Plugin is a class whose methods can be invoked from a UIWebView.
  */
 @protocol SVNHPlugin <NSObject>
 

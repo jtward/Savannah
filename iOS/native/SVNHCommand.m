@@ -186,7 +186,7 @@
                               message:nil];
 }
 
-- (void) progressyWithArray:(NSArray *)message {
+- (void) progressWithArray:(NSArray *)message {
     
     [self sendPluginResultWithSuccess:YES
                          keepCallback:YES
