@@ -68,7 +68,7 @@ A plugin class just implements SVNHPlugin. Plugin methods take a SVNHCommand as 
 @interface MyPlugin : NSObject <SVNHPlugin>
 + (NSString *) name;
 + (NSArray *) methods;
-- (void) foo:(SVNHCommand *)command;
+- (void) bar:(SVNHCommand *)command;
 @end
 ```
 
@@ -133,7 +133,7 @@ public class MyPlugin implements SavannahPlugin {
   public boolean execute(String action, JSONArray args, Command command) {
 
     // check for the `bar` action
-    if(action.equals("bar")) {
+    if (action.equals("bar")) {
       // report success and pass back the string "bar!"
       command.success("bar!");
       return true;
