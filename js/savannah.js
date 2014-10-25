@@ -209,26 +209,6 @@
         }
     };
 
-    // called by the native app to unregister a plugin
-    var _unregisterPlugin = function(pluginName) {
-        delete plugins[pluginName];
-        var alias = aliases[pluginName];
-        if (alias) {
-            delete plugins[alias];
-        }
-    };
-
-    // called by the native app to unregister all plugins
-    var _clearPlugins = function() {
-        // delete all plugins rather than replacing with a new object,
-        // so that a user can keep a their own direct reference to plugins
-        var keys = Object.keys(plugins);
-        var i;
-        for (i = 0; i < keys.length; i += 1) {
-            delete plugins[keys[i]];
-        }
-    };
-
     // expose a promise, ready, that resolves once _didFinishLoad is called
     // _didFinishLoad is called by the native app when the page load is complete,
     // sending app-specific settings
@@ -270,9 +250,6 @@
     window.savannah = {
         _fetchMessages: _fetchMessages,
         _callback: _callback,
-        _registerPlugin: _registerPlugin,
-        _unregisterPlugin: _unregisterPlugin,
-        _clearPlugins: _clearPlugins,
         _didFinishLoad: _didFinishLoad,
         alias: alias,
         ready: ready,

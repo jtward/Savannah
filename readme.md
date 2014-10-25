@@ -114,7 +114,7 @@ new WebViewManager("main", webView, settings, plugins, "file:///android_asset/ww
 
 Don't forget to include the savannah.js file in your web page!
 
-A plugin class just implements `Plugin`. You need to implement an `execute` method, similar to Cordova, and a `getName` method.
+A plugin class just implements `Plugin`. You need to implement an `execute` method, similar to Cordova.
 
 ```Java
 public class MyPlugin implements SavannahPlugin {

@@ -67,33 +67,8 @@
     return [self.webView stringByEvaluatingJavaScriptFromString:script];
 }
 
-- (void) registerPlugin:(id <SVNHPlugin>)plugin {
-    NSString *pluginName = [[plugin class] name];
-    NSArray *pluginMethods = [[plugin class] methods];
-    
-    NSData* pluginMethodsData = [NSJSONSerialization dataWithJSONObject:pluginMethods
-                                                              options:0
-                                                                error:nil];
-    
-    NSString *pluginMethodsJSON = [[NSString alloc] initWithData:pluginMethodsData
-                                                      encoding:NSUTF8StringEncoding];
-    
-    [self executeJavaScript:[NSString stringWithFormat:@"window.savannah._registerPlugin('%@', %@);", pluginName, pluginMethodsJSON]];
-    [self.plugins setObject:plugin forKey:pluginName];
-}
-
-- (void) unregisterPluginByName:(NSString *)pluginName {
-    [self executeJavaScript:[NSString stringWithFormat:@"window.savannah._unregisterPlugin('%@');", pluginName]];
-    [self.plugins removeObjectForKey:pluginName];
-}
-
 - (id <SVNHPlugin>) getPluginByName:(NSString *)pluginName {
     return [self.plugins objectForKey:pluginName];
-}
-
-- (void) clearPlugins {
-    [self executeJavaScript:@"window.savannah._clearPlugins();"];
-    [self.plugins removeAllObjects];
 }
 
 - (BOOL) webView:(UIWebView *)theWebView

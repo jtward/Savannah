@@ -29,32 +29,11 @@
             plugins:(NSArray *)plugins
                 URL:(NSURL *)URL;
 
-
-/*!
- * Registers a plugin to be made available to the WebView.
- * @param plugin a plugin to be made available to the WebView.
- */
-- (void) registerPlugin:(id <SVNHPlugin>)plugin;
-
-/*!
- * Unregisters a plugin, making it unavailable to the WebView.
- * @param pluginName the name of the plugin to unregister.
- * @discussion Does nothing if the plugin is not currently registered.
- * Any messages returned from the plugin to the WebView after the plugin is unregistered are not affected and will be passed back to the WebView as normal.
- */
-- (void) unregisterPluginByName:(NSString *)pluginName;
-
 /*!
  * Returns the registered plugin with the given name, or nil if no plugin with the given name is registered.
  * @param pluginName the name of the registered plugin to return.
  */
 - (id<SVNHPlugin>) getPluginByName:(NSString *)pluginName;
-
-/*!
- * Unregister all Plugins, making them unavailable to the WebView.
- * @discussion Any messages returned from the plugin to the WebView after the plugin is unregistered are not affected and will be passed back to the WebView as normal.
- */
-- (void) clearPlugins;
 
 /*!
  * Sends the result of a Plugin execution to the UIWebView.
