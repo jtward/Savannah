@@ -1,3 +1,6 @@
+#import <Foundation/Foundation.h>
+@class SVNHCommand;
+
 /*!
  * A Plugin is a class whose methods can be invoked from a UIWebView.
  */
@@ -11,5 +14,8 @@
  */
 + (NSString *) name;
 + (NSArray *) methods;
+
+- (BOOL) execute:(NSString *)action
+     withCommand:(SVNHCommand *)command;
 
 @end

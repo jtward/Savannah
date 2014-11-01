@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "SVNHPlugin.h"
+@protocol SVNHPlugin;
 
 /*!
  * A manager for a single UIWebView instance. Handles communication between the web page loaded in the UIWebView and a collection of Plugins.

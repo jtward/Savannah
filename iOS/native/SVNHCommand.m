@@ -63,15 +63,17 @@
     return ret;
 }
 
-- (void)sendPluginResultWithSuccess:(BOOL)success
-                       keepCallback:(BOOL)keepCallback
-                            message:(id)messageObject {
+- (void) sendPluginResultWithSuccess:(BOOL)success
+                        keepCallback:(BOOL)keepCallback
+                             message:(id)messageObject {
     
     if (!self.isDiscarded) {
         self.keepCallback = keepCallback;
+        
         if (!self.keepCallback) {
             self.isDiscarded = YES;
         }
+        
         [self.webViewManager sendPluginResponseWithStatus:success
                                                   message:[self messageAsJSON:messageObject]
                                              keepCallback:self.keepCallback
@@ -208,7 +210,7 @@
 }
 
 - (void) progressWithDouble:(double)message {
-
+    
     [self sendPluginResultWithSuccess:YES
                          keepCallback:YES
                               message:[NSNumber numberWithInt:message]];

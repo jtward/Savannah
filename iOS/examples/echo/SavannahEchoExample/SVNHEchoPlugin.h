@@ -6,5 +6,7 @@
 + (NSString *) name;
 + (NSArray *) methods;
 
-- (void) echo:(SVNHCommand *)command;
+- (BOOL) execute:(NSString *)action
+     withCommand:(SVNHCommand *)command;
+
 @end

@@ -1,5 +1,6 @@
 #import "SVNHWebViewManager.h"
 #import "SVNHCommand.h"
+#import "SVNHPlugin.h"
 
 @interface SVNHWebViewManager()
 
@@ -28,7 +29,7 @@
     self.name = name;
     self.webView = webView;
     
-    int pluginsCount = plugins == nil ? 0 : [plugins count];
+    long pluginsCount = plugins == nil ? 0 : [plugins count];
     
     NSMutableDictionary *pluginsDictionary = [[NSMutableDictionary alloc] initWithCapacity:pluginsCount];
 
@@ -47,7 +48,7 @@
     NSData* settingsData = [NSJSONSerialization dataWithJSONObject:settings
                                                            options:0
                                                              error:nil];
-        
+    
     NSString *settingsJSON = [[NSString alloc] initWithData:settingsData
                                                    encoding:NSUTF8StringEncoding];
     
@@ -100,24 +101,12 @@
                     NSLog(@"Plugin %@ not found", pluginName);
                 }
                 else {
-                    SEL execSelector = NSSelectorFromString([NSString stringWithFormat:@"%@:",
-                                                             methodName]);
+                    SVNHCommand *command = [[SVNHCommand alloc] initWithArguments:[cmd objectAtIndex:3]
+                                                                       callbackId:[cmd objectAtIndex:0]
+                                                                   webViewManager:self
+                                                                          webView:theWebView];
                     
-                    if ([plugin respondsToSelector:execSelector]) {
-                        
-                        // create command and send
-                        SVNHCommand *command = [[SVNHCommand alloc] initWithArguments:[cmd objectAtIndex:3]
-                                                                           callbackId:[cmd objectAtIndex:0]
-                                                                       webViewManager:self
-                                                                              webView:theWebView];
-                        
-                        
-                        [plugin performSelector:execSelector
-                                     withObject:command];
-                    }
-                    else {
-                        NSLog(@"Plugin %@ has no method %@", pluginName, methodName);
-                    }
+                    [plugin execute:methodName withCommand:command];
                 }
             }
         }

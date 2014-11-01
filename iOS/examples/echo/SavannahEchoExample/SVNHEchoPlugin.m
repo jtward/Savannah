@@ -10,10 +10,15 @@
     return @[@"echo"];
 };
 
-- (void) echo:(SVNHCommand *)command {
+- (BOOL) execute:(NSString *)action
+     withCommand:(SVNHCommand *)command {
+    if ([action isEqualToString:@"echo"]) {
+        NSString *message = [command argumentAtIndex:0];
+        [command successWithString:message];
+        return YES;
+    }
     
-    NSString *message = [command argumentAtIndex:0];
-    [command successWithString:message];
+    return NO;
 }
 
 @end

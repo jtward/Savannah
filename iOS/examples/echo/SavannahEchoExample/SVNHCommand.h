@@ -1,4 +1,5 @@
-#import "SVNHWebViewManager.h"
+#import <UIKit/UIKit.h>
+@class SVNHWebViewManager;
 
 /*!
  * A Command is used to send the result of a Plugin execution back to the UIWebView that called it.
