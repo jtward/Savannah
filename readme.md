@@ -46,13 +46,14 @@ self.webViewManager = [[SVNHWebViewManager alloc] initWithName:@"main"
 Don't forget to include the savannah.js file in your web page!
 
 
-A plugin class just implements SVNHPlugin. Plugin methods take a SVNHCommand as their only argument.
+A plugin class just implements SVNHPlugin. You need to implement an `execute` method, similar to Cordova's Android implementation, and a `getMethods` method to expose the plugin's methods.
 
 ```Objective-C
 @interface MyPlugin : NSObject <SVNHPlugin>
 + (NSString *) name;
 + (NSArray *) methods;
-- (void) bar:(SVNHCommand *)command;
+- (BOOL) execute:(NSString *)action
+     withCommand:(SVNHCommand *)command;
 @end
 ```
 
@@ -67,9 +68,16 @@ A plugin class just implements SVNHPlugin. Plugin methods take a SVNHCommand as 
     return @[@"bar"];
 };
 
-- (void) bar:(SVNHCommand *)command {
+- (BOOL) execute:(NSString *)action
+     withCommand:(SVNHCommand *)command {
+
+  // check for the `bar` action
+  if ([action isEqualToString @"bar"]) {
     // report success and pass back the string "bar!"
     [command successWithString:@"bar!"];
+    return YES;
+  }
+  return NO;
 }
 ```
 
