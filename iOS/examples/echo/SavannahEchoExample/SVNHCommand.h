@@ -12,29 +12,14 @@
 @property (nonatomic, readonly) NSString* webViewManagerName;
 
 /*!
- * The UIWebView that executed this Command.
- */
-@property (nonatomic, readonly) UIWebView* webView;
-
-/*!
- * The command's keep callback flag.
- * @deprecated
- * @param keepCallback true if the next call to success or error should keep this Command and not discard it, false otherwise.
- * @discussion You should only set this property when porting over plugins that use Cordova syntax. Use progress instead.
- */
-@property (nonatomic) BOOL keepCallback __attribute__((deprecated));
-
-/*!
  * Create a new Command.
  * @param arguments the arguments passed to the plugin by the UIWebVeiw.
  * @param callbackId the value used to identify the callbacks for this Command in the UIWebView.
  * @param webViewManager the manager for this Command.
- * @param webView the UIWebView for this Command.
  */
 - (id) initWithArguments:(NSArray *)arguments
               callbackId:(NSString *)callbackId
-          webViewManager:(SVNHWebViewManager *)webViewManager
-                 webView:(UIWebView *)webView;
+          webViewManager:(SVNHWebViewManager *)webViewManager;
 
 /*!
  * Returns the argument at the given index.

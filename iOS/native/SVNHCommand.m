@@ -188,7 +188,7 @@
                               message:nil];
 }
 
-- (void) progressWithArray:(NSArray *)message {
+- (void) progressyWithArray:(NSArray *)message {
     
     [self sendPluginResultWithSuccess:YES
                          keepCallback:YES
@@ -210,7 +210,7 @@
 }
 
 - (void) progressWithDouble:(double)message {
-    
+
     [self sendPluginResultWithSuccess:YES
                          keepCallback:YES
                               message:[NSNumber numberWithInt:message]];
