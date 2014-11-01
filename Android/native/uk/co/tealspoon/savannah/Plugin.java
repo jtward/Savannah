@@ -26,9 +26,8 @@ public interface Plugin {
 	/**
 	 * Called when a the WebView executes a command for this Plugin.
 	 * @param action The name of the action to perform.
-	 * @param args The arguments passed by the WebView.
 	 * @param command The command used to feed back the result or status of the command.
 	 * @return true if the given action is valid, false otherwise.
 	 */
-	public boolean execute(String action, JSONArray args, Command command);
+	public boolean execute(String action, Command command);
 }

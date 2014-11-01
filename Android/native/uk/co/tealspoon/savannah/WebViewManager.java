@@ -62,7 +62,6 @@ public class WebViewManager {
 	/**
 	 * Creates a new WebViewManager which manages the given WebView. 
 	 * @param name the name of this WebViewManager. Useful for identifying WebViewManagers. Uniqueness is not enforced.
-	 * @param webView the WebView managed by this WebViewManager.
 	 * @param activity the Activity that contains the given WebView.
 	 * @param settings the settings to pass to the WebView.
 	 * @param pluginsCollection a collection of Plugins to be made available to the WebView.
@@ -277,8 +276,8 @@ public class WebViewManager {
 					else {
 						try {
 							JSONArray args = new JSONArray(arguments);
-							Command cmd = new Command(callbackId, this, webView, activity);
-							plugin.execute(methodName, args, cmd);
+							Command cmd = new Command(args, callbackId, this, activity);
+							plugin.execute(methodName, cmd);
 						}
 						catch (JSONException e) {
 							Log.e("Savannah", "Malformed JSON in arguments to " + pluginName + " " + methodName + ". JSON: " + arguments);
@@ -301,8 +300,10 @@ public class WebViewManager {
 
 	/**
 	 * Send the result of a Plugin execution to the WebView.
-	 * @param result the result to send.
-	 * @param callbackId the id of the callback that should receive the result.
+     * @param status the status to send.
+     * @param message the message to send.
+     * @param keepCallback true if the callback should be kept rather than discarded.
+     * @param callbackId the id of the callback that should receive the result.
 	 */
 	protected void sendPluginResult(boolean status, String message, boolean keepCallback, String callbackId) {
 		String statusString = Boolean.toString(status);
