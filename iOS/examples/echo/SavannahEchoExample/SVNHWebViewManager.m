@@ -103,8 +103,7 @@
                 else {
                     SVNHCommand *command = [[SVNHCommand alloc] initWithArguments:[cmd objectAtIndex:3]
                                                                        callbackId:[cmd objectAtIndex:0]
-                                                                   webViewManager:self
-                                                                          webView:theWebView];
+                                                                   webViewManager:self];
                     
                     [plugin execute:methodName withCommand:command];
                 }
@@ -149,12 +148,8 @@
     didFailLoadWithError:(NSError *)error {
     
     if (self.delegate != nil) {
-        SEL selector = NSSelectorFromString([NSString stringWithFormat:@"webView:didFailLoadWithError:"]);
-        
-        if ([self.delegate respondsToSelector:selector]) {
-            
-            [self.delegate performSelector:selector withObject:webView
-                                withObject:error];
+        if ([self.delegate respondsToSelector:@selector(webView:didFailLoadWithError:)]) {
+            [self.delegate webView:webView didFailLoadWithError:error];
         }
     }
 }
@@ -187,12 +182,8 @@
         self.isFirstLoad = NO;
     }
     if (self.delegate != nil) {
-        SEL selector = NSSelectorFromString([NSString stringWithFormat:@"webViewDidFinishLoad:"]);
-        
-        if ([self.delegate respondsToSelector:selector]) {
-            
-            [self.delegate performSelector:selector
-                                withObject:self.webView];
+        if ([self.delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
+            [self.delegate webViewDidFinishLoad:self.webView];
         }
     }
 }
@@ -200,12 +191,8 @@
 - (void) webViewDidStartLoad:(UIWebView *)theWebView {
     
     if (self.delegate != nil) {
-        SEL selector = NSSelectorFromString([NSString stringWithFormat:@"webViewDidStartLoad:"]);
-        
-        if ([self.delegate respondsToSelector:selector]) {
-            
-            [self.delegate performSelector:selector
-                                withObject:self.webView];
+        if ([self.delegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
+            [self.delegate webViewDidStartLoad:self.webView];
         }
     }
 }
