@@ -5,22 +5,6 @@ Savannah is a web-native bridge for hybrid apps with a plugin architecture, simi
 
 It is designed to be easy to drop into native apps, and enables you to use multiple isolated webviews with their own set of plugins.
 
-Version 0.8.0 - 11th June 2014
-
-Version 0.7.0 - 10th June 2014
-
-Version 0.6.0 - 8th June 2014
-
-Version 0.5.0 - 19th May 2014
-
-Version 0.4.0 - 18th May 2014
-
-Version 0.3.0 - 9th May 2014
-
-Version 0.2.0 - 23rd March 2014
-
-Version 0.1.0 - 8th February 2014
-
 ## Differences between Savannah and Cordova / Phonegap
 
 - You can create as many Savannah-managed webviews as you like. Each webview has its own manager, and is isolated from all others. Plugins are per-manager, which means your webviews can have different plugins available to them. You can use the same instance of a plugin in multiple managers, or create a new instance for each manager.
@@ -189,30 +173,30 @@ savannah.exec("com.example.foo",        // plugin identifier / name
 Savannah user either promises or callbacks, but not both. If you pass callbacks to `savannah.exec`, a promise will not be returned. Savannah.js depends on `window.Promise` or a polyfill, and you must wait for the `savannah.ready` promise to resolve before calling plugin methods.
 
 ## Changelog
-### 0.8.0
+### 0.8.0, 11th June 2014
 - Native plugins must now provide a list of the methods they support.
 - Plugins on savannah.plugins are now a hash of the plugin's methods, rather than just a single method. Those methods are called with separate arguments, rather than an arguments array.
 
-### 0.7.0
+### 0.7.0, 10th June 2014
 - Plugin execution from savannah.js is now debounced for better efficiency.
 - Removed onDeviceReady callback and added a ready promise in savannah.js.
 - savannah.js now depends on window.Promise or a polyfill.
 
-### 0.6.0
+### 0.6.0, 8th June 2014
 - Made currently available plugins visible in the webview.
 - Now use only window.Promise. 
 
-### 0.5.0
+### 0.5.0, 19th May 2014
 - Added promise support to savannah.exec.
 - Added progress methods to Command, and removed keepCallback arguments from success and error methods in favour of a deprecated Cordova-style setKeepCallback method.
 
-### 0.4.0
+### 0.4.0, 18th May 2014
 - Unified savannah.js: the same JS file is now used across both iOS and Android.
 
-### 0.3.0
+### 0.3.0, 9th May 2014
 - Added settings to managers, which get passed to the webview.
 - Added an optional onDeviceReady callback, which gets called when settings are known.
 
-### 0.2.0
+### 0.2.0, 8th February 2014
 - Added methods for getting and removing plugins from managers.
 - Fixed a bug in Android where a null pointer exception could occur when executing JavaScript on the WebView after it had been destroyed.
