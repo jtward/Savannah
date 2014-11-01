@@ -13,7 +13,7 @@
 
 /*!
  * Create a new Command.
- * @param arguments the arguments passed to the plugin by the UIWebVeiw.
+ * @param arguments the arguments passed to the plugin by the UIWebView.
  * @param callbackId the value used to identify the callbacks for this Command in the UIWebView.
  * @param webViewManager the manager for this Command.
  */

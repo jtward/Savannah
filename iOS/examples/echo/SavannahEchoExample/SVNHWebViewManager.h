@@ -38,7 +38,9 @@
 
 /*!
  * Sends the result of a Plugin execution to the UIWebView.
- * @param result the result to send.
+ * @param status the status to send.
+ * @param message the message to send.
+ * @param keepCallback true if the callback should be kept rather than discarded.
  * @param callbackId the id of the callback that should receive the result.
  */
 - (void) sendPluginResponseWithStatus:(BOOL)status
