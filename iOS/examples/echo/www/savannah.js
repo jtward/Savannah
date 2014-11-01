@@ -50,25 +50,28 @@
 
     // notify the native app that there are commands waiting
     // send the command data if possible to avoid a round trip
-    var notifyNative = debounce((function() {
-        if (window.savannahJSI) {
-            // Android
-            return function() {
-                if (commandQueue.length) {
-                    window.savannahJSI.exec(JSON.stringify(commandQueue));
-                    commandQueue.length = 0;
-                }
-            };
-        }
-        else {
-            // iOS
-            return function() {
-                if (commandQueue.length) {
-                    window.location = "/!svnh_exec?";
-                }
-            };
-        }
-    }()), 20);
+    var notifyNative;
+    var setNotifyNative = function() {
+        notifyNative = debounce((function() {
+            if (window.savannahJSI) {
+                // Android
+                return function() {
+                    if (commandQueue.length) {
+                        window.savannahJSI.exec(JSON.stringify(commandQueue));
+                        commandQueue.length = 0;
+                    }
+                };
+            }
+            else {
+                // iOS
+                return function() {
+                    if (commandQueue.length) {
+                        window.location = "/!svnh_exec?";
+                    }
+                };
+            }
+        }()), 20);
+    };
 
     // IIFE; returns a function which is the entry point for all plugin execution
     var exec = (function() {
@@ -209,26 +212,6 @@
         }
     };
 
-    // called by the native app to unregister a plugin
-    var _unregisterPlugin = function(pluginName) {
-        delete plugins[pluginName];
-        var alias = aliases[pluginName];
-        if (alias) {
-            delete plugins[alias];
-        }
-    };
-
-    // called by the native app to unregister all plugins
-    var _clearPlugins = function() {
-        // delete all plugins rather than replacing with a new object,
-        // so that a user can keep a their own direct reference to plugins
-        var keys = Object.keys(plugins);
-        var i;
-        for (i = 0; i < keys.length; i += 1) {
-            delete plugins[keys[i]];
-        }
-    };
-
     // expose a promise, ready, that resolves once _didFinishLoad is called
     // _didFinishLoad is called by the native app when the page load is complete,
     // sending app-specific settings
@@ -238,6 +221,7 @@
             var i;
 
             if (!isLoadFinished) {
+                setNotifyNative();
                 isLoadFinished = true;
                 window.savannah.settings = settings;
                 for (i = 0; i < plugins.length; i += 1) {
@@ -270,9 +254,6 @@
     window.savannah = {
         _fetchMessages: _fetchMessages,
         _callback: _callback,
-        _registerPlugin: _registerPlugin,
-        _unregisterPlugin: _unregisterPlugin,
-        _clearPlugins: _clearPlugins,
         _didFinishLoad: _didFinishLoad,
         alias: alias,
         ready: ready,

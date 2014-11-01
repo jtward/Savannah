@@ -50,25 +50,28 @@
 
     // notify the native app that there are commands waiting
     // send the command data if possible to avoid a round trip
-    var notifyNative = debounce((function() {
-        if (window.savannahJSI) {
-            // Android
-            return function() {
-                if (commandQueue.length) {
-                    window.savannahJSI.exec(JSON.stringify(commandQueue));
-                    commandQueue.length = 0;
-                }
-            };
-        }
-        else {
-            // iOS
-            return function() {
-                if (commandQueue.length) {
-                    window.location = "/!svnh_exec?";
-                }
-            };
-        }
-    }()), 20);
+    var notifyNative;
+    var setNotifyNative = function() {
+        notifyNative = debounce((function() {
+            if (window.savannahJSI) {
+                // Android
+                return function() {
+                    if (commandQueue.length) {
+                        window.savannahJSI.exec(JSON.stringify(commandQueue));
+                        commandQueue.length = 0;
+                    }
+                };
+            }
+            else {
+                // iOS
+                return function() {
+                    if (commandQueue.length) {
+                        window.location = "/!svnh_exec?";
+                    }
+                };
+            }
+        }()), 20);
+    };
 
     // IIFE; returns a function which is the entry point for all plugin execution
     var exec = (function() {
@@ -218,6 +221,7 @@
             var i;
 
             if (!isLoadFinished) {
+                setNotifyNative();
                 isLoadFinished = true;
                 window.savannah.settings = settings;
                 for (i = 0; i < plugins.length; i += 1) {
