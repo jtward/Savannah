@@ -122,7 +122,7 @@ public class MyPlugin implements SavannahPlugin {
   }
 
   @Override
-  public boolean execute(String action, JSONArray args, Command command) {
+  public boolean execute(String action, Command command) {
 
     // check for the `bar` action
     if (action.equals("bar")) {
@@ -181,6 +181,9 @@ savannah.exec("com.example.foo",        // plugin identifier / name
 Savannah user either promises or callbacks, but not both. If you pass callbacks to `savannah.exec`, a promise will not be returned. Savannah.js depends on `window.Promise` or a polyfill, and you must wait for the `savannah.ready` promise to resolve before calling plugin methods.
 
 ## Changelog
+### 0.9.0, 1st November 2014
+- Made changes to Plugin and Command syntax in both Android and iOS to be more consistent with each other rather than Cordova. iOS plugins must now implement execute, and the plugin arguments are now accessed via the command on Android.
+
 ### 0.8.0, 11th June 2014
 - Native plugins must now provide a list of the methods they support.
 - Plugins on savannah.plugins are now a hash of the plugin's methods, rather than just a single method. Those methods are called with separate arguments, rather than an arguments array.
