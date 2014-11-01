@@ -7,7 +7,6 @@
 @property (nonatomic) NSString* callbackId;
 @property (nonatomic) SVNHWebViewManager* webViewManager;
 @property (nonatomic) NSString* webViewManagerName;
-@property (nonatomic) UIWebView* webView;
 @property (nonatomic) BOOL isDiscarded;
 
 @end
@@ -16,17 +15,14 @@
 
 - (id) initWithArguments:(NSArray *)arguments
               callbackId:(NSString *)callbackId
-          webViewManager:(SVNHWebViewManager *)webViewManager
-                 webView:(UIWebView *)webView {
+          webViewManager:(SVNHWebViewManager *)webViewManager {
     
     self = [super init];
     
-    self.keepCallback = NO;
     self.isDiscarded = NO;
     self.arguments = arguments;
     self.callbackId = callbackId;
     self.webViewManager = webViewManager;
-    self.webView = webView;
     self.webViewManagerName = webViewManager.name;
     
     return self;
@@ -64,19 +60,18 @@
 }
 
 - (void) sendPluginResultWithSuccess:(BOOL)success
-                        keepCallback:(BOOL)keepCallback
-                             message:(id)messageObject {
+                             message:(NSString *)message
+                        keepCallback:(BOOL)keepCallback {
     
     if (!self.isDiscarded) {
-        self.keepCallback = keepCallback;
-        
-        if (!self.keepCallback) {
+
+        if (!keepCallback) {
             self.isDiscarded = YES;
         }
         
         [self.webViewManager sendPluginResponseWithStatus:success
-                                                  message:[self messageAsJSON:messageObject]
-                                             keepCallback:self.keepCallback
+                                                  message:message
+                                             keepCallback:keepCallback
                                                callbackId:self.callbackId];
     }
     else {
@@ -86,148 +81,148 @@
 
 - (void) success {
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:self.keepCallback
-                              message:nil];
+                              message:nil
+                         keepCallback:NO];
 }
 
 - (void) successWithArray:(NSArray *)message {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:self.keepCallback
-                              message:message];
+                              message:[self messageAsJSON:message]
+                         keepCallback:NO];
 }
 
 - (void) successWithBool:(BOOL)message {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:self.keepCallback
-                              message:[NSNumber numberWithBool:message]];
+                              message:[self messageAsJSON:[NSNumber numberWithBool:message]]
+                         keepCallback:NO];
 }
 
 - (void) successWithDictionary:(NSDictionary *)message {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:self.keepCallback
-                              message:message];
+                              message:[self messageAsJSON:message]
+                         keepCallback:NO];
 }
 
 - (void) successWithDouble:(double)message {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:self.keepCallback
-                              message:[NSNumber numberWithInt:message]];
+                              message:[self messageAsJSON:[NSNumber numberWithInt:message]]
+                         keepCallback:NO];
 }
 
 - (void) successWithInt:(int)message {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:self.keepCallback
-                              message:[NSNumber numberWithDouble:message]];
+                              message:[self messageAsJSON:[NSNumber numberWithDouble:message]]
+                         keepCallback:NO];
 }
 
 - (void) successWithString:(NSString *)message {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:self.keepCallback
-                              message:message];
+                              message:[self messageAsJSON:message]
+                         keepCallback:NO];
 }
 
 - (void) error {
     
     [self sendPluginResultWithSuccess:NO
-                         keepCallback:self.keepCallback
-                              message:nil];
+                              message:[self messageAsJSON:nil]
+                         keepCallback:NO];
 }
 
 - (void) errorWithArray:(NSArray *)message {
     
     [self sendPluginResultWithSuccess:NO
-                         keepCallback:self.keepCallback
-                              message:message];
+                              message:[self messageAsJSON:message]
+                         keepCallback:NO];
 }
 
 - (void) errorWithBool:(BOOL)message {
     
     [self sendPluginResultWithSuccess:NO
-                         keepCallback:self.keepCallback
-                              message:[NSNumber numberWithBool:message]];
+                              message:[self messageAsJSON:[NSNumber numberWithBool:message]]
+                         keepCallback:NO];
 }
 
 - (void) errorWithDictionary:(NSDictionary *)message {
     
     [self sendPluginResultWithSuccess:NO
-                         keepCallback:self.keepCallback
-                              message:message];
+                              message:[self messageAsJSON:message]
+                         keepCallback:NO];
 }
 
 - (void) errorWithDouble:(double)message {
     
     [self sendPluginResultWithSuccess:NO
-                         keepCallback:self.keepCallback
-                              message:[NSNumber numberWithInt:message]];
+                              message:[self messageAsJSON:[NSNumber numberWithInt:message]]
+                         keepCallback:NO];
 }
 
 - (void) errorWithInt:(int)message {
     
     [self sendPluginResultWithSuccess:NO
-                         keepCallback:self.keepCallback
-                              message:[NSNumber numberWithDouble:message]];
+                              message:[self messageAsJSON:[NSNumber numberWithDouble:message]]
+                         keepCallback:NO];
 }
 
 - (void) errorWithString:(NSString *)message {
     
     [self sendPluginResultWithSuccess:NO
-                         keepCallback:self.keepCallback
-                              message:message];
+                              message:[self messageAsJSON:message]
+                         keepCallback:NO];
 }
 
 - (void) progress {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:YES
-                              message:nil];
+                              message:[self messageAsJSON:nil]
+                         keepCallback:YES];
 }
 
-- (void) progressyWithArray:(NSArray *)message {
+- (void) progressWithArray:(NSArray *)message {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:YES
-                              message:message];
+                              message:[self messageAsJSON:message]
+                         keepCallback:YES];
 }
 
 - (void) progressWithBool:(BOOL)message {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:YES
-                              message:[NSNumber numberWithBool:message]];
+                              message:[self messageAsJSON:[NSNumber numberWithBool:message]]
+                         keepCallback:YES];
 }
 
 - (void) progressWithDictionary:(NSDictionary *)message {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:YES
-                              message:message];
+                              message:[self messageAsJSON:message]
+                         keepCallback:YES];
 }
 
 - (void) progressWithDouble:(double)message {
-
+    
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:YES
-                              message:[NSNumber numberWithInt:message]];
+                              message:[self messageAsJSON:[NSNumber numberWithInt:message]]
+                         keepCallback:YES];
 }
 
 - (void) progressWithInt:(int)message {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:YES
-                              message:[NSNumber numberWithDouble:message]];
+                              message:[self messageAsJSON:[NSNumber numberWithDouble:message]]
+                         keepCallback:YES];
 }
 
 - (void) progressWithString:(NSString *)message {
     
     [self sendPluginResultWithSuccess:YES
-                         keepCallback:YES
-                              message:message];
+                              message:[self messageAsJSON:message]
+                         keepCallback:YES];
 }
 
 - (NSString*) messageAsJSON:(id)messageObject {
