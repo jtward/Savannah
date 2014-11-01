@@ -25,10 +25,10 @@ public class EchoPlugin implements Plugin {
 	}
 
 	@Override
-	public boolean execute(String action, JSONArray args, Command command) {
+	public boolean execute(String action, Command command) {
 		
 		if(action.equals("echo")) {
-			String message = args.optString(0);
+			String message = command.getArguments().optString(0);
 			command.success(message);
 			return true;
 		}
