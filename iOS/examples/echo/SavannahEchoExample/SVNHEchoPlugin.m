@@ -12,9 +12,17 @@
 
 - (BOOL) execute:(NSString *)action
      withCommand:(SVNHCommand *)command {
+
     if ([action isEqualToString:@"echo"]) {
-        NSString *message = [command argumentAtIndex:0];
-        [command successWithString:message];
+
+        if ([command hasStringAtIndex:0]) {
+            NSString *message = [command stringAtIndex:0];
+            [command successWithString:message];
+        }
+        else {
+            [command error];
+        }
+
         return YES;
     }
     

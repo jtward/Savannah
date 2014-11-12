@@ -1,6 +1,7 @@
 package uk.co.tealspoon.savannah;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -12,13 +13,13 @@ import android.util.Log;
  *
  */
 public class Command {
-	
-	private JSONArray arguments;
-	private String callbackId;
-	private WebViewManager webViewManager;
+
+	private final JSONArray arguments;
+	private final String callbackId;
+	private final WebViewManager webViewManager;
 	private boolean isDiscarded;
-	private String webViewManagerName;
-	private Activity activity;
+	public final String webViewManagerName;
+	public final Activity activity;
 
 	/**
 	 * Create a new Command
@@ -36,16 +37,181 @@ public class Command {
 		isDiscarded = false;
 	}
 
-	public JSONArray getArguments() {
-		return arguments;
+	/**
+	 * Return the length of the arguments array for this Command.
+	 * @return the length of the arguments array for this Command.
+	 */
+	public int argumentsLength() {
+		return arguments.length();
 	}
 
-	public String getWebViewManagerName() {
-		return webViewManagerName;
+	private boolean hasTypeAtIndex(int index, Class aClass) {
+		if (arguments.length() > index) {
+			try {
+				Object argument = arguments.get(index);
+				return aClass.isInstance(argument);
+			}
+			catch (JSONException e) {
+				return false;
+			}
+		}
+		return false;
 	}
-	
-	public Activity getActivity() {
-		return activity;
+
+	/**
+	 * Return true if the argument at the given index is a JSON array. If index is beyond the end of the array, then this method returns false.
+	 * @param index the index into the arguments array to check.
+	 * @return true if the argument at the given index is a JSON array, false otherwise.
+	 */
+	public boolean hasArrayAtIndex(int index) {
+		return arguments.optJSONArray(index) != null;
+	}
+
+	/**
+	 * Returns the argument at the given index if it is a JSON array. If the argument at the given index is not a JSON array, then this method returns null.
+	 * @param index the index into the arguments array to check.
+	 * @return the argument at the given index if it is a JSON array, null otherwise.
+	 */
+	public JSONArray arrayAtIndex(int index) {
+		return arguments.optJSONArray(index);
+	}
+
+	/**
+	 * Return true if the argument at the given index is a boolean. If index is beyond the end of the array, then this method returns false.
+	 * @param index the index into the arguments array to check.
+	 * @return true if the argument at the given index is a bool, false otherwise.
+	 */
+	public boolean hasBooleanAtIndex(int index) {
+		return hasTypeAtIndex(index, Boolean.class);
+	}
+
+	/**
+	 * Returns the argument at the given index if it is a boolean. If the argument at the given index is not a boolean, then this method returns false.
+	 * @param index the index into the arguments array to check.
+	 * @return the argument at the given index if it is a boolean, false otherwise.
+	 */
+	public boolean booleanAtIndex(int index) {
+		return arguments.optBoolean(index, false);
+	}
+
+	/**
+	 * Returns the argument at the given index if it is a boolean. If the argument at the given index is not a boolean, then this method returns defaultValue.
+	 * @param index the index into the arguments array to check.
+	 * @param defaultValue the value to return if the argument at the given index is not a boolean.
+	 * @return the argument at the given index if it is a boolean, defaultValue otherwise.
+	 */
+	public boolean booleanAtIndex(int index, boolean defaultValue) {
+		return arguments.optBoolean(index, defaultValue);
+	}
+
+	/**
+	 * Return true if the argument at the given index is a double. If index is beyond the end of the array, then this method returns false.
+	 * @param index the index into the arguments array to check.
+	 * @return true if the argument at the given index is a double, false otherwise.
+	 */
+	public boolean hasDoubleAtIndex(int index) {
+		// use Number here because integers should also be considered doubles
+		return hasTypeAtIndex(index, Number.class);
+	}
+
+	/**
+	 * Returns the argument at the given index if it is a double. If the argument at the given index is not a double, then this method returns 0.
+	 * @param index the index into the arguments array to check.
+	 * @return the argument at the given index if it is a double, 0 otherwise.
+	 */
+	public double doubleAtIndex(int index) {
+		// doubleAtIndex returns NaN as a fallback by default, so pass 0 instead
+		return arguments.optDouble(index, 0);
+	}
+
+	/**
+	 * Returns the argument at the given index if it is a double. If the argument at the given index is not a double, then this method returns defaultValue.
+	 * @param index the index into the arguments array to check.
+	 * @param defaultValue the value to return if the argument at the given index is not a double.
+	 * @return the argument at the given index if it is a double, defaultValue otherwise.
+	 */
+	public double doubleAtIndex(int index, double defaultValue) {
+		return arguments.optDouble(index, defaultValue);
+	}
+
+	/**
+	 * Return true if the argument at the given index is an int. If index is beyond the end of the array, then this method returns false.
+	 * @param index the index into the arguments array to check.
+	 * @return true if the argument at the given index is an int, false otherwise.
+	 */
+	public boolean hasIntAtIndex(int index) {
+		return hasTypeAtIndex(index, Integer.class);
+	}
+
+	/**
+	 * Returns the argument at the given index if it is an int. If the argument at the given index is not an int, then this method returns 0.
+	 * @param index the index into the arguments array to check.
+	 * @return the argument at the given index if it is an int, 0 otherwise.
+	 */
+	public int intAtIndex(int index) {
+		return arguments.optInt(index);
+	}
+
+	/**
+	 * Returns the argument at the given index if it is an int. If the argument at the given index is not an int, then this method returns defaultValue.
+	 * @param index the index into the arguments array to check.
+	 * @param defaultValue the value to return if the argument at the given index is not an int.
+	 * @return the argument at the given index if it is an int, 0 otherwise.
+	 */
+	public int intAtIndex(int index, int defaultValue) {
+		return arguments.optInt(index, defaultValue);
+	}
+
+	/**
+	 * Return true if the argument at the given index is a JSON object. If index is beyond the end of the array, then this method returns false.
+	 * @param index the index into the arguments array to check.
+	 * @return true if the argument at the given index if it is a JSON object, false otherwise.
+	 */
+	public boolean hasObjectAtIndex(int index) {
+		return arguments.optJSONObject(index) != null;
+	}
+
+	/**
+	 * Returns the argument at the given index if it is a JSON object. If the argument at the given index is not a JSON object, then this method returns null.
+	 * @param index the index into the arguments array to check.
+	 * @return the argument at the given index if it is a JSON object, null otherwise.
+	 */
+	public JSONObject objectAtIndex(int index) {
+		return arguments.optJSONObject(index);
+	}
+
+	/**
+	 * Return true if the argument at the given index is a string. If index is beyond the end of the array, then this method returns false.
+	 * @param index the index into the arguments array to check.
+	 * @return true if the argument at the given index if it is a string, false otherwise.
+	 */
+	public boolean hasStringAtIndex(int index) {
+		return hasTypeAtIndex(index, String.class);
+	}
+
+	/**
+	 * Returns the argument at the given index if it is a string. If the argument at the given index is not a string, then this method returns null.
+	 * @param index the index into the arguments array to check.
+	 * @return the argument at the given index if it is a string, null otherwise.
+	 */
+	public String stringAtIndex(int index) {
+		return arguments.optString(index);
+	}
+
+	/**
+	 * Return true if the argument at the given index is null. If index is beyond the end of the array, then this method returns true.
+	 * @param index the index into the arguments array to check.
+	 * @return true if the argument at the given index if it is null, false otherwise.
+	 */
+	public boolean hasNullAtIndex(int index) {
+		try {
+			return (index >= 0 &&
+					arguments.length() > index &&
+					arguments.get(index) == null);
+		}
+		catch (JSONException e) {
+			return true;
+		}
 	}
 	
 	/**

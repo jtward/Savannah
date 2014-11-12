@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+
 @protocol SVNHPlugin;
 
 /*!
@@ -12,9 +13,17 @@
  */
 @property (nonatomic, readonly) NSString *name;
 
+/*!
+ * Returns the WebView managed by this WebViewManager.
+ * @return the WebView managed by this WebViewManager.
+ */
 @property (nonatomic, readonly) UIWebView *webView;
 
-@property (nonatomic) id<UIWebViewDelegate> delegate;
+/*!
+ * Returns the WebViewDelegate for this WebViewManager.
+ * @return the WebViewDelegate for this WebViewManager.
+ */
+@property (nonatomic, weak) id<UIWebViewDelegate> delegate;
 
 /*!
  * Creates a new WebViewManager which manages the given WebView.
@@ -28,7 +37,8 @@
             WebView:(UIWebView *)webView
            settings:(NSDictionary *)settings
             plugins:(NSArray *)plugins
-                URL:(NSURL *)URL;
+                URL:(NSURL *)URL
+                __attribute__((nonnull (1, 2, 5)));
 
 /*!
  * Returns the registered plugin with the given name, or nil if no plugin with the given name is registered.

@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+
 @class SVNHWebViewManager;
 
 /*!
@@ -22,32 +23,128 @@
           webViewManager:(SVNHWebViewManager *)webViewManager;
 
 /*!
- * Returns the argument at the given index.
- * @param index the index of the returned argument.
- * @return the argument at the given index, or nil if the given index is out of bounds.
+ * Returns the length of the arguments array for this Command.
+ * @return the length of the arguments array for this Command
  */
-- (id) argumentAtIndex:(NSUInteger)index;
+- (long) argumentsCount;
 
 /*!
- * Returns the argument at the given index.
- * @param index the index of the returned argument.
- * @param defaultValue the value to return if there is no argument at the given index or the argument at the given index is null.
- * @return the argument at the given index, or defaultValue if there is no argument at the given index or the argument at the given index is null.
+ * Returns YES if the argument at the given index is an array. If index is beyond the end of the array, then this method returns NO.
+ * @param index the index into the arguments array to check.
+ * @return YES if the argument at the given index is an array, NO otherwise.
  */
-- (id) argumentAtIndex:(NSUInteger)index
-           withDefault:(id)defaultValue;
+- (BOOL) hasArrayAtIndex:(NSUInteger)index;
 
 /*!
- * Returns the argument at the given index.
- * @param index the index of the returned argument.
- * @param defaultValue the value to return if there is no argument at the given index or the argument at the given index is null or the value at the given index is not an instance of the given class.
- * @param aClass if the value at the given index is not a subclass of this class, the defaultValue is returned.
- * @return the argument at the given index, or defaultValue if there is no argument at the given index or the argument at the given index is null or the value at the given index is not an instance of the given class.
+ * Returns the argument at the given index if it is an array. If the argument at the given index is not an array, then this method returns nil.
+ * @param index the index into the arguments array to check.
+ * @return the argument at the given index if it is an array, nil otherwise.
  */
-- (id) argumentAtIndex:(NSUInteger)index
-           withDefault:(id)defaultValue
-              andClass:(Class)aClass;
+- (NSArray *) arrayAtIndex:(NSUInteger)index;
 
+/*!
+ * Returns YES if the argument at the given index is a bool. Note that the numbers 1 and 0 are indistinguishable from YES and NO, respectively, and so will this method will return YES if the argument is numeric and has the value 1 or 0. If index is beyond the end of the array, then this method returns NO.
+ * @param index the index into the arguments array to check.
+ * @return YES if the argument at the given index is a bool, NO otherwise.
+ */
+- (BOOL) hasBoolAtIndex:(NSUInteger)index;
+
+/*!
+ * Returns the argument at the given index if it is a bool. If the argument at the given index is not an array, then this method returns NO. If the argument at the given index is not a bool, then this method returns nil. Note that the numbers 1 and 0 are indistinguishable from YES and NO, respectively, and so will this method will return YES if the argument is 1 and NO if the argument is 0.
+ * @param index the index into the arguments array to check.
+ * @return the argument at the given index if it is a bool, NO otherwise.
+ */
+- (BOOL) boolAtIndex:(NSUInteger)index;
+
+/*!
+ * Returns the argument at the given index if it is a bool. If the argument at the given index is not a bool, then this method returns nil. Note that the numbers 1 and 0 are indistinguishable from YES and NO, respectively, and so will this method will return YES if the argument is 1 and NO if the argument is 0.
+ * @param index the index into the arguments array to check.
+ * @param defaultValue the value to return if the argument at the given index is not a bool.
+ * @return the argument at the given index if it is a bool, defaultValue otherwise.
+ */
+- (BOOL) boolAtIndex:(NSUInteger)index
+        defaultValue:(BOOL)defaultValue;
+
+/*!
+ * Returns YES if the argument at the given index is a dictionary. If index is beyond the end of the array, then this method returns NO.
+ * @param index the index into the arguments array to check.
+ * @return YES if the argument at the given index is a dictionary, NO otherwise.
+ */
+- (BOOL) hasDictionaryAtIndex:(NSUInteger)index;
+
+/*!
+ * Returns the argument at the given index if it is a dictionary. If the argument at the given index is not a dictionary, then this method returns nil.
+ * @param index the index into the arguments array to check.
+ * @return the argument at the given index if it is a dictionary, nil otherwise.
+ */
+- (NSDictionary *) dictionaryAtIndex:(NSUInteger)index;
+
+/*!
+ * Returns YES if the argument at the given index is a double. If index is beyond the end of the array, then this method returns NO.
+ * @param index the index into the arguments array to check.
+ * @return YES if the argument at the given index is a double, NO otherwise.
+ */
+- (BOOL) hasDoubleAtIndex:(NSUInteger)index;
+
+/*!
+ * Returns the argument at the given index if it is a double.
+ * @param index the index into the arguments array to check.
+ * @return the argument at the given index if it is a double, 0 otherwise.
+ */
+- (double) doubleAtIndex:(NSUInteger)index;
+
+/*!
+ * Returns the argument at the given index if it is a double.
+ * @param index the index into the arguments array to check.
+ * @param defaultValue the value to return if the argument at the given index is not a double.
+ * @return the argument at the given index if it is a double, defaultValue otherwise.
+ */
+- (double) doubleAtIndex:(NSUInteger)index
+            defaultValue:(double)defaultValue;
+
+/*!
+ * Returns YES if the argument at the given index is an int. If index is beyond the end of the array, then this method returns NO.
+ * @param index the index into the arguments array to check.
+ * @return YES if the argument at the given index is an int, NO otherwise.
+ */
+- (BOOL) hasIntAtIndex:(NSUInteger)index;
+
+/*!
+ * Returns the argument at the given index if it is an int.
+ * @param index the index into the arguments array to check.
+ * @return the argument at the given index if it is an int, 0 otherwise.
+ */
+- (int) intAtIndex:(NSUInteger)index;
+
+/*!
+ * Returns the argument at the given index if it is an int.
+ * @param index the index into the arguments array to check.
+ * @param defaultValue the value to return if the argument at the given index is not an int.
+ * @return the argument at the given index if it is an int, defaultValue otherwise.
+ */
+- (int) intAtIndex:(NSUInteger)index
+      defaultValue:(int)defaultValue;
+
+/*!
+ * Returns YES if the argument at the given index is a string. If index is beyond the end of the array, then this method returns NO.
+ * @param index the index into the arguments array to check.
+ * @return YES if the argument at the given index is a string, NO otherwise.
+ */
+- (BOOL) hasStringAtIndex:(NSUInteger)index;
+
+/*!
+ * Returns the argument at the given index if it is a string.
+ * @param index the index into the arguments array to check.
+ * @return the argument at the given index if it is a string, nil otherwise.
+ */
+- (NSString *) stringAtIndex:(NSUInteger)index;
+
+/*!
+ * Returns YES if the argument at the given index is nil. If index beyond the end of the array, then this method returns YES.
+ * @param index the index into the arguments array to check.
+ * @return YES if the argument at the given index is nil.
+ */
+- (BOOL) hasNilAtIndex:(NSUInteger)index;
 
 /*!
  * Calls the success callback in the WebView for this command (if any), and discards the Command.
@@ -55,19 +152,19 @@
 - (void) success;
 
 /*!
- * Calls the success callback in the UIWebView for this command (if any), passing back a JSON array, and discards the Command.
+ * Calls the success callback in the UIWebView for this command (if any), passing back an array, and discards the Command.
  * @param message the result of the Command, to send to the UIWebView.
  */
 - (void) successWithArray:(NSArray *)message;
 
 /*!
- * Calls the success callback in the UIWebView for this command (if any), passing back a boolean, and discards the Command.
+ * Calls the success callback in the UIWebView for this command (if any), passing back a bool, and discards the Command.
  * @param message the result of the Command, to send to the UIWebView.
  */
 - (void) successWithBool:(BOOL)message;
 
 /*!
- * Calls the success callback in the UIWebView for this command (if any), passing back a JSON object, and discards the Command.
+ * Calls the success callback in the UIWebView for this command (if any), passing back a dictionary, and discards the Command.
  * @param message the result of the Command, to send to the UIWebView.
  */
 - (void) successWithDictionary:(NSDictionary *)message;
@@ -96,19 +193,19 @@
 - (void) error;
 
 /*!
- * Calls the error callback in the UIWebView for this command (if any), passing back a JSON array, and discards the Command.
+ * Calls the error callback in the UIWebView for this command (if any), passing back an array, and discards the Command.
  * @param message the result of the Command, to send to the UIWebView.
  */
 - (void) errorWithArray:(NSArray *)message;
 
 /*!
- * Calls the error callback in the UIWebView for this command (if any), passing back a boolean, and discards the Command.
+ * Calls the error callback in the UIWebView for this command (if any), passing back a bool, and discards the Command.
  * @param message the result of the Command, to send to the UIWebView.
  */
 - (void) errorWithBool:(BOOL)message;
 
 /*!
- * Calls the error callback in the UIWebView for this command (if any), passing back a JSON object, and discards the Command.
+ * Calls the error callback in the UIWebView for this command (if any), passing back a dictionary, and discards the Command.
  * @param message the result of the Command, to send to the UIWebView.
  */
 - (void) errorWithDictionary:(NSDictionary *)message;
@@ -137,19 +234,19 @@
 - (void) progress;
 
 /*!
- * Calls the error callback in the UIWebView for this command (if any), passing back a JSON array.
+ * Calls the error callback in the UIWebView for this command (if any), passing back an array.
  * @param message the result of the Command, to send to the UIWebView.
  */
 - (void) progressWithArray:(NSArray *)message;
 
 /*!
- * Calls the error callback in the UIWebView for this command (if any), passing back a boolean.
+ * Calls the error callback in the UIWebView for this command (if any), passing back a bool.
  * @param message the result of the Command, to send to the UIWebView.
  */
 - (void) progressWithBool:(BOOL)message;
 
 /*!
- * Calls the error callback in the UIWebView for this command (if any), passing back a JSON object.
+ * Calls the error callback in the UIWebView for this command (if any), passing back a dictionary.
  * @param message the result of the Command, to send to the UIWebView.
  */
 - (void) progressWithDictionary:(NSDictionary *)message;

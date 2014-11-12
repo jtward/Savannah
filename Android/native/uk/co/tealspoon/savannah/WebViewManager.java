@@ -55,7 +55,7 @@ public class WebViewManager {
 		@JavascriptInterface
 		public String exec(String commands) {
 			manager.handleCommands(commands);
-			return "";
+			return null;
 		}
 	}
 	
@@ -73,6 +73,18 @@ public class WebViewManager {
 		this.name = name;
 		this.webView = webView;
 		this.activity = activity;
+
+		if (name == null) {
+			throw new IllegalArgumentException("Name should not be null");
+		}
+
+		if (webView == null) {
+			throw new IllegalArgumentException("WebView should not be null");
+		}
+
+		if (url == null) {
+			throw new IllegalArgumentException("URL should not be null");
+		}
 		
 		int initialCapacity = (pluginsCollection == null) ? 0 : pluginsCollection.size();
 		
@@ -300,10 +312,10 @@ public class WebViewManager {
 
 	/**
 	 * Send the result of a Plugin execution to the WebView.
-     * @param status the status to send.
-     * @param message the message to send.
-     * @param keepCallback true if the callback should be kept rather than discarded.
-     * @param callbackId the id of the callback that should receive the result.
+	 * @param status the status to send.
+	 * @param message the message to send.
+	 * @param keepCallback true if the callback should be kept rather than discarded.
+	 * @param callbackId the id of the callback that should receive the result.
 	 */
 	protected void sendPluginResult(boolean status, String message, boolean keepCallback, String callbackId) {
 		String statusString = Boolean.toString(status);

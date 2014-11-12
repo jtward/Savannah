@@ -181,6 +181,9 @@ savannah.exec("com.example.foo",        // plugin identifier / name
 Savannah user either promises or callbacks, but not both. If you pass callbacks to `savannah.exec`, a promise will not be returned. Savannah.js depends on `window.Promise` or a polyfill, and you must wait for the `savannah.ready` promise to resolve before calling plugin methods.
 
 ## Changelog
+### 0.10.0, 12th November 2014
+- Changed the way arguments are retrieved from Commands by Plugins. The iOS and Android Command APIs are now more consistent.
+
 ### 0.9.0, 1st November 2014
 - Made changes to Plugin and Command syntax in both Android and iOS to be more consistent with each other rather than Cordova. iOS plugins must now implement execute, and the plugin arguments are now accessed via the command on Android.
 

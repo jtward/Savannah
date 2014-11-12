@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-		    WebView.setWebContentsDebuggingEnabled(true);
+			WebView.setWebContentsDebuggingEnabled(true);
 		}
 		
 		WebView echoWebView = (WebView) findViewById(R.id.echo_web_view);
