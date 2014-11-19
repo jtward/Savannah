@@ -28,6 +28,8 @@
     };
 
     var Savannah = function (window) {
+        var publicAPI = this;
+
         // a container for all the unresolved callbacks
         var callbacks = {};
 
@@ -224,7 +226,7 @@
                 if (!isLoadFinished) {
                     setNotifyNative();
                     isLoadFinished = true;
-                    window.savannah.settings = settings;
+                    publicAPI.settings = settings;
                     for (i = 0; i < plugins.length; i += 1) {
                         registerPlugin(plugins[i], pluginMethods[i]);
                     }
@@ -251,14 +253,14 @@
             }
         };
 
-        this._fetchMessages = fetchMessages;
-        this._callback = callback;
-        this._didFinishLoad = didFinishLoad;
-        this.alias = alias;
-        this.ready = ready;
-        this.exec = exec;
-        this.plugins = plugins;
-        this.version = version;
+        publicAPI._fetchMessages = fetchMessages;
+        publicAPI._callback = callback;
+        publicAPI._didFinishLoad = didFinishLoad;
+        publicAPI.alias = alias;
+        publicAPI.ready = ready;
+        publicAPI.exec = exec;
+        publicAPI.plugins = plugins;
+        publicAPI.version = version;
     };
 
     window.savannah = new Savannah(window);
