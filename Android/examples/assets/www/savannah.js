@@ -1,27 +1,6 @@
 (function(window) {
     "use strict";
-    var version = "0.8.0";
-
-    // a container for all the unresolved callbacks
-    var callbacks = {};
-
-    // a container for promises
-    var promises = {};
-
-    // a container for progress callbacks
-    var progressCallbacks = {};
-
-    // a list of pending JS->Native messages.
-    var commandQueue = [];
-
-    // a container for plugins
-    var plugins = {};
-
-    // a hash of fully qualified plugin names to their aliases
-    var aliases = {};
-
-    // keeps track of whether load is finished
-    var isLoadFinished = false;
+    var version = "0.10.0";
 
     // calls func on the leading edge and, if called again,
     // the trailing edge, of the debounce window.
@@ -48,218 +27,240 @@
         };
     };
 
-    // notify the native app that there are commands waiting
-    // send the command data if possible to avoid a round trip
-    var notifyNative;
-    var setNotifyNative = function() {
-        notifyNative = debounce((function() {
-            if (window.savannahJSI) {
-                // Android
-                return function() {
-                    if (commandQueue.length) {
-                        window.savannahJSI.exec(JSON.stringify(commandQueue));
-                        commandQueue.length = 0;
-                    }
-                };
-            }
-            else {
-                // iOS
-                return function() {
-                    if (commandQueue.length) {
-                        window.location = "/!svnh_exec?";
-                    }
-                };
-            }
-        }()), 20);
-    };
+    var Savannah = function (window) {
+        // a container for all the unresolved callbacks
+        var callbacks = {};
 
-    // IIFE; returns a function which is the entry point for all plugin execution
-    var exec = (function() {
+        // a container for promises
+        var promises = {};
 
-        // a callback id that's randomized to minimize the possibility of clashes
-        // after refreshes and navigations
-        var callbackId = Math.floor(Math.random() * 2000000000);
+        // a container for progress callbacks
+        var progressCallbacks = {};
 
-        // keep a record of the given callback for progress for the given callback ID
-        var promiseProgress = function(callbackId, callback) {
-            var callbacks = progressCallbacks[callbackId];
-            if (!callbacks) {
-                callbacks = (progressCallbacks[callbackId] = []);
-            }
-            callbacks.push(callback);
-        };
+        // a list of pending JS->Native messages.
+        var commandQueue = [];
 
-        // the real exec
-        return function(successCallback, failCallback, service, action, actionArgs) {
-            var tmpService;
-            var command;
-            var promise;
+        // a container for plugins
+        var plugins = {};
 
-            if (!isLoadFinished) {
-                throw "Unable to execute plugin before Savannah is ready.";
-            }
+        // a hash of fully qualified plugin names to their aliases
+        var aliases = {};
 
-            // exec can be called with or without leading success/fail params.
-            // if the first param is a string, there were no success/fail params.
-            if (typeof successCallback === "string") {
-                tmpService = service;
-                service = successCallback;
-                action = failCallback;
-                actionArgs = tmpService;
+        // keeps track of whether load is finished
+        var isLoadFinished = false;
 
-                promise = new window.Promise(function(resolve, reject) {
-                    promises[callbackId] = {
-                        resolve: resolve,
-                        reject: reject
+        // notify the native app that there are commands waiting
+        // send the command data if possible to avoid a round trip
+        var notifyNative;
+        var setNotifyNative = function() {
+            notifyNative = debounce((function() {
+                if (window.savannahJSI) {
+                    // Android
+                    return function() {
+                        if (commandQueue.length) {
+                            window.savannahJSI.exec(JSON.stringify(commandQueue));
+                            commandQueue.length = 0;
+                        }
                     };
-                });
-
-                promise.progress = function(callback) {
-                    promiseProgress(callbackId, callback);
-                    return this;
-                };
-            }
-            else if (successCallback || failCallback) {
-                // if there were success/fail params, keep a record of them
-                callbacks[callbackId] = {
-                    "success": successCallback,
-                    "fail": failCallback
-                };
-            }
-
-            command = [callbackId, service, action, actionArgs];
-
-            callbackId += 1;
-
-            commandQueue.push(command);
-
-            notifyNative();
-
-            return promise;
+                }
+                else {
+                    // iOS
+                    return function() {
+                        if (commandQueue.length) {
+                            window.location = "/!svnh_exec?";
+                        }
+                    };
+                }
+            }()), 20);
         };
-    }());
 
-    // let the native app pull commands
-    var _fetchMessages = function() {
-        // Each entry in commandQueue is a JSON string already.
-        var json = JSON.stringify(commandQueue);
-        commandQueue.length = 0;
-        return json;
-    };
+        // IIFE; returns a function which is the entry point for all plugin execution
+        var exec = (function() {
 
-    // call all progress listeners for the callback with the given arguments
-    var notifyProgress = function(callbackId, args) {
-        var listeners = progressCallbacks[callbackId];
-        var i;
-        for (i = 0; i < (listeners && listeners.length); i += 1) {
-            listeners[i](args);
-        }
-    };
+            // a callback id that's randomized to minimize the possibility of clashes
+            // after refreshes and navigations
+            var callbackId = Math.floor(Math.random() * 2000000000);
 
-    // called when a response (success, fail or progress) is returned from the native app
-    var _callback = function(callbackId, success, args, keepCallback) {
-        var callback = callbacks[callbackId];
-        var promise = promises[callbackId];
+            // keep a record of the given callback for progress for the given callback ID
+            var promiseProgress = function(callbackId, callback) {
+                var callbacks = progressCallbacks[callbackId];
+                if (!callbacks) {
+                    callbacks = (progressCallbacks[callbackId] = []);
+                }
+                callbacks.push(callback);
+            };
 
-        if (callback) {
-            if (success && callback.success) {
-                callback.success.apply(null, [args]);
-            }
-            else if (!success && callback.fail) {
-                callback.fail.apply(null, [args]);
-            }
+            // the real exec
+            return function(successCallback, failCallback, service, action, actionArgs) {
+                var tmpService;
+                var command;
+                var promise;
 
-            // Clear callback if not expecting any more results
-            if (!keepCallback) {
-                delete callbacks[callbackId];
-            }
-        }
+                if (!isLoadFinished) {
+                    throw "Unable to execute plugin before Savannah is ready.";
+                }
 
-        if (promise) {
-            if (keepCallback) {
-                notifyProgress(callbackId, args);
-            }
-            else {
-                (success ? promise.resolve : promise.reject)(args);
-                delete promises[callbackId];
-            }
-        }
-    };
+                // exec can be called with or without leading success/fail params.
+                // if the first param is a string, there were no success/fail params.
+                if (typeof successCallback === "string") {
+                    tmpService = service;
+                    service = successCallback;
+                    action = failCallback;
+                    actionArgs = tmpService;
 
-    var pluginMethod = function(pluginName, methodName) {
-        return function() {
-            var args = [Array.prototype.slice.call(arguments, 0)];
-            args.unshift(methodName);
-            args.unshift(pluginName);
-            return exec.apply(null, args);
+                    promise = new window.Promise(function(resolve, reject) {
+                        promises[callbackId] = {
+                            resolve: resolve,
+                            reject: reject
+                        };
+                    });
+
+                    promise.progress = function(callback) {
+                        promiseProgress(callbackId, callback);
+                        return this;
+                    };
+                }
+                else if (successCallback || failCallback) {
+                    // if there were success/fail params, keep a record of them
+                    callbacks[callbackId] = {
+                        "success": successCallback,
+                        "fail": failCallback
+                    };
+                }
+
+                command = [callbackId, service, action, actionArgs];
+
+                callbackId += 1;
+
+                commandQueue.push(command);
+
+                notifyNative();
+
+                return promise;
+            };
+        }());
+
+        // let the native app pull commands
+        var fetchMessages = function() {
+            // Each entry in commandQueue is a JSON string already.
+            var json = JSON.stringify(commandQueue);
+            commandQueue.length = 0;
+            return json;
         };
-    };
 
-    // called by the native app to register a plugin
-    var _registerPlugin = function(pluginName, methods) {
-        var plugin = {};
-        var methodName;
-        
-        for (var i = 0; i < methods.length; i += 1) {
-            methodName = methods[i];
-            plugin[methodName] = pluginMethod(pluginName, methodName);
-        }
-
-        plugins[pluginName] = plugin;
-        
-        if (aliases[pluginName]) {
-            plugins[aliases[pluginName]] = plugins[pluginName];
-        }
-    };
-
-    // expose a promise, ready, that resolves once _didFinishLoad is called
-    // _didFinishLoad is called by the native app when the page load is complete,
-    // sending app-specific settings
-    var _didFinishLoad;
-    var ready = new window.Promise(function(resolve) {
-        _didFinishLoad = function(settings, plugins, pluginMethods) {
+        // call all progress listeners for the callback with the given arguments
+        var notifyProgress = function(callbackId, args) {
+            var listeners = progressCallbacks[callbackId];
             var i;
+            for (i = 0; i < (listeners && listeners.length); i += 1) {
+                listeners[i](args);
+            }
+        };
 
-            if (!isLoadFinished) {
-                setNotifyNative();
-                isLoadFinished = true;
-                window.savannah.settings = settings;
-                for (i = 0; i < plugins.length; i += 1) {
-                    _registerPlugin(plugins[i], pluginMethods[i]);
+        // called when a response (success, fail or progress) is returned from the native app
+        var callback = function(callbackId, success, args, keepCallback) {
+            var callback = callbacks[callbackId];
+            var promise = promises[callbackId];
+
+            if (callback) {
+                if (success && callback.success) {
+                    callback.success.apply(null, [args]);
+                }
+                else if (!success && callback.fail) {
+                    callback.fail.apply(null, [args]);
+                }
+
+                // Clear callback if not expecting any more results
+                if (!keepCallback) {
+                    delete callbacks[callbackId];
                 }
             }
-            resolve();
-        };
-    });
 
-    // register aliases for plugins
-    var alias = function(newAliases) {
-        var names = Object.keys(newAliases);
-        var i;
-        var name;
-        var alias;
-        for (i = 0; i < names.length; i += 1) {
-            name = names[i];
-            alias = newAliases[name];
-            // keep a record of the alias
-            aliases[name] = alias;
-            // if the plugin already exists, make alias point to it
-            if (plugins[name]) {
-                plugins[alias] = plugins[name];
+            if (promise) {
+                if (keepCallback) {
+                    notifyProgress(callbackId, args);
+                }
+                else {
+                    (success ? promise.resolve : promise.reject)(args);
+                    delete promises[callbackId];
+                }
             }
-        }
+        };
+
+        var pluginMethod = function(pluginName, methodName) {
+            return function() {
+                var args = [Array.prototype.slice.call(arguments, 0)];
+                args.unshift(methodName);
+                args.unshift(pluginName);
+                return exec.apply(null, args);
+            };
+        };
+
+        // called by the native app to register a plugin
+        var registerPlugin = function(pluginName, methods) {
+            var plugin = {};
+            var methodName;
+            
+            for (var i = 0; i < methods.length; i += 1) {
+                methodName = methods[i];
+                plugin[methodName] = pluginMethod(pluginName, methodName);
+            }
+
+            plugins[pluginName] = plugin;
+            
+            if (aliases[pluginName]) {
+                plugins[aliases[pluginName]] = plugins[pluginName];
+            }
+        };
+
+        // expose a promise, ready, that resolves once didFinishLoad is called
+        // didFinishLoad is called by the native app when the page load is complete,
+        // sending app-specific settings
+        var didFinishLoad;
+        var ready = new window.Promise(function(resolve) {
+            didFinishLoad = function(settings, plugins, pluginMethods) {
+                var i;
+
+                if (!isLoadFinished) {
+                    setNotifyNative();
+                    isLoadFinished = true;
+                    window.savannah.settings = settings;
+                    for (i = 0; i < plugins.length; i += 1) {
+                        registerPlugin(plugins[i], pluginMethods[i]);
+                    }
+                }
+                resolve();
+            };
+        });
+
+        // register aliases for plugins
+        var alias = function(newAliases) {
+            var names = Object.keys(newAliases);
+            var i;
+            var name;
+            var alias;
+            for (i = 0; i < names.length; i += 1) {
+                name = names[i];
+                alias = newAliases[name];
+                // keep a record of the alias
+                aliases[name] = alias;
+                // if the plugin already exists, make alias point to it
+                if (plugins[name]) {
+                    plugins[alias] = plugins[name];
+                }
+            }
+        };
+
+        this._fetchMessages = fetchMessages;
+        this._callback = callback;
+        this._didFinishLoad = didFinishLoad;
+        this.alias = alias;
+        this.ready = ready;
+        this.exec = exec;
+        this.plugins = plugins;
+        this.version = version;
     };
 
-    // exposed functions
-    window.savannah = {
-        _fetchMessages: _fetchMessages,
-        _callback: _callback,
-        _didFinishLoad: _didFinishLoad,
-        alias: alias,
-        ready: ready,
-        exec: exec,
-        plugins: plugins,
-        version: version
-    };
+    window.savannah = new Savannah(window);
 
 }(window));
