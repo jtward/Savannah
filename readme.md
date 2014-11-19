@@ -178,7 +178,14 @@ savannah.exec("com.example.foo",        // plugin identifier / name
   .catch(function(error) {});
 ```
 
-Savannah user either promises or callbacks, but not both. If you pass callbacks to `savannah.exec`, a promise will not be returned. Savannah.js depends on `window.Promise` or a polyfill, and you must wait for the `savannah.ready` promise to resolve before calling plugin methods.
+Savannah uses either promises or callbacks, but not both. For example, if you pass callbacks to `savannah.exec`, a promise will not be returned. Savannah.js depends on `window.Promise` or a polyfill, and you must wait for the `savannah.ready` promise to resolve before calling plugin methods.
+
+## Roadmap
+- Generated documentation
+- Add tests
+- Create Pod and Jar files
+- Add WKWebView support
+- Implement page Unload / reload handling (discard commands, reset callbackId, reconnect)
 
 ## Changelog
 ### 0.10.0, 12th November 2014
