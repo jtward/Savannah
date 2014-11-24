@@ -48,6 +48,9 @@
         // a hash of fully qualified plugin names to their aliases
         var aliases = {};
 
+        // a list of aliases
+        var aliasNames = [];
+
         // keeps track of whether load is finished
         var isLoadFinished = false;
 
@@ -59,9 +62,14 @@
                 if (window.savannahJSI) {
                     // Android
                     return function() {
+                        var commands;
                         if (commandQueue.length) {
-                            window.savannahJSI.exec(JSON.stringify(commandQueue));
+                            // there could be inconsistency if _fetchMessages is called
+                            // on exec before we clear the command queue, so clear the
+                            // queue first
+                            commands = JSON.stringify(commandQueue);
                             commandQueue.length = 0;
+                            window.savannahJSI.exec(commands);
                         }
                     };
                 }
@@ -202,8 +210,9 @@
         var registerPlugin = function(pluginName, methods) {
             var plugin = {};
             var methodName;
+            var i;
             
-            for (var i = 0; i < methods.length; i += 1) {
+            for (i = 0; i < methods.length; i += 1) {
                 methodName = methods[i];
                 plugin[methodName] = pluginMethod(pluginName, methodName);
             }
@@ -211,7 +220,9 @@
             plugins[pluginName] = plugin;
             
             if (aliases[pluginName]) {
-                plugins[aliases[pluginName]] = plugins[pluginName];
+                for (i = 0; i < aliases[pluginName].length; i += 1) {
+                    plugins[aliases[pluginName][i]] = plugins[pluginName];
+                }
             }
         };
 
@@ -230,6 +241,9 @@
                     for (i = 0; i < plugins.length; i += 1) {
                         registerPlugin(plugins[i], pluginMethods[i]);
                     }
+
+                    // the aliases hash is no longer required
+                    aliases = undefined;
                 }
                 resolve();
             };
@@ -244,11 +258,26 @@
             for (i = 0; i < names.length; i += 1) {
                 name = names[i];
                 alias = newAliases[name];
-                // keep a record of the alias
-                aliases[name] = alias;
-                // if the plugin already exists, make alias point to it
-                if (plugins[name]) {
-                    plugins[alias] = plugins[name];
+
+                if (aliasNames.indexOf(alias) === -1) {
+                    // keep a record of the alias
+                    aliasNames.push(alias);
+
+                    // if the plugin already exists, make alias point to it
+                    // otherwise store the relation so we can make a reference once
+                    // the plugins are ready
+                    if (plugins[name]) {
+                        plugins[alias] = plugins[name];
+                    }
+                    else {
+                        if (!aliases[name]) {
+                            aliases[name] = [];
+                        }
+                        aliases[name].push(alias);
+                    }
+                }
+                else {
+                    throw "An alias \"" + alias + "\" has already been defined.";
                 }
             }
         };
