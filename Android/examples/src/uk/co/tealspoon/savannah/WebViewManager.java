@@ -81,6 +81,9 @@ public class WebViewManager {
 		if (webView == null) {
 			throw new IllegalArgumentException("WebView should not be null");
 		}
+		else if (webView.getOriginalUrl() != null) {
+			throw new IllegalArgumentException("The WebView to be managed should not be loaded or loading");
+		}
 
 		if (url == null) {
 			throw new IllegalArgumentException("URL should not be null");

@@ -48,6 +48,16 @@
     }
 }
 
+- (NSArray *) arrayAtIndex:(NSUInteger)index
+              defaultValue:(NSArray *)defaultValue {
+    if ([self hasArrayAtIndex:index]) {
+        return [self.arguments objectAtIndex:index];
+    }
+    else {
+        return defaultValue;
+    }
+}
+
 - (BOOL) hasBoolAtIndex:(NSUInteger)index {
     if (index >= [self.arguments count]) {
         return NO;
@@ -97,6 +107,16 @@
     }
     else {
         return nil;
+    }
+}
+
+- (NSDictionary *) dictionaryAtIndex:(NSUInteger)index
+                        defaultValue:(NSDictionary *)defaultValue {
+    if ([self hasDictionaryAtIndex:index]) {
+        return [self.arguments objectAtIndex:index];
+    }
+    else {
+        return defaultValue;
     }
 }
 
@@ -175,6 +195,16 @@
     }
     else {
         return nil;
+    }
+}
+
+- (NSString *) stringAtIndex:(NSUInteger)index
+                defaultValue:(NSString *)defaultValue {
+    if ([self hasStringAtIndex:index]) {
+        return [self.arguments objectAtIndex:index];
+    }
+    else {
+        return defaultValue;
     }
 }
 

@@ -77,6 +77,21 @@ public class Command {
 	}
 
 	/**
+	 * Returns the argument at the given index if it is a JSON array. If the argument at the given index is not a JSON array, then this method returns null.
+	 * @param index the index into the arguments array to check.
+	 * @param defaultValue the value to return if the argument at the given index is not a JSON array.
+	 * @return the argument at the given index if it is a JSON array, null otherwise.
+	 */
+	public JSONArray arrayAtIndex(int index, JSONArray defaultValue) {
+		if (hasArrayAtIndex(index)) {
+			return arguments.optJSONArray(index);
+		}
+		else {
+			return defaultValue;
+		}
+	}
+
+	/**
 	 * Return true if the argument at the given index is a boolean. If index is beyond the end of the array, then this method returns false.
 	 * @param index the index into the arguments array to check.
 	 * @return true if the argument at the given index is a bool, false otherwise.
@@ -181,6 +196,21 @@ public class Command {
 	}
 
 	/**
+	 * Returns the argument at the given index if it is a JSON object. If the argument at the given index is not a JSON object, then this method returns null.
+	 * @param index the index into the arguments array to check.
+	 * @param defaultValue the value to return if the argument at the given index is not a JSON object.
+	 * @return the argument at the given index if it is a JSON object, null otherwise.
+	 */
+	public JSONObject objectAtIndex(int index, JSONObject defaultValue) {
+		if (hasObjectAtIndex(index)) {
+			return arguments.optJSONObject(index);
+		}
+		else {
+			return defaultValue;
+		}
+	}
+
+	/**
 	 * Return true if the argument at the given index is a string. If index is beyond the end of the array, then this method returns false.
 	 * @param index the index into the arguments array to check.
 	 * @return true if the argument at the given index if it is a string, false otherwise.
@@ -196,6 +226,21 @@ public class Command {
 	 */
 	public String stringAtIndex(int index) {
 		return arguments.optString(index);
+	}
+
+	/**
+	 * Returns the argument at the given index if it is a string. If the argument at the given index is not a string, then this method returns null.
+	 * @param index the index into the arguments array to check.
+	 * @param defaultValue the value to return if the argument at the given index is not a string.
+	 * @return the argument at the given index if it is a string, null otherwise.
+	 */
+	public String stringAtIndex(int index, String defaultValue) {
+		if (hasStringAtIndex(index)) {
+			return arguments.optString(index);
+		}
+		else {
+			return defaultValue;
+		}
 	}
 
 	/**
