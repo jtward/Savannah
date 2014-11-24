@@ -188,6 +188,10 @@ Savannah uses either promises or callbacks, but not both. For example, if you pa
 - Implement page Unload / reload handling (discard commands, reset callbackId, reconnect)
 
 ## Changelog
+### 0.11.0, 24th November 2014
+- Added the option to pass a default value to all argument retrieval methods.
+- An error is now thrown in savannah.js if a plugin alias would be overridden.
+
 ### 0.10.0, 12th November 2014
 - Changed the way arguments are retrieved from Commands by Plugins. The iOS and Android Command APIs are now more consistent.
 
