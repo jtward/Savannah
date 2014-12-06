@@ -1,16 +1,17 @@
 (function(window) {
     "use strict";
-    var version = "0.10.0";
+    var version = "0.11.0";
 
-    // calls func on the leading edge and, if called again,
+    // calls fn on the leading edge and, if called again,
     // the trailing edge, of the debounce window.
-    var debounce = function(func, wait) {
-        var timeout;
-        var didCallAgain;
+    var debounce = function(fn, wait) {
+        var timeout,
+            didCallAgain,
+            later;
 
-        var later = function() {
+        later = function() {
             if (didCallAgain) {
-                func();
+                fn();
             }
             timeout = null;
             didCallAgain = false;
@@ -19,7 +20,7 @@
         return function() {
             if (!timeout) {
                 timeout = setTimeout(later, wait);
-                setTimeout(func, 0);
+                setTimeout(fn, 0);
             }
             else {
                 didCallAgain = true;
@@ -28,40 +29,61 @@
     };
 
     var Savannah = function (window) {
-        var publicAPI = this;
+        var publicAPI = this,
 
-        // a container for all the unresolved callbacks
-        var callbacks = {};
+            // a container for all the unresolved callbacks
+            callbacks = {},
 
-        // a container for promises
-        var promises = {};
+            // a container for promises
+            promises = {},
 
-        // a container for progress callbacks
-        var progressCallbacks = {};
+            // a container for progress callbacks
+            progressCallbacks = {},
 
-        // a list of pending JS->Native messages.
-        var commandQueue = [];
+            // a list of pending JS->Native messages.
+            commandQueue = [],
 
-        // a container for plugins
-        var plugins = {};
+            // a container for plugins
+            plugins = {},
 
-        // a hash of fully qualified plugin names to their aliases
-        var aliases = {};
+            // a hash of fully qualified plugin names to their aliases
+            aliases = {},
 
-        // keeps track of whether load is finished
-        var isLoadFinished = false;
+            // a list of aliases
+            aliasNames = [],
+
+            // keeps track of whether load is finished
+            isLoadFinished = false,
+
+            // functions
+            notifyNative,
+            setNotifyNative,
+            exec,
+            fetchMessages,
+            notifyProgress,
+            callback,
+            pluginMethod,
+            registerPlugin,
+            didFinishLoad,
+            ready,
+            alias,
+            getIsLoadFinished;
 
         // notify the native app that there are commands waiting
         // send the command data if possible to avoid a round trip
-        var notifyNative;
-        var setNotifyNative = function() {
+        setNotifyNative = function() {
             notifyNative = debounce((function() {
                 if (window.savannahJSI) {
                     // Android
                     return function() {
+                        var commands;
                         if (commandQueue.length) {
-                            window.savannahJSI.exec(JSON.stringify(commandQueue));
+                            // there could be inconsistency if _fetchMessages is called
+                            // on exec before we clear the command queue, so clear the
+                            // queue first
+                            commands = JSON.stringify(commandQueue);
                             commandQueue.length = 0;
+                            window.savannahJSI.exec(commands);
                         }
                     };
                 }
@@ -77,14 +99,13 @@
         };
 
         // IIFE; returns a function which is the entry point for all plugin execution
-        var exec = (function() {
+        exec = (function() {
 
-            // a callback id that's randomized to minimize the possibility of clashes
-            // after refreshes and navigations
-            var callbackId = Math.floor(Math.random() * 2000000000);
+            var callbackId = 1,
+                promiseProgress;
 
-            // keep a record of the given callback for progress for the given callback ID
-            var promiseProgress = function(callbackId, callback) {
+                // keep a record of the given callback for progress for the given callback ID
+            promiseProgress = function(callbackId, callback) {
                 var callbacks = progressCallbacks[callbackId];
                 if (!callbacks) {
                     callbacks = (progressCallbacks[callbackId] = []);
@@ -94,9 +115,9 @@
 
             // the real exec
             return function(successCallback, failCallback, service, action, actionArgs) {
-                var tmpService;
-                var command;
-                var promise;
+                var tmpService,
+                    command,
+                    promise;
 
                 if (!isLoadFinished) {
                     throw "Unable to execute plugin before Savannah is ready.";
@@ -143,7 +164,7 @@
         }());
 
         // let the native app pull commands
-        var fetchMessages = function() {
+        fetchMessages = function() {
             // Each entry in commandQueue is a JSON string already.
             var json = JSON.stringify(commandQueue);
             commandQueue.length = 0;
@@ -151,18 +172,19 @@
         };
 
         // call all progress listeners for the callback with the given arguments
-        var notifyProgress = function(callbackId, args) {
-            var listeners = progressCallbacks[callbackId];
-            var i;
+        notifyProgress = function(callbackId, args) {
+            var listeners = progressCallbacks[callbackId],
+                i;
+            
             for (i = 0; i < (listeners && listeners.length); i += 1) {
                 listeners[i](args);
             }
         };
 
         // called when a response (success, fail or progress) is returned from the native app
-        var callback = function(callbackId, success, args, keepCallback) {
-            var callback = callbacks[callbackId];
-            var promise = promises[callbackId];
+        callback = function(callbackId, success, args, keepCallback) {
+            var callback = callbacks[callbackId],
+                promise = promises[callbackId];
 
             if (callback) {
                 if (success && callback.success) {
@@ -189,7 +211,7 @@
             }
         };
 
-        var pluginMethod = function(pluginName, methodName) {
+        pluginMethod = function(pluginName, methodName) {
             return function() {
                 var args = [Array.prototype.slice.call(arguments, 0)];
                 args.unshift(methodName);
@@ -199,11 +221,12 @@
         };
 
         // called by the native app to register a plugin
-        var registerPlugin = function(pluginName, methods) {
-            var plugin = {};
-            var methodName;
+        registerPlugin = function(pluginName, methods) {
+            var plugin = {},
+                methodName,
+                i;
             
-            for (var i = 0; i < methods.length; i += 1) {
+            for (i = 0; i < methods.length; i += 1) {
                 methodName = methods[i];
                 plugin[methodName] = pluginMethod(pluginName, methodName);
             }
@@ -211,14 +234,15 @@
             plugins[pluginName] = plugin;
             
             if (aliases[pluginName]) {
-                plugins[aliases[pluginName]] = plugins[pluginName];
+                for (i = 0; i < aliases[pluginName].length; i += 1) {
+                    plugins[aliases[pluginName][i]] = plugins[pluginName];
+                }
             }
         };
 
         // expose a promise, ready, that resolves once didFinishLoad is called
         // didFinishLoad is called by the native app when the page load is complete,
         // sending app-specific settings
-        var didFinishLoad;
         var ready = new window.Promise(function(resolve) {
             didFinishLoad = function(settings, plugins, pluginMethods) {
                 var i;
@@ -230,32 +254,56 @@
                     for (i = 0; i < plugins.length; i += 1) {
                         registerPlugin(plugins[i], pluginMethods[i]);
                     }
+
+                    // the aliases hash is no longer required
+                    aliases = undefined;
                 }
                 resolve();
             };
         });
 
         // register aliases for plugins
-        var alias = function(newAliases) {
-            var names = Object.keys(newAliases);
-            var i;
-            var name;
-            var alias;
+        alias = function(newAliases) {
+            var names = Object.keys(newAliases),
+                i,
+                name,
+                alias;
+
             for (i = 0; i < names.length; i += 1) {
                 name = names[i];
                 alias = newAliases[name];
-                // keep a record of the alias
-                aliases[name] = alias;
-                // if the plugin already exists, make alias point to it
-                if (plugins[name]) {
-                    plugins[alias] = plugins[name];
+
+                if (aliasNames.indexOf(alias) === -1) {
+                    // keep a record of the alias
+                    aliasNames.push(alias);
+
+                    // if the plugin already exists, make alias point to it
+                    // otherwise store the relation so we can make a reference once
+                    // the plugins are ready
+                    if (plugins[name]) {
+                        plugins[alias] = plugins[name];
+                    }
+                    else {
+                        if (!aliases[name]) {
+                            aliases[name] = [];
+                        }
+                        aliases[name].push(alias);
+                    }
+                }
+                else {
+                    throw "An alias \"" + alias + "\" has already been defined.";
                 }
             }
+        };
+
+        getIsLoadFinished = function() {
+            return isLoadFinished;
         };
 
         publicAPI._fetchMessages = fetchMessages;
         publicAPI._callback = callback;
         publicAPI._didFinishLoad = didFinishLoad;
+        publicAPI._getIsLoadFinished = getIsLoadFinished;
         publicAPI.alias = alias;
         publicAPI.ready = ready;
         publicAPI.exec = exec;
