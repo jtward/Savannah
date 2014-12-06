@@ -7,15 +7,15 @@ It is designed to be easy to drop into native apps, and enables you to use multi
 
 ## Differences between Savannah and Cordova / Phonegap
 
-- You can create as many Savannah-managed webviews as you like. Each webview has its own manager, and is isolated from all others. Plugins are per-manager, which means your webviews can have different plugins available to them. You can use the same instance of a plugin in multiple managers, or create a new instance for each manager.
+- You can create as many Savannah-managed webviews as you like. Each webview has its own manager, and is isolated from all others. Plugins are configurable per-URL per-manager, which means each URL loaded in each webview can be given access to a different set of plugins. You control which plugin instances are provided each time a new URL is loaded.
 
 - Savannah is intentionally lightweight, giving you, the developer, as much control as possible. You should expect to write native code when using Savannah in your apps.
 
-- The native plugin APIs are deliberately similar to Cordova's, to ease transitions, but there are several notable differences intended to make writing plugins simpler, and more consistent between platforms. For example, there are no plugin result codes, just success and error, and JavaScript in plugins is not supported. Other differences are down to Savannah's multiple-webview model.
-
-- No JavaScript events (pause, resume, et cetera).
+- The native plugin APIs are deliberately similar to Cordova's, to ease transitions, but there are several notable differences intended to make writing plugins simpler, and more consistent between platforms. For example, there are no plugin result codes, just success, error and progress, and plugins can't include any JavaScript, which makes things much simpler for plugin consumers. Other differences are down to Savannah's multiple-webview model.
 
 - Exactly the same tiny savannah.js file for both iOS and Android, which means you can concat and minify it in with the rest of your JavaScript.
+
+- No JavaScript events (pause, resume, et cetera).
 
 - Sending JavaScript typed arrays across the native bridge is not currently supported.
 
@@ -40,7 +40,40 @@ self.webViewManager = [[SVNHWebViewManager alloc] initWithName:@"main"
                                                            URL:[NSURL fileURLWithPath:[[NSBundle mainBundle]
                                                             pathForResource:@"www/index"
                                                                      ofType:@"html"]]];
-                                                      }
+```
+
+This will create a manager that will bind itself to the page whenever it matches the given URL.
+If you use a config provider, you can tell the manager to bind to other URLs and specify the settings and plugins to be loaded for those URLs:
+
+```Objective-C
+// in a config provider:
+@interface MyConfigProvider : NSObject <SVNHConfigProvider>
+@end
+@implementation MyConfigProvider
+- (BOOL) shouldProvideSavannahForURL:(NSURL *)url {
+  // don't do this in real code: check the URL!
+  return YES;
+}
+
+- (NSArray *) pluginsForURL:(NSURL *)url {
+  return @[[SVNHEchoPlugin new]];
+}
+
+- (NSDictionary *) settingsForURL:(NSURL *)url {
+  return @{@"foo": @"bar"};
+}
+@end
+```
+```Objective-C
+// create a webview
+UIWebView *webView = [UIWebView new];
+
+self.webViewManager = [[SVNHWebViewManager alloc] initWithName:@""
+                                                       webView:webView
+                                                configProvider:[MyConfigProvider new]
+                                                           URL:[NSURL fileURLWithPath:[[NSBundle mainBundle]
+                                                            pathForResource:@"www/index"
+                                                                     ofType:@"html"]]];
 ```
 
 Don't forget to include the savannah.js file in your web page!
@@ -101,7 +134,42 @@ plugins.add(new MyPlugin());
 JSONObject settings = new JSONObject();
 
 // create a WebViewManager and pass in a name, the webview, settings, plugins and the url to load into the webview
-new WebViewManager("main", webView, settings, plugins, "file:///android_asset/www/index.html");
+new WebViewManager("main", webView, settings, plugins, new URL("file:///android_asset/www/index.html"));
+```
+
+This will create a manager that will bind itself to the page whenever it matches the given URL.
+If you use a config provider, you can tell the manager to bind to other URLs and specify the settings and plugins to be loaded for those URLs:
+
+```Java
+// create or get a webview
+WebView webView = (WebView) findViewById(R.id.web_view);
+
+// make sure JavaScript is enabled in the webview
+webView.getSettings().setJavaScriptEnabled(true);
+
+// create a config provider to specify the settings and plugins to be loaded for given URLs:
+ConfigProvider configProvider = new ConfigProvider() {
+  @Override
+  public boolean shouldProvideSavannahForUrl(URL url) {
+    // don't do this in real code: check the URL!
+    return true;
+  }
+
+  @Override
+  public Collection<Plugin> pluginsForUrl(URL url) {
+    ArrayList<Plugin> plugins = new ArrayList<Plugin>(1);
+    plugins.add(new MyPlugin());
+    return plugins;
+  }
+
+  @Override
+  public JSONObject settingsForUrl(URL url) {
+    return new JSONObject();
+  }
+};
+
+// create a WebViewManager and pass in a name, the webview, a config provider and the url to load into the webview
+new WebViewManager("main", webView, configProvider, new URL("file:///android_asset/www/index.html"));
 ```
 
 Don't forget to include the savannah.js file in your web page!
@@ -185,9 +253,12 @@ Savannah uses either promises or callbacks, but not both. For example, if you pa
 - Add tests
 - Create Pod and Jar files
 - Add WKWebView support
-- Implement page Unload / reload handling (discard commands, reset callbackId, reconnect)
 
 ## Changelog
+### 0.12.0, 6th December 2014
+- Savannah can now reconnect after page loads. The plugins and settings for the new page are configurable using a config provider.
+- On Android, the manager constructor now takes a URL object rather than a string.
+
 ### 0.11.0, 24th November 2014
 - Added the option to pass a default value to all argument retrieval methods.
 - An error is now thrown in savannah.js if a plugin alias would be overridden.
