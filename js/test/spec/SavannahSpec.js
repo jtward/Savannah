@@ -8,19 +8,12 @@ describe("Savannah", function() {
             Promise: window.Promise
         };
 
-        var androidEnvironment = {
-            savannahJSI: {
-                exec: jasmine.createSpy("exec")
-            }
-        };
-        _.extend(androidEnvironment, commonEnvironment);
-
-        var iOSEnvironment = _.extend({
-            location: ""
-        }, commonEnvironment);
-
         createAndroidInstance = function() {
-            var environment = _.extend({}, androidEnvironment);
+            var environment = _.extend({
+                savannahJSI: {
+                    exec: jasmine.createSpy("exec")
+                }
+            }, commonEnvironment);
             var savannah = new window.savannah.constructor(environment);
             environment.savannah = savannah;
             return {
@@ -30,7 +23,9 @@ describe("Savannah", function() {
         };
 
         createiOSInstance = function() {
-            var environment = _.extend({}, iOSEnvironment);
+            var environment = _.extend({
+                location: ""
+            }, commonEnvironment);
             var savannah = new window.savannah.constructor(environment);
             environment.savannah = savannah;
             return {
@@ -243,57 +238,64 @@ describe("Savannah", function() {
         var plugins = ["foo"];
         var pluginMethods = [["bar"]];
 
-        androidSavannah._didFinishLoad(settings, plugins, pluginMethods);
-        androidSavannah.ready.then(function() {
-            androidSavannah.plugins.foo.bar({});
-            setTimeout(function() {
-                androidSavannah.plugins.foo.bar({});
-            }, 1);
-            setTimeout(function() {
-                androidSavannah.plugins.foo.bar({});
-            }, 1);
+        [androidSavannah, iOSSavannah].forEach(function(savannah) {
+            savannah._didFinishLoad(settings, plugins, pluginMethods);
+            savannah.ready.then(function() {
+                savannah.plugins.foo.bar({});
+                setTimeout(function() {
+                    savannah.plugins.foo.bar({});
+                }, 1);
+                setTimeout(function() {
+                    savannah.plugins.foo.bar({});
+                }, 1);
+            });
         });
 
-        var messagesSent = 0;
+        var androidMessagesSent = 0;
+        var iOSMessagesSent = 0;
+
+        var maybeDone = function() {
+            if (androidMessagesSent === 3 && iOSMessagesSent === 3) {
+                var remainingAndroidMessages = androidSavannah._fetchMessages();
+                expect(remainingAndroidMessages).toBe("[]");
+
+                var remainingiOSMessages = iOSSavannah._fetchMessages();
+                expect(remainingiOSMessages).toBe("[]");
+
+                done();
+                return true;
+            }
+            return false;
+        };
 
         androidEnvironment.savannahJSI.exec.and.callFake(function(messagesString) {
             var message = JSON.parse(messagesString);
-            messagesSent += message.length
-            if (messagesSent === 3) {
-                var remainingMessages = androidSavannah._fetchMessages();
-                expect(remainingMessages).toBe("[]");
-                done();
-            }
+            androidMessagesSent += message.length
+            maybeDone();
         });
 
-        /*setTimeout(function() {
-            var messagesString, messages;
-            if (androidEnvironment.savannahJSI.exec.calls.count() === 1) {
-                // there should be two messages
-                messages = JSON.parse(androidEnvironment.savannahJSI.exec.calls.argsFor(0));
-                expect(messages.length).toBe(2);
-                console.log("1x2");
-            }
-            else if (androidEnvironment.savannahJSI.exec.calls.count() === 2) {
-                // each call should contain one message
-                messages = JSON.parse(androidEnvironment.savannahJSI.exec.calls.argsFor(0));
-                expect(messages.length).toBe(1);
+        var checkLocation = function() {
+            requestAnimationFrame(function() {
+                var message;
+                if (iOSEnvironment.location === "/!svnh_exec?") {
+                    iOSEnvironment.location = "";
+                    message = JSON.parse(iOSSavannah._fetchMessages());
+                    iOSMessagesSent += message.length;
+                    maybeDone() || checkLocation();
+                }
+                else {
+                    checkLocation();
+                }
+            });
+        };
 
-                messages = JSON.parse(androidEnvironment.savannahJSI.exec.calls.argsFor(1));
-                expect(messages.length).toBe(1);
-                console.log("2x"+messages.length);
-            }
-            else {
-                expect(true).toBe(false);
-            }
-            done();
-        }, 100);*/
+        checkLocation();
     });
 
-    /*it('should use unique IDs', function(done) {
+    it('should use unique IDs', function(done) {
         var settings = {};
-        var plugins = [];
-        var pluginMethods = [];
+        var plugins = ["foo"];
+        var pluginMethods = [["bar"]];
 
         androidSavannah._didFinishLoad(settings, plugins, pluginMethods);
         androidSavannah.ready.then(function() {
@@ -302,11 +304,11 @@ describe("Savannah", function() {
         });
 
         setTimeout(function() {
-
             messagesString = androidEnvironment.savannahJSI.exec.calls.argsFor(0)[0];
-            expect(androidReady).toHaveBeenCalled();
-            expect(iOSReady).toHaveBeenCalled();
+            var messages = JSON.parse(messagesString);
+            expect(messages.length).toBe(2);
+            expect(messages[0][1]).not.toBe(messages[1][0]);
             done();
-        }, 1);
-    })*/
+        }, 100);
+    });
 });
