@@ -1,11 +1,3 @@
-//
-//  AppDelegate.h
-//  SavannahEchoExample
-//
-//  Created by James Ward on 07/10/2013.
-//
-//
-
 #import "AppDelegate.h"
 
 #import "SVNHEchoPlugin.h"
@@ -39,12 +31,12 @@
     
     // create a SVNHWebViewDelegate and pass in the plugins
     self.webViewManager = [[SVNHWebViewManager alloc] initWithName:@"mainWebView"
-                                                           WebView:webView
+                                                           webView:webView
                                                           settings:@{@"foo": @"bar"}
                                                            plugins:@[[SVNHEchoPlugin new]]
                                                                URL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"www/index"
                                                                                                                           ofType:@"html"]]];
-    
+
     // add the webview to the view controller
     [controller.view addSubview:webView];
     

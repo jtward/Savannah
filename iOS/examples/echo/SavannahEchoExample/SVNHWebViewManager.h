@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+
+@protocol SVNHConfigProvider;
 @protocol SVNHPlugin;
 
 /*!
@@ -34,11 +36,25 @@
  * @param URL the initial URL to load into the WebView.
  */
 - (id) initWithName:(NSString *)name
-            WebView:(UIWebView *)webView
+            webView:(UIWebView *)webView
            settings:(NSDictionary *)settings
             plugins:(NSArray *)plugins
                 URL:(NSURL *)URL
                 __attribute__((nonnull (1, 2, 5)));
+
+/*!
+ * Creates a new WebViewManager which manages the given WebView.
+ * @param name the name of this WebViewManager. Useful for identifying WebViewManagers. Uniqueness is not enforced.
+ * @param webView the WebView managed by this WebViewManager.
+ * @param configProvider the provider to use for retrieving Savannah configuration for pages loaded by the given WebView.
+ * @param URL the initial URL to load into the WebView.
+ */
+- (id) initWithName:(NSString *)name
+            webView:(UIWebView *)webView
+     configProvider:(id <SVNHConfigProvider>)configProvider
+                URL:(NSURL *)URL
+                __attribute__((nonnull (1, 2, 3, 4)));
+
 
 /*!
  * Returns the registered plugin with the given name, or nil if no plugin with the given name is registered.
@@ -57,6 +73,8 @@
                               message:(NSString *)message
                          keepCallback:(BOOL)keepCallback
                            callbackId:(NSString *)callbackId;
+
+- (void) setDelegate:(id<UIWebViewDelegate>)delegate;
 
 /*!
  * Executes the given script in the WebViewManager's WebView.
