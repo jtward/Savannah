@@ -1,6 +1,6 @@
 (function(window) {
     "use strict";
-    var version = "0.11.0";
+    var version = "0.12.0";
 
     // calls fn on the leading edge and, if called again,
     // the trailing edge, of the debounce window.
