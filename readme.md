@@ -46,7 +46,7 @@ This will create a manager that will bind itself to the page whenever it matches
 If you use a config provider, you can tell the manager to bind to other URLs and specify the settings and plugins to be loaded for those URLs:
 
 ```Objective-C
-// in a config provider:
+// create a config provider:
 @interface MyConfigProvider : NSObject <SVNHConfigProvider>
 @end
 @implementation MyConfigProvider
@@ -65,8 +65,8 @@ If you use a config provider, you can tell the manager to bind to other URLs and
 @end
 ```
 ```Objective-C
-// create a webview
-UIWebView *webView = [UIWebView new];
+// create a WKWebView. The code for UIWebView is the same but uses SVNHLegacyWebViewManager
+WKWebView *webView = [WKWebView new];
 
 self.webViewManager = [[SVNHWebViewManager alloc] initWithName:@""
                                                        webView:webView
@@ -252,9 +252,11 @@ Savannah uses either promises or callbacks, but not both. For example, if you pa
 - Generated documentation
 - Add tests
 - Create Pod and Jar files
-- Add WKWebView support
 
 ## Changelog
+### 0.13.0, 11th December 2014
+- Savannah for iOS now supports WKWebView. SVNHWebViewManager now manages a WKWebView; UIWebViews are now managed by the new SVNHLegacyWebViewManager class. In order to keep the manager APIs consistent, `executeJavaScript` now takes a block instead of returning the result directly.
+
 ### 0.12.0, 6th December 2014
 - Savannah can now reconnect after page loads. The plugins and settings for the new page are configurable using a config provider.
 - On Android, the manager constructor now takes a URL object rather than a string.
