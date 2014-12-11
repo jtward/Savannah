@@ -1,31 +1,24 @@
-#import <UIKit/UIKit.h>
-
+#import <WebKit/WebKit.h>
+#import "SVNHBaseWebViewManager.h"
 
 @protocol SVNHConfigProvider;
-@protocol SVNHPlugin;
 
 /*!
- * A manager for a single UIWebView instance. Handles communication between the web page loaded in the UIWebView and a collection of Plugins.
+ * A manager for a single WKWebView instance. Handles communication between the web page loaded in the WKWebView and a collection of Plugins.
  */
-@interface SVNHWebViewManager : NSObject <UIWebViewDelegate>
-
-/*!
- * Returns the name given to this WebViewManager.
- * @return the name given to this WebViewManager.
- */
-@property (nonatomic, readonly) NSString *name;
+@interface SVNHWebViewManager : SVNHBaseWebViewManager <WKNavigationDelegate>
 
 /*!
  * Returns the WebView managed by this WebViewManager.
  * @return the WebView managed by this WebViewManager.
  */
-@property (nonatomic, readonly) UIWebView *webView;
+@property (nonatomic, readonly) WKWebView *webView;
 
 /*!
- * Returns the WebViewDelegate for this WebViewManager.
- * @return the WebViewDelegate for this WebViewManager.
+ * Returns the WKNavigationDelegate for this WebViewManager.
+ * @return the WKNavigationDelegate for this WebViewManager.
  */
-@property (nonatomic, weak) id<UIWebViewDelegate> delegate;
+@property (nonatomic, weak) id<WKNavigationDelegate> navigationDelegate;
 
 /*!
  * Creates a new WebViewManager which manages the given WebView.
@@ -36,11 +29,11 @@
  * @param URL the initial URL to load into the WebView.
  */
 - (id) initWithName:(NSString *)name
-            webView:(UIWebView *)webView
+            webView:(WKWebView *)webView
            settings:(NSDictionary *)settings
             plugins:(NSArray *)plugins
                 URL:(NSURL *)URL
-                __attribute__((nonnull (1, 2, 5)));
+__attribute__((nonnull (1, 2, 5)));
 
 /*!
  * Creates a new WebViewManager which manages the given WebView.
@@ -50,37 +43,9 @@
  * @param URL the initial URL to load into the WebView.
  */
 - (id) initWithName:(NSString *)name
-            webView:(UIWebView *)webView
+            webView:(WKWebView *)webView
      configProvider:(id <SVNHConfigProvider>)configProvider
                 URL:(NSURL *)URL
-                __attribute__((nonnull (1, 2, 3, 4)));
-
-
-/*!
- * Returns the registered plugin with the given name, or nil if no plugin with the given name is registered.
- * @param pluginName the name of the registered plugin to return.
- */
-- (id<SVNHPlugin>) getPluginByName:(NSString *)pluginName;
-
-/*!
- * Sends the result of a Plugin execution to the UIWebView.
- * @param status the status to send.
- * @param message the message to send.
- * @param keepCallback true if the callback should be kept rather than discarded.
- * @param callbackId the id of the callback that should receive the result.
- */
-- (void) sendPluginResponseWithStatus:(BOOL)status
-                              message:(NSString *)message
-                         keepCallback:(BOOL)keepCallback
-                           callbackId:(NSString *)callbackId;
-
-- (void) setDelegate:(id<UIWebViewDelegate>)delegate;
-
-/*!
- * Executes the given script in the WebViewManager's WebView.
- * @param script the script to execute.
- * @return the result of the execution.
- */
-- (NSString *) executeJavaScript:(NSString *)script;
+__attribute__((nonnull (1, 2, 3, 4)));
 
 @end

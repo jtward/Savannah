@@ -1,6 +1,6 @@
 (function(window) {
     "use strict";
-    var version = "0.12.0";
+    var version = "0.13.0";
 
     // calls fn on the leading edge and, if called again,
     // the trailing edge, of the debounce window.
@@ -84,6 +84,18 @@
                             commands = JSON.stringify(commandQueue);
                             commandQueue.length = 0;
                             window.savannahJSI.exec(commands);
+                        }
+                    };
+                }
+                else if (window.webkit &&
+                         window.webkit.messageHandlers &&
+                         window.webkit.messageHandlers.savannahJSI) {
+                    return function() {
+                        var commands;
+                        if (commandQueue.length) {
+                            commands = commandQueue.slice();
+                            commandQueue.length = 0;
+                            window.webkit.messageHandlers.savannahJSI.postMessage(commands);
                         }
                     };
                 }

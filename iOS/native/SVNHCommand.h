@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@class SVNHWebViewManager;
+@class SVNHBaseWebViewManager;
 
 /*!
  * A Command is used to send the result of a Plugin execution back to the UIWebView that called it.
@@ -20,7 +20,7 @@
  */
 - (id) initWithArguments:(NSArray *)arguments
               callbackId:(NSString *)callbackId
-          webViewManager:(SVNHWebViewManager *)webViewManager;
+          webViewManager:(SVNHBaseWebViewManager *)webViewManager;
 
 /*!
  * Returns the length of the arguments array for this Command.
@@ -41,6 +41,15 @@
  * @return the argument at the given index if it is an array, nil otherwise.
  */
 - (NSArray *) arrayAtIndex:(NSUInteger)index;
+
+/*!
+ * Returns the argument at the given index if it is an array. If the argument at the given index is not an array, then this method returns nil.
+ * @param index the index into the arguments array to check.
+ * @param defaultValue the value to return if the argument at the given index is not an array.
+ * @return the argument at the given index if it is an array, nil otherwise.
+ */
+- (NSArray *) arrayAtIndex:(NSUInteger)index
+              defaultValue:(NSArray *)defaultValue;
 
 /*!
  * Returns YES if the argument at the given index is a bool. Note that the numbers 1 and 0 are indistinguishable from YES and NO, respectively, and so will this method will return YES if the argument is numeric and has the value 1 or 0. If index is beyond the end of the array, then this method returns NO.
@@ -78,6 +87,15 @@
  * @return the argument at the given index if it is a dictionary, nil otherwise.
  */
 - (NSDictionary *) dictionaryAtIndex:(NSUInteger)index;
+
+/*!
+ * Returns the argument at the given index if it is a dictionary. If the argument at the given index is not a dictionary, then this method returns nil.
+ * @param index the index into the arguments array to check.
+ * @param defaultValue the value to return if the argument at the given index is not a dictionary.
+ * @return the argument at the given index if it is a dictionary, nil otherwise.
+ */
+- (NSDictionary *) dictionaryAtIndex:(NSUInteger)index
+                        defaultValue:(NSDictionary *)defaultValue;
 
 /*!
  * Returns YES if the argument at the given index is a double. If index is beyond the end of the array, then this method returns NO.
@@ -138,6 +156,15 @@
  * @return the argument at the given index if it is a string, nil otherwise.
  */
 - (NSString *) stringAtIndex:(NSUInteger)index;
+
+/*!
+ * Returns the argument at the given index if it is a string.
+ * @param index the index into the arguments array to check.
+ * @param defaultValue the value to return if the argument at the given index is not a string.
+ * @return the argument at the given index if it is a string, defaultValue otherwise.
+ */
+- (NSString *) stringAtIndex:(NSUInteger)index
+                defaultValue:(NSString *)defaultValue;
 
 /*!
  * Returns YES if the argument at the given index is nil. If index beyond the end of the array, then this method returns YES.

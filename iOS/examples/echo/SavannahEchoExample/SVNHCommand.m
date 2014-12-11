@@ -1,11 +1,12 @@
 #import "SVNHCommand.h"
-#import "SVNHWebViewManager.h"
+#import "SVNHBaseWebViewManager.h"
+#import "SVNHBaseWebViewManager+Protected.h"
 
 @interface SVNHCommand()
 
 @property (nonatomic) NSArray* arguments;
 @property (nonatomic) NSString* callbackId;
-@property (nonatomic) SVNHWebViewManager* webViewManager;
+@property (nonatomic) SVNHBaseWebViewManager* webViewManager;
 @property (nonatomic) NSString* webViewManagerName;
 @property (nonatomic) BOOL isDiscarded;
 
@@ -15,7 +16,7 @@
 
 - (id) initWithArguments:(NSArray *)arguments
               callbackId:(NSString *)callbackId
-          webViewManager:(SVNHWebViewManager *)webViewManager {
+          webViewManager:(SVNHBaseWebViewManager *)webViewManager {
 
     self = [super init];
 

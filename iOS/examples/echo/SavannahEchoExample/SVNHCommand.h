@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@class SVNHWebViewManager;
+@class SVNHBaseWebViewManager;
 
 /*!
  * A Command is used to send the result of a Plugin execution back to the UIWebView that called it.
@@ -20,7 +20,7 @@
  */
 - (id) initWithArguments:(NSArray *)arguments
               callbackId:(NSString *)callbackId
-          webViewManager:(SVNHWebViewManager *)webViewManager;
+          webViewManager:(SVNHBaseWebViewManager *)webViewManager;
 
 /*!
  * Returns the length of the arguments array for this Command.

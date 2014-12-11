@@ -1,10 +1,11 @@
 #import "AppDelegate.h"
 
 #import "SVNHEchoPlugin.h"
+#import "SVNHLegacyWebViewManager.h"
 
 @interface AppDelegate ()
 
-@property (strong, nonatomic) SVNHWebViewManager *webViewManager;
+@property (strong, nonatomic) SVNHLegacyWebViewManager *webViewManager;
 
 @end
 
@@ -28,15 +29,14 @@
     // create a webview
     UIWebView *webView = [UIWebView new];
     webView.frame = controller.view.bounds;
-    
-    // create a SVNHWebViewDelegate and pass in the plugins
-    self.webViewManager = [[SVNHWebViewManager alloc] initWithName:@"mainWebView"
-                                                           webView:webView
-                                                          settings:@{@"foo": @"bar"}
-                                                           plugins:@[[SVNHEchoPlugin new]]
-                                                               URL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"www/index"
-                                                                                                                          ofType:@"html"]]];
 
+    // create a SVNHWebViewDelegate and pass in the plugins
+    self.webViewManager = [[SVNHLegacyWebViewManager alloc] initWithName:@"mainWebView"
+                                                                 webView:webView
+                                                                settings:@{@"foo": @"bar"}
+                                                                 plugins:@[[SVNHEchoPlugin new]]
+                                                                     URL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"www/index"
+                                                                                                                                ofType:@"html"]]];
     // add the webview to the view controller
     [controller.view addSubview:webView];
     

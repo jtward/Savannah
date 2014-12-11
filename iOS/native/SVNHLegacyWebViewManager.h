@@ -1,24 +1,24 @@
-#import <WebKit/WebKit.h>
+#import <UIKit/UIKit.h>
 #import "SVNHBaseWebViewManager.h"
 
 @protocol SVNHConfigProvider;
 
 /*!
- * A manager for a single WKWebView instance. Handles communication between the web page loaded in the WKWebView and a collection of Plugins.
+ * A manager for a single UIWebView instance. Handles communication between the web page loaded in the UIWebView and a collection of Plugins.
  */
-@interface SVNHWebViewManager : SVNHBaseWebViewManager <WKNavigationDelegate>
+@interface SVNHLegacyWebViewManager : SVNHBaseWebViewManager <UIWebViewDelegate>
 
 /*!
  * Returns the WebView managed by this WebViewManager.
  * @return the WebView managed by this WebViewManager.
  */
-@property (nonatomic, readonly) WKWebView *webView;
+@property (nonatomic, readonly) UIWebView *webView;
 
 /*!
- * Returns the WKNavigationDelegate for this WebViewManager.
- * @return the WKNavigationDelegate for this WebViewManager.
+ * Returns the WebViewDelegate for this WebViewManager.
+ * @return the WebViewDelegate for this WebViewManager.
  */
-@property (nonatomic, weak) id<WKNavigationDelegate> navigationDelegate;
+@property (nonatomic, weak) id<UIWebViewDelegate> delegate;
 
 /*!
  * Creates a new WebViewManager which manages the given WebView.
@@ -29,7 +29,7 @@
  * @param URL the initial URL to load into the WebView.
  */
 - (id) initWithName:(NSString *)name
-            webView:(WKWebView *)webView
+            webView:(UIWebView *)webView
            settings:(NSDictionary *)settings
             plugins:(NSArray *)plugins
                 URL:(NSURL *)URL
@@ -43,9 +43,10 @@ __attribute__((nonnull (1, 2, 5)));
  * @param URL the initial URL to load into the WebView.
  */
 - (id) initWithName:(NSString *)name
-            webView:(WKWebView *)webView
+            webView:(UIWebView *)webView
      configProvider:(id <SVNHConfigProvider>)configProvider
                 URL:(NSURL *)URL
 __attribute__((nonnull (1, 2, 3, 4)));
+
 
 @end

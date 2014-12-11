@@ -1,11 +1,12 @@
 #import "SVNHCommand.h"
-#import "SVNHWebViewManager.h"
+#import "SVNHBaseWebViewManager.h"
+#import "SVNHBaseWebViewManager+Protected.h"
 
 @interface SVNHCommand()
 
 @property (nonatomic) NSArray* arguments;
 @property (nonatomic) NSString* callbackId;
-@property (nonatomic) SVNHWebViewManager* webViewManager;
+@property (nonatomic) SVNHBaseWebViewManager* webViewManager;
 @property (nonatomic) NSString* webViewManagerName;
 @property (nonatomic) BOOL isDiscarded;
 
@@ -15,7 +16,7 @@
 
 - (id) initWithArguments:(NSArray *)arguments
               callbackId:(NSString *)callbackId
-          webViewManager:(SVNHWebViewManager *)webViewManager {
+          webViewManager:(SVNHBaseWebViewManager *)webViewManager {
 
     self = [super init];
 
@@ -45,6 +46,16 @@
     }
     else {
         return nil;
+    }
+}
+
+- (NSArray *) arrayAtIndex:(NSUInteger)index
+              defaultValue:(NSArray *)defaultValue {
+    if ([self hasArrayAtIndex:index]) {
+        return [self.arguments objectAtIndex:index];
+    }
+    else {
+        return defaultValue;
     }
 }
 
@@ -97,6 +108,16 @@
     }
     else {
         return nil;
+    }
+}
+
+- (NSDictionary *) dictionaryAtIndex:(NSUInteger)index
+                        defaultValue:(NSDictionary *)defaultValue {
+    if ([self hasDictionaryAtIndex:index]) {
+        return [self.arguments objectAtIndex:index];
+    }
+    else {
+        return defaultValue;
     }
 }
 
@@ -175,6 +196,16 @@
     }
     else {
         return nil;
+    }
+}
+
+- (NSString *) stringAtIndex:(NSUInteger)index
+                defaultValue:(NSString *)defaultValue {
+    if ([self hasStringAtIndex:index]) {
+        return [self.arguments objectAtIndex:index];
+    }
+    else {
+        return defaultValue;
     }
 }
 
