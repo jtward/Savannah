@@ -29,8 +29,8 @@ Docs
 To use Savannah:
 
 ```Objective-C
-// create a webview
-UIWebView *webView = [UIWebView new];
+// create a WKWebView. The code for UIWebView is the same but uses SVNHLegacyWebViewManager
+WKWebView *webView = [WKWebView new];
 
 // create a SVNHWebViewManager and pass in a name, the webview, settings, plugins and the url to load into the webview
 self.webViewManager = [[SVNHWebViewManager alloc] initWithName:@"main"
